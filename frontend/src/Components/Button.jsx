@@ -7,13 +7,14 @@ const ButtonStyle = styled.button`
   height: ${(props) => props.height};
   margin: ${(props) => props.margin};
   padding: 0.2rem 1rem;
-  border: 1px solid grey;
+  border: 2px solid white;
   border-radius: 10rem;
   text-align: center;
   font-size: 1rem;
   color: ${(props) => props.color};
   background: ${(props) => props.background};
   background: ${(props) => props.backgroundColor};
+  cursor: pointer;
 `;
 
 export default function Button({
