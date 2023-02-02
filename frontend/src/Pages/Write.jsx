@@ -1,7 +1,7 @@
 import React from 'react';
 
 function Write() {
-  return <div></div>;
+  return <div>Write</div>;
 }
 
 export default Write;
