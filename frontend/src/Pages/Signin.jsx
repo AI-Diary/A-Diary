@@ -51,13 +51,9 @@ function Signin() {
 
         <ExplainInput>비밀번호 확인</ExplainInput>
         <Input width='15rem' height='2.8rem' marignTop='1rem' />
+
         <ExplainInput>이메일</ExplainInput>
-        <Input
-          width='15rem'
-          height='2.8rem'
-          marignTop='1rem'
-          placeholder='이메일'
-        />
+        <Input width='15rem' height='2.8rem' marignTop='1rem' />
 
         <Button
           width='15rem'

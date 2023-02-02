@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import Button from '../Components/Button';
+
 const Wrap = styled.div`
   position: absolute;
   width: 100vw;
@@ -12,6 +13,7 @@ const Wrap = styled.div`
     rgba(178, 102, 255)
   );
 `;
+
 const Welcome = styled.div`
   margin-top: 10rem;
   color: white;
@@ -26,12 +28,15 @@ const WrapButtons = styled.div`
 `;
 function Default() {
   const nagivate = useNavigate();
+
   const TransLogin = () => {
     nagivate(`/Login`);
   };
+
   const TransSignin = () => {
     nagivate(`/Signin`);
   };
+
   return (
     <div>
       <Wrap>

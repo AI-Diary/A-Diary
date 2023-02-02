@@ -23,7 +23,7 @@ const WrapInput = styled.div`
   background-color: white;
 `;
 
-const TransSignin = styled.div`
+const WrapSignin = styled.div`
   margin-top: 0.5rem;
   text-align: center;
   /* border: 1px solid black; */
@@ -37,9 +37,15 @@ const TransSignin = styled.div`
 `;
 
 function Login() {
+  // 회원가입 페이지 이동
   const navigate = useNavigate();
-  const ClickSignin = () => {
+  const TransSignin = () => {
     navigate(`/Signin`);
+  };
+
+  // 메인 페이지 이동
+  const TransMain = () => {
+    navigate('/Main');
   };
   return (
     <div>
@@ -58,8 +64,9 @@ function Login() {
           height='2.5rem'
           margin='2rem 0rem 0rem 0rem'
           name='로그인'
+          onClick={TransMain}
         />
-        <TransSignin onClick={ClickSignin}>회원가입이 필요한가요?</TransSignin>
+        <WrapSignin onClick={TransSignin}>회원가입이 필요한가요?</WrapSignin>
       </WrapInput>
     </div>
   );
