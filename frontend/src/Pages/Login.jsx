@@ -12,7 +12,7 @@ const WrapTitle = styled.div`
   align-items: center;
   /* border: 1px solid black; */
 `;
-const WrapInput = styled.div`
+const WrapForms = styled.div`
   box-sizing: content-box;
   width: fit-content;
   height: fit-content;
@@ -23,6 +23,11 @@ const WrapInput = styled.div`
   background-color: white;
 `;
 
+const WrapInput = styled.div`
+  width: fit-content;
+  height: fit-content;
+  margin-bottom: 0.2rem;
+`;
 const WrapSignin = styled.div`
   margin-top: 0.5rem;
   text-align: center;
@@ -49,15 +54,12 @@ function Login() {
   };
   return (
     <div>
-      <WrapInput>
+      <WrapForms>
         <WrapTitle>로그인</WrapTitle>
-        <Input width='15rem' height='2.8rem' placeholder='아이디' />
-        <Input
-          width='15rem'
-          height='2.8rem'
-          marignTop='1rem'
-          placeholder='비밀번호'
-        />
+        <WrapInput>
+          <Input width='15rem' height='2.8rem' placeholder='아이디' />
+        </WrapInput>
+        <Input width='15rem' height='2.8rem' placeholder='비밀번호' />
 
         <Button
           width='15rem'
@@ -67,7 +69,7 @@ function Login() {
           onClick={TransMain}
         />
         <WrapSignin onClick={TransSignin}>회원가입이 필요한가요?</WrapSignin>
-      </WrapInput>
+      </WrapForms>
     </div>
   );
 }

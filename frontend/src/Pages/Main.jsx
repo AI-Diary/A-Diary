@@ -62,7 +62,6 @@ function Main() {
             name='로그아웃'
             color='white'
             backgroundColor='transparent'
-            onClick={TransStatistics}
           />
         </WrapButtons>
         <WrapCalendar>

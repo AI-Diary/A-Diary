@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 const InputStyle = styled.input`
-  display: block;
+  /* display: block; */
   box-sizing: content-box;
   width: ${(props) => props.width};
   height: ${(props) => props.height};
@@ -23,12 +23,14 @@ export default function Input({
   onChange,
 }) {
   return (
-    <InputStyle
-      width={width}
-      height={height}
-      marginTop={marginTop}
-      placeholder={placeholder}
-      onChange={onChange}
-    />
+    <div>
+      <InputStyle
+        width={width}
+        height={height}
+        // marginTop={marginTop}
+        placeholder={placeholder}
+        onChange={onChange}
+      />
+    </div>
   );
 }
