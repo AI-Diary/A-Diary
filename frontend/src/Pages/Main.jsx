@@ -49,7 +49,6 @@ function Main() {
           <Button
             width='7rem'
             height='2.5rem'
-            // margin='4rem 1rem'
             name='일기 통계'
             color='white'
             backgroundColor='transparent'
