@@ -10,7 +10,8 @@ import Button from '../Components/Button';
 const Wrap = styled.div`
   position: absolute;
   width: 100vw;
-  height: 100vh;
+  height: fit-content;
+  padding-bottom: 2rem;
   background: linear-gradient(
     to bottom,
     rgba(51, 153, 255),
@@ -94,7 +95,7 @@ const WrapCalendar = styled.div`
     border-color: rgba(256, 256, 256);
     border-radius: 0.5rem;
     border-style: none solid solid none;
-    font-size: 1.2rem;
+    font-size: 0.9rem;
   }
   /* .react-calendar__tile:enabled:hover,
   .react-calendar__tile:enabled:focus {
