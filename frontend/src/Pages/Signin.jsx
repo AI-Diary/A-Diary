@@ -24,12 +24,12 @@ const WrapTitle = styled.div`
   /* border: 1px solid black; */
 `;
 const WrapInputs = styled.div`
+  /* border: 1px solid grey; */
   box-sizing: content-box;
   width: fit-content;
   height: fit-content;
   margin: 5% auto;
   padding: 2rem 4rem;
-  /* border: 1px solid grey; */
   border-radius: 2rem;
   background-color: rgba(256, 256, 256, 0.85);
   box-shadow: 0.4rem 0.4rem 1rem rgba(120, 120, 120, 0.3);
@@ -110,6 +110,7 @@ function Signin() {
             width='15rem'
             height='2.8rem'
             borderRadius='0.4rem'
+            placeholder='우측에 중복 확인 버튼 추가 예정'
             backgroundColor='rgba(256, 256, 256, 0.7)'
             onChange={onChangeId}
           />
@@ -120,6 +121,7 @@ function Signin() {
             height='2.8rem'
             marignTop='1rem'
             borderRadius='0.4rem'
+            placeholder='영문, 숫자 조합의 8자리 이상'
             backgroundColor='rgba(256, 256, 256, 0.7)'
             onChange={onChangePw1}
             type='password'
@@ -131,6 +133,7 @@ function Signin() {
             height='2.8rem'
             marignTop='1rem'
             borderRadius='0.4rem'
+            placeholder='비밀번호를 한번 더 입력해주세요'
             backgroundColor='rgba(256, 256, 256, 0.7)'
             onChange={onChangePw2}
             type='password'

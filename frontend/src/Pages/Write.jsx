@@ -109,7 +109,7 @@ function Write() {
             height='2.5rem'
             name='키워드 추출'
             color='white'
-            margin='2rem 1rem'
+            margin='2rem 0.5rem'
             border='2px solid white'
             backgroundColor='transparent;'
           />
@@ -118,7 +118,7 @@ function Write() {
             height='2.5rem'
             name='일기 저장'
             color='white'
-            margin='2rem 1rem'
+            margin='2rem 0.5rem'
             border='2px solid white'
             backgroundColor='transparent;'
           />
@@ -127,7 +127,7 @@ function Write() {
             height='2.5rem'
             name='SNS 공유'
             color='white'
-            margin='2rem 2rem 2rem 1rem'
+            margin='2rem 0.5rem'
             border='2px solid white'
             backgroundColor='transparent;'
           />
