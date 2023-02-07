@@ -4,6 +4,17 @@ import styled from 'styled-components';
 import Button from '../Components/Button';
 import Input from '../Components/Input';
 
+const Wrap = styled.div`
+  position: absolute;
+  width: 100%;
+  height: fit-content;
+  background: linear-gradient(
+    to bottom,
+    rgba(51, 153, 255),
+    rgba(178, 102, 255)
+  );
+`;
+
 const WrapTitle = styled.div`
   width: fit-content;
   margin: 2rem auto;
@@ -18,9 +29,10 @@ const WrapInputs = styled.div`
   height: fit-content;
   margin: 5% auto;
   padding: 2rem 4rem;
-  border: 1px solid grey;
+  /* border: 1px solid grey; */
   border-radius: 2rem;
-  background-color: white;
+  background-color: rgba(256, 256, 256, 0.85);
+  box-shadow: 0.4rem 0.4rem 1rem rgba(120, 120, 120, 0.3);
 `;
 
 const ExplainInput = styled.div`
@@ -79,47 +91,76 @@ function Signin() {
   };
   return (
     <div>
-      <WrapInputs>
-        <WrapTitle>회원가입</WrapTitle>
+      <Wrap>
+        <WrapInputs>
+          <WrapTitle>회원가입</WrapTitle>
 
-        <ExplainInput>이름</ExplainInput>
-        <Input width='15rem' height='2.8rem' onChange={onChangeName} />
+          <ExplainInput>이름</ExplainInput>
+          <Input
+            width='15rem'
+            height='2.8rem'
+            borderRadius='0.4rem'
+            placeholder='홍길동'
+            backgroundColor='rgba(256, 256, 256, 0.7)'
+            onChange={onChangeName}
+          />
 
-        <ExplainInput>아이디</ExplainInput>
-        <Input width='15rem' height='2.8rem' onChange={onChangeId} />
+          <ExplainInput>아이디</ExplainInput>
+          <Input
+            width='15rem'
+            height='2.8rem'
+            borderRadius='0.4rem'
+            backgroundColor='rgba(256, 256, 256, 0.7)'
+            onChange={onChangeId}
+          />
 
-        <ExplainInput>비밀번호</ExplainInput>
-        <Input
-          width='15rem'
-          height='2.8rem'
-          marignTop='1rem'
-          onChange={onChangePw1}
-        />
+          <ExplainInput>비밀번호</ExplainInput>
+          <Input
+            width='15rem'
+            height='2.8rem'
+            marignTop='1rem'
+            borderRadius='0.4rem'
+            backgroundColor='rgba(256, 256, 256, 0.7)'
+            onChange={onChangePw1}
+            type='password'
+          />
 
-        <ExplainInput>비밀번호 확인</ExplainInput>
-        <Input
-          width='15rem'
-          height='2.8rem'
-          marignTop='1rem'
-          onChange={onChangePw2}
-        />
+          <ExplainInput>비밀번호 확인</ExplainInput>
+          <Input
+            width='15rem'
+            height='2.8rem'
+            marignTop='1rem'
+            borderRadius='0.4rem'
+            backgroundColor='rgba(256, 256, 256, 0.7)'
+            onChange={onChangePw2}
+            type='password'
+          />
 
-        <ExplainInput>이메일</ExplainInput>
-        <Input
-          width='15rem'
-          height='2.8rem'
-          marignTop='1rem'
-          onChange={onChangeEmail}
-        />
+          <ExplainInput>이메일</ExplainInput>
+          <Input
+            width='15rem'
+            height='2.8rem'
+            marignTop='1rem'
+            borderRadius='0.4rem'
+            backgroundColor='rgba(256, 256, 256, 0.7)'
+            placeholder='example@email.com'
+            onChange={onChangeEmail}
+            type='email'
+          />
 
-        <Button
-          width='15rem'
-          height='2.5rem'
-          margin='3rem 0rem 1.5rem 0rem'
-          name='가입하기'
-          onClick={CheckForms}
-        />
-      </WrapInputs>
+          <Button
+            width='15rem'
+            height='2.5rem'
+            margin='3rem 0rem 1.5rem 0rem'
+            color='grey'
+            border='2px solid grey'
+            borderRadius='0.4rem'
+            backgroundColor='white'
+            name='가입하기'
+            onClick={CheckForms}
+          />
+        </WrapInputs>
+      </Wrap>
     </div>
   );
 }

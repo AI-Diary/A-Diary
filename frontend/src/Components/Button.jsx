@@ -7,7 +7,7 @@ const ButtonStyle = styled.button`
   height: ${(props) => props.height};
   margin: ${(props) => props.margin};
   padding: 0.2rem 1rem;
-  border: 2px solid white;
+  border: ${(props) => props.border};
   border-radius: 10rem;
   text-align: center;
   font-size: 1rem;
@@ -22,6 +22,7 @@ export default function Button({
   height,
   margin,
   color,
+  border,
   background,
   backgroundColor,
   name,
@@ -33,6 +34,7 @@ export default function Button({
       height={height}
       margin={margin}
       color={color}
+      border={border}
       background={background}
       backgroundColor={backgroundColor}
       onClick={onClick}

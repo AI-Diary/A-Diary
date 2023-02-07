@@ -8,9 +8,11 @@ import Button from '../Components/Button';
 // import Input from '../Components/Input';
 
 const Wrap = styled.div`
-  position: absolute;
+  /* position: absolute; */
   width: 100vw;
-  height: 100vh;
+  height: fit-content;
+  border: 0.1px solid transparent;
+  padding-bottom: 4rem;
   background: linear-gradient(
     to bottom,
     rgba(51, 153, 255),
@@ -27,12 +29,11 @@ const WrapButtons = styled.div`
 const WrapCalendar = styled.div`
   width: 50rem;
   height: fit-content;
-  margin: 10rem auto 0rem auto;
+  margin: 9rem auto 0rem auto;
   padding: 2rem 3rem 3rem 3rem;
   border-radius: 1rem;
   text-align: center;
   background-color: rgba(256, 256, 256, 0.5);
-  /* color: green; */
   .react-calendar__navigation__label {
     font-weight: bold;
     width: 15rem;
@@ -124,17 +125,17 @@ function Main() {
   const navigate = useNavigate();
 
   // 통계 페이지 이동
-  const TransStatistics = () => {
+  const NavigateToStatistics = () => {
     navigate(`/Statistics`);
   };
 
   // 글쓰기 페이지 이동
-  const TransWrite = () => {
+  const NavigateToWrite = () => {
     navigate(`/Write`);
   };
 
   // 웰컴 페이지 이동
-  const TransDefault = () => {
+  const NavigateToDefault = () => {
     navigate('/');
   };
   const [value, onChange] = useState(new Date());
@@ -148,16 +149,18 @@ function Main() {
             name='일기 쓰기'
             color='white'
             margin='2rem 1rem'
-            backgroundColor='transparent'
-            onClick={TransWrite}
+            border='2px solid white'
+            backgroundColor='transparent;'
+            onClick={NavigateToWrite}
           />
           <Button
             width='7rem'
             height='2.5rem'
             name='일기 통계'
             color='white'
+            border='2px solid white'
             backgroundColor='transparent'
-            onClick={TransStatistics}
+            onClick={NavigateToStatistics}
           />
           <Button
             width='7rem'
@@ -165,8 +168,9 @@ function Main() {
             margin='2rem 1rem'
             name='로그아웃'
             color='white'
+            border='2px solid white'
             backgroundColor='transparent'
-            onClick={TransDefault}
+            onClick={NavigateToDefault}
           />
         </WrapButtons>
         <WrapCalendar>
@@ -177,7 +181,7 @@ function Main() {
             formatDay={(locale, date) => moment(date).format('DD')}
           />
         </WrapCalendar>
-        <ToDay>{moment(value).format('YYYY년 MM일 DD일')}</ToDay>
+        {/* <ToDay>{moment(value).format('YYYY년 MM일 DD일')}</ToDay> */}
       </Wrap>
     </div>
   );
