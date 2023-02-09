@@ -91,11 +91,14 @@ const WrapCalendar = styled.div`
     // react-calendar 내의 버튼들
     height: 6rem;
     max-width: initial !important;
+    padding: 0.5rem;
     background-color: rgba(256, 256, 256, 0.2);
     border-color: rgba(256, 256, 256);
     border-radius: 0.5rem;
     border-style: none solid solid none;
     font-size: 1.2rem;
+    vertical-align: top;
+    text-align: left;
   }
   /* .react-calendar__tile:enabled:hover,
   .react-calendar__tile:enabled:focus {
@@ -107,6 +110,7 @@ const WrapCalendar = styled.div`
     /* background: #6f48eb33; */
     /* border-radius: 6px; */
     font-weight: bold;
+    background-color: rgba(51, 153, 255, 0.1);
     /* color: #6f48eb; */
   }
   .react-calendar__month-view__days__day--neighboringMonth {
@@ -122,6 +126,7 @@ const ToDay = styled.div`
 `;
 
 function Main() {
+  const [value, onChange] = useState(new Date());
   const navigate = useNavigate();
 
   // 통계 페이지 이동
@@ -131,14 +136,15 @@ function Main() {
 
   // 글쓰기 페이지 이동
   const NavigateToWrite = () => {
-    navigate(`/Write`);
+    console.log('MainPage', moment(value));
+    navigate(`/Write`, { state: moment(value).format('YYYY-MM-DD') });
   };
 
   // 웰컴 페이지 이동
   const NavigateToDefault = () => {
     navigate('/');
   };
-  const [value, onChange] = useState(new Date());
+
   return (
     <div>
       <Wrap>
@@ -179,9 +185,10 @@ function Main() {
             value={value}
             calendarType='US'
             formatDay={(locale, date) => moment(date).format('DD')}
+            onClickDay={NavigateToWrite}
           />
         </WrapCalendar>
-        {/* <ToDay>{moment(value).format('YYYY년 MM일 DD일')}</ToDay> */}
+        <ToDay>{moment(value).format('YYYY년 MM일 DD일')}</ToDay>
       </Wrap>
     </div>
   );

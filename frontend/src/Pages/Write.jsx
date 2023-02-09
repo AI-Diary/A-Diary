@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import Button from '../Components/Button';
 import Input from '../Components/Input';
@@ -18,7 +19,7 @@ const Wrap = styled.div`
 
 const WrapButtons = styled.div`
   /* border: 1px solid black; */
-  margin-left: 1rem;
+  /* margin-left: 1rem; */
   width: fit-content;
   height: fit-content;
   float: right;
@@ -32,6 +33,7 @@ const WrapDiary = styled.div`
   padding: 3rem 7rem 5rem 7rem;
   border-radius: 1.5rem;
   background-color: rgba(256, 256, 256, 0.7);
+  box-shadow: 0.4rem 0.4rem 1rem rgba(120, 120, 120, 0.3);
 `;
 
 const WrapTop = styled.div`
@@ -39,7 +41,7 @@ const WrapTop = styled.div`
   height: 5rem;
   margin-bottom: 1rem;
   border-radius: 1.2rem;
-  background-color: rgba(256, 256, 256, 0.8);
+  background-color: rgba(256, 256, 256, 0.7);
   border: 1.8px solid grey;
 `;
 
@@ -48,10 +50,19 @@ const DateForm = styled.div`
   margin: 1.2rem 0rem 0rem 2rem;
   /* border: 1px solid black; */
   /* white-space: pre-wrap; */
-  /* word-spacing: 1rem; */
+  word-spacing: 0.4rem;
   font-size: 1.8rem;
 
   /* width: 5rem; */
+`;
+
+const Weather = styled.button`
+  width: 1.8rem;
+  height: 1.8rem;
+  margin-left: 1.3rem;
+  border: none;
+  background-color: transparent;
+  font-size: 1.8rem;
 `;
 
 const DrawDiary = styled.div`
@@ -71,7 +82,7 @@ const WriteDiary = styled.textarea`
   box-sizing: border-box;
   width: 40.2rem;
   height: 20rem;
-  background-color: rgba(256, 256, 256, 0.8);
+  background-color: rgba(256, 256, 256, 0.7);
   /* margin: 2rem 27rem; */
   padding: 2.8rem 2rem 1rem 2rem;
   border: 1.8px solid grey;
@@ -93,12 +104,17 @@ const WriteDiary = styled.textarea`
 `;
 
 function Write() {
-  const now = new Date();
+  // const time = new Date();
+  const { state } = useLocation();
   const week = ['일', '월', '화', '수', '목', '금', '토'];
-  const year = now.getFullYear();
-  const month = now.getMonth() + 1;
-  const date = now.getDate();
-  const day = week[now.getDay()];
+  // const year = now.getFullYear();
+  // const month = now.getMonth() + 1;
+  // const date = now.getDate();
+  // const day = week[now.getDay()];
+  const date = state.split('-');
+  const daynum = new Date(state).getDay();
+  const day = week[daynum];
+  console.log(state);
 
   return (
     <div>
@@ -135,9 +151,14 @@ function Write() {
         <WrapDiary>
           <WrapTop>
             <DateForm>
-              {year}년 {month}월 {date}일 {day}요일
+              {date[0]}년 {date[1]}월 {date[2]}일 {day}요일
               <WrapButtons>
-                <Button
+                <Weather>🌞</Weather>
+                <Weather>⛅️</Weather>
+                <Weather>🌧️</Weather>
+                <Weather>🌨️</Weather>
+                <Weather>🌬️</Weather>
+                {/* <Button
                   width='1rem'
                   height='1.5rem'
                   background='transparent'
@@ -171,7 +192,7 @@ function Write() {
                   background='transparent'
                   name='눈'
                   margin='0rem 2px 0rem 0rem'
-                />
+                /> */}
               </WrapButtons>
             </DateForm>
           </WrapTop>
