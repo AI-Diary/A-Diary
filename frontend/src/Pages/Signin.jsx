@@ -43,8 +43,11 @@ const ExplainInput = styled.div`
 `;
 
 function Signin() {
+  const resPass = new RegExp(/^(?=.*[A-Za-z])(?=.*[0-9]).{8,16}$/);
   const [name, setName] = useState();
   const [id, setId] = useState();
+  const [checkId, setCheckId] = useState(false);
+  const [checkPw, setCheckPw] = useState(false);
   const [pw1, setPw1] = useState();
   const [pw2, setPw2] = useState();
   const [email, setEmail] = useState();
@@ -58,9 +61,21 @@ function Signin() {
   };
   const onChangeId = (e) => {
     setId(e.target.value);
+    if (resPass.test(id)) {
+      console.log('된당!');
+      setCheckPw(true);
+    } else {
+      console.log('아직이당!');
+    }
   };
   const onChangePw1 = (e) => {
     setPw1(e.target.value);
+    if (resPass.test(pw1)) {
+      console.log('된당!');
+      setCheckPw(true);
+    } else {
+      console.log('아직이당!');
+    }
   };
   const onChangePw2 = (e) => {
     setPw2(e.target.value);
@@ -68,23 +83,23 @@ function Signin() {
   const onChangeEmail = (e) => {
     setEmail(e.target.value);
   };
+
+  const onClickCheckId = () => {
+    // axios로 받아서 검사 후 true로 바꾸기
+    console.log('확인');
+    setCheckId(true);
+  };
+
+  const onCheckPasswd = () => {};
+
   const CheckForms = () => {
-    console.log(
-      '이름 : ',
-      name,
-      ' 아이디 : ',
-      id,
-      ' pw1 : ',
-      pw1,
-      ' pw2 : ',
-      pw2,
-      ' email : ',
-      email
-    );
+    // console.log('이름 : ', name, ' 아이디 : ',id,  ' pw1 : ',  pw1, ' pw2 : ',  pw2,  ' email : ',  email);
     if (!name || !id || !pw1 || !pw2 || !email) {
       alert('빈 칸을 모두 입력해주세요');
     } else if (pw1 !== pw2) {
       alert('비밀번호를 다시 입력해주세요');
+    } else if (checkId === false) {
+      alert('아이디 중복 확인을 해주세요');
     } else {
       nagivate(`/Main`);
     }
@@ -110,9 +125,22 @@ function Signin() {
             width='15rem'
             height='2.8rem'
             borderRadius='0.4rem'
-            placeholder='우측에 중복 확인 버튼 추가 예정'
+            placeholder='영문, 숫자 조합 8자리 이상 16자리 이하'
             backgroundColor='rgba(256, 256, 256, 0.7)'
             onChange={onChangeId}
+            maxLength='16'
+          />
+          <Button
+            width='15rem'
+            height='2rem'
+            color='grey'
+            name='아이디 중복 확인'
+            background='white'
+            border='2px solid grey'
+            borderRadius='10rem'
+            // margin='0.5rem 2.5rem 0rem'
+            margin='0.5rem 0rem 0rem 0rem'
+            onClick={onClickCheckId}
           />
 
           <ExplainInput>비밀번호</ExplainInput>
@@ -121,10 +149,11 @@ function Signin() {
             height='2.8rem'
             marignTop='1rem'
             borderRadius='0.4rem'
-            placeholder='영문, 숫자 조합의 8자리 이상'
+            placeholder='영문, 숫자 조합 8자리 이상 16자리 이하'
             backgroundColor='rgba(256, 256, 256, 0.7)'
             onChange={onChangePw1}
             type='password'
+            maxLength='16'
           />
 
           <ExplainInput>비밀번호 확인</ExplainInput>
@@ -137,6 +166,7 @@ function Signin() {
             backgroundColor='rgba(256, 256, 256, 0.7)'
             onChange={onChangePw2}
             type='password'
+            maxLength='16'
           />
 
           <ExplainInput>이메일</ExplainInput>
@@ -154,10 +184,10 @@ function Signin() {
           <Button
             width='15rem'
             height='2.5rem'
-            margin='3rem 0rem 1.5rem 0rem'
+            margin='2rem 0rem 1.5rem 0rem'
             color='grey'
             border='2px solid grey'
-            borderRadius='0.4rem'
+            borderRadius='10rem'
             backgroundColor='white'
             name='가입하기'
             onClick={CheckForms}

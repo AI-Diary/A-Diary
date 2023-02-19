@@ -29,16 +29,18 @@ const WrapDiary = styled.div`
   box-sizing: border-box;
   width: fit-content;
   height: fit-content;
-  margin: 7rem 0rem 5rem 18rem;
+  margin: 7rem 0rem 5rem 0rem;
   padding: 3rem 7rem 5rem 7rem;
   border-radius: 1.5rem;
-  background-color: rgba(256, 256, 256, 0.7);
+  background-color: rgba(256, 256, 256, 0.8);
   box-shadow: 0.4rem 0.4rem 1rem rgba(120, 120, 120, 0.3);
 `;
 
 const WrapTop = styled.div`
+  box-sizing: border-box;
   width: 40rem;
-  height: 5rem;
+  height: 4rem;
+  padding: 1rem;
   margin-bottom: 1rem;
   border-radius: 1.2rem;
   background-color: rgba(256, 256, 256, 0.7);
@@ -47,13 +49,11 @@ const WrapTop = styled.div`
 
 const DateForm = styled.div`
   width: fit-content;
-  margin: 1.2rem 0rem 0rem 2rem;
+  /* margin: 1.2rem 0rem 0rem 2rem; */
   /* border: 1px solid black; */
   /* white-space: pre-wrap; */
   word-spacing: 0.4rem;
-  font-size: 1.8rem;
-
-  /* width: 5rem; */
+  font-size: 1.5rem;
 `;
 
 const Weather = styled.button`
@@ -103,6 +103,11 @@ const WriteDiary = styled.textarea`
   line-height: 40px;
 `;
 
+const WrapKeywordButton = styled.div`
+  width: fit-content;
+  height: fit-content;
+  margin: 1rem auto 0rem auto;
+`;
 function Write() {
   // const time = new Date();
   const { state } = useLocation();
@@ -123,15 +128,6 @@ function Write() {
           <Button
             width='7rem'
             height='2.5rem'
-            name='키워드 추출'
-            color='white'
-            margin='2rem 0.5rem'
-            border='2px solid white'
-            backgroundColor='transparent;'
-          />
-          <Button
-            width='7rem'
-            height='2.5rem'
             name='일기 저장'
             color='white'
             margin='2rem 0.5rem'
@@ -148,6 +144,7 @@ function Write() {
             backgroundColor='transparent;'
           />
         </WrapButtons>
+        {/* WrapDiary 중앙정렬하기 */}
         <WrapDiary>
           <WrapTop>
             <DateForm>
@@ -158,46 +155,21 @@ function Write() {
                 <Weather>🌧️</Weather>
                 <Weather>🌨️</Weather>
                 <Weather>🌬️</Weather>
-                {/* <Button
-                  width='1rem'
-                  height='1.5rem'
-                  background='transparent'
-                  name='해'
-                  margin='0rem 2px 0rem 0rem'
-                />
-                <Button
-                  width='2rem'
-                  height='1.5rem'
-                  background='transparent'
-                  name='구름'
-                  margin='0rem 2px 0rem 0rem'
-                />
-                <Button
-                  width='1rem'
-                  height='1.5rem'
-                  background='transparent'
-                  name='비'
-                  margin='0rem 2px 0rem 0rem'
-                />
-                <Button
-                  width='2rem'
-                  height='1.5rem'
-                  background='transparent'
-                  name='안개'
-                  margin='0rem 2px 0rem 0rem'
-                />
-                <Button
-                  width='1rem'
-                  height='1.5rem'
-                  background='transparent'
-                  name='눈'
-                  margin='0rem 2px 0rem 0rem'
-                /> */}
               </WrapButtons>
             </DateForm>
           </WrapTop>
           <DrawDiary />
           <WriteDiary />
+          <WrapKeywordButton>
+            <Button
+              width='8rem'
+              height='2.5rem'
+              name='키워드 추출'
+              color='rgba(138, 80, 255, 0.5)'
+              border='2px solid rgba(138, 80, 255, 0.5)'
+              backgroundColor='transparent;'
+            />
+          </WrapKeywordButton>
         </WrapDiary>
       </Wrap>
     </div>

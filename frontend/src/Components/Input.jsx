@@ -7,11 +7,11 @@ const InputStyle = styled.input`
   height: ${(props) => props.height};
   margin-top: ${(props) => props.marginTop};
   padding: 0rem 1rem;
-  border: 1.2px solid grey;
+  border: 1.3px solid grey;
   border-style: ${(props) => props.borderStyle};
   border-radius: ${(props) => props.borderRadius};
   background-color: ${(props) => props.backgroundColor};
-  font-size: 1rem;
+  font-size: ${(props) => props.fontSize};
   color: ${(props) => props.color};
 `;
 
@@ -25,6 +25,8 @@ export default function Input({
   borderRadius,
   backgroundColor,
   type,
+  fontSize,
+  maxLength,
 }) {
   return (
     <div>
@@ -38,6 +40,8 @@ export default function Input({
         borderRadius={borderRadius}
         backgroundColor={backgroundColor}
         type={type}
+        fontSize={fontSize}
+        maxLength={maxLength}
       />
     </div>
   );

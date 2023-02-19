@@ -10,9 +10,9 @@ import Button from '../Components/Button';
 const Wrap = styled.div`
   /* position: absolute; */
   width: 100vw;
-  height: fit-content;
+  height: 100vh;
   border: 0.1px solid transparent;
-  padding-bottom: 4rem;
+  /* padding-bottom: 4rem; */
   background: linear-gradient(
     to bottom,
     rgba(51, 153, 255),
@@ -25,11 +25,15 @@ const WrapButtons = styled.div`
   height: fit-content;
   float: right;
 `;
-
 const WrapCalendar = styled.div`
+  width: fit-content;
+  height: fit-content;
+  margin: 8rem auto 0rem auto;
+`;
+const CustomCalendar = styled.div`
   width: 50rem;
   height: fit-content;
-  margin: 9rem auto 0rem auto;
+  /* margin: 9rem auto 0rem auto; */
   padding: 2rem 3rem 3rem 3rem;
   border-radius: 1rem;
   text-align: center;
@@ -110,7 +114,7 @@ const WrapCalendar = styled.div`
     /* background: #6f48eb33; */
     /* border-radius: 6px; */
     font-weight: bold;
-    background-color: rgba(51, 153, 255, 0.1);
+    background-color: rgba(114, 92, 255, 0.2);
     /* color: #6f48eb; */
   }
   .react-calendar__month-view__days__day--neighboringMonth {
@@ -150,8 +154,8 @@ function Main() {
       <Wrap>
         <WrapButtons>
           <Button
-            width='7rem'
-            height='2.5rem'
+            width='5rem'
+            height='2.3rem'
             name='일기 쓰기'
             color='white'
             margin='2rem 1rem'
@@ -160,8 +164,8 @@ function Main() {
             onClick={NavigateToWrite}
           />
           <Button
-            width='7rem'
-            height='2.5rem'
+            width='5rem'
+            height='2.3rem'
             name='일기 통계'
             color='white'
             border='2px solid white'
@@ -169,8 +173,8 @@ function Main() {
             onClick={NavigateToStatistics}
           />
           <Button
-            width='7rem'
-            height='2.5rem'
+            width='5rem'
+            height='2.3rem'
             margin='2rem 1rem'
             name='로그아웃'
             color='white'
@@ -180,15 +184,18 @@ function Main() {
           />
         </WrapButtons>
         <WrapCalendar>
-          <Calendar
-            onChange={onChange}
-            value={value}
-            calendarType='US'
-            formatDay={(locale, date) => moment(date).format('DD')}
-            onClickDay={NavigateToWrite}
-          />
+          <CustomCalendar>
+            <Calendar
+              onChange={onChange}
+              value={value}
+              calendarType='US'
+              formatDay={(locale, date) => moment(date).format('DD')}
+              onClickDay={NavigateToWrite}
+            />
+          </CustomCalendar>
         </WrapCalendar>
-        <ToDay>{moment(value).format('YYYY년 MM일 DD일')}</ToDay>
+
+        {/* <ToDay>{moment(value).format('YYYY년 MM일 DD일')}</ToDay> */}
       </Wrap>
     </div>
   );
