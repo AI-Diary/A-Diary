@@ -4,7 +4,9 @@ import Calendar from 'react-calendar';
 import moment from 'moment';
 // import 'react-calendar/dist/Calendar.css';
 import styled from 'styled-components';
+import Menu from '../Components/Menu';
 import Button from '../Components/Button';
+
 // import Input from '../Components/Input';
 
 const Wrap = styled.div`
@@ -13,6 +15,7 @@ const Wrap = styled.div`
   height: 100vh;
   border: 0.1px solid transparent;
   /* padding-bottom: 4rem; */
+  font-family: 'NanumGothic';
   background: linear-gradient(
     to bottom,
     rgba(51, 153, 255),
@@ -37,6 +40,7 @@ const CustomCalendar = styled.div`
   padding: 2rem 3rem 3rem 3rem;
   border-radius: 1rem;
   text-align: center;
+  font-family: 'NanumGothic';
   background-color: rgba(256, 256, 256, 0.5);
   .react-calendar__navigation__label {
     font-weight: bold;
@@ -151,6 +155,7 @@ function Main() {
 
   return (
     <div>
+      {/* <Menu /> */}
       <Wrap>
         <WrapButtons>
           <Button

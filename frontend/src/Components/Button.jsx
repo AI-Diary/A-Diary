@@ -18,6 +18,7 @@ const ButtonStyle = styled.button`
   color: ${(props) => props.color};
   background: ${(props) => props.background};
   background-color: ${(props) => props.backgroundColor};
+  font-family: 'NanumGothic';
   cursor: pointer;
   &:hover {
     background-color: rgba(256, 256, 256, 0.35);

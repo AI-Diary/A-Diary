@@ -12,6 +12,7 @@ const InputStyle = styled.input`
   border-radius: ${(props) => props.borderRadius};
   background-color: ${(props) => props.backgroundColor};
   font-size: ${(props) => props.fontSize};
+  font-family: 'NanumGothic';
   color: ${(props) => props.color};
 `;
 

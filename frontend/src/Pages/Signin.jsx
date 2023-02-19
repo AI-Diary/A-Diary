@@ -13,6 +13,7 @@ const Wrap = styled.div`
     rgba(51, 153, 255),
     rgba(178, 102, 255)
   );
+  font-family: 'NanumGothic';
 `;
 
 const WrapTitle = styled.div`
@@ -108,6 +109,7 @@ function Signin() {
       console.log('아직이당!');
     }
   };
+
   // 가입하기 버튼 누르면 조건 확인
   const CheckForms = () => {
     console.log(

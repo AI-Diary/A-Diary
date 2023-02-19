@@ -13,6 +13,7 @@ const Wrap = styled.div`
     rgba(51, 153, 255),
     rgba(178, 102, 255)
   );
+  font-family: 'NanumGothic';
 `;
 
 const WrapTitle = styled.div`

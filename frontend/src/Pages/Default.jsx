@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import '../Fonts/Font.css';
 import styled from 'styled-components';
 import Button from '../Components/Button';
 
@@ -18,6 +19,7 @@ const Welcome = styled.div`
   margin-top: 10rem;
   color: white;
   font-size: 4rem;
+  font-family: 'LogoFont';
   text-align: center;
 `;
 
