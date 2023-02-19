@@ -6,8 +6,8 @@ import Input from '../Components/Input';
 
 const Wrap = styled.div`
   position: absolute;
-  width: 100%;
-  height: fit-content;
+  width: 100vw;
+  height: 100vh;
   background: linear-gradient(
     to bottom,
     rgba(51, 153, 255),
@@ -43,39 +43,30 @@ const ExplainInput = styled.div`
 `;
 
 function Signin() {
+  // 아이디, 비밀번호 정규식
   const resPass = new RegExp(/^(?=.*[A-Za-z])(?=.*[0-9]).{8,16}$/);
+  // 이메일 정규식
+  const resEmail = new RegExp(
+    /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i
+  );
   const [name, setName] = useState();
   const [id, setId] = useState();
-  const [checkId, setCheckId] = useState(false);
-  const [checkPw, setCheckPw] = useState(false);
   const [pw1, setPw1] = useState();
   const [pw2, setPw2] = useState();
   const [email, setEmail] = useState();
+  const [checkId, setCheckId] = useState(false);
 
   const nagivate = useNavigate();
-  // const TransMain = () => {
-  //   nagivate(`/Main`);
-  // };
+
+  // onChange~~ input값 받기
   const onChangeName = (e) => {
     setName(e.target.value);
   };
   const onChangeId = (e) => {
     setId(e.target.value);
-    if (resPass.test(id)) {
-      console.log('된당!');
-      setCheckPw(true);
-    } else {
-      console.log('아직이당!');
-    }
   };
   const onChangePw1 = (e) => {
     setPw1(e.target.value);
-    if (resPass.test(pw1)) {
-      console.log('된당!');
-      setCheckPw(true);
-    } else {
-      console.log('아직이당!');
-    }
   };
   const onChangePw2 = (e) => {
     setPw2(e.target.value);
@@ -84,22 +75,64 @@ function Signin() {
     setEmail(e.target.value);
   };
 
+  // 아이디 정규식 체크
   const onClickCheckId = () => {
-    // axios로 받아서 검사 후 true로 바꾸기
-    console.log('확인');
-    setCheckId(true);
+    // || 추가 예정 뒤에 axios로 받아서 검사 후 true로 바꾸기
+    if (!resPass.test(id)) {
+      console.log('조건 미달');
+      alert('조건 미달');
+    } else {
+      console.log(id);
+      setCheckId(true);
+    }
   };
 
-  const onCheckPasswd = () => {};
+  // 비밀번호 정규식 체크
+  const onCheckPwReg = () => {
+    console.log('check pw :', pw1);
+    if (resPass.test(pw1)) {
+      console.log('된당!');
+      return true;
+    } else {
+      console.log('아직이당!');
+    }
+  };
 
+  // 이메일 정규식 체크
+  const onCheckEmailReg = () => {
+    console.log('check email :', email);
+    if (resEmail.test(email)) {
+      console.log('된당!');
+      return true;
+    } else {
+      console.log('아직이당!');
+    }
+  };
+  // 가입하기 버튼 누르면 조건 확인
   const CheckForms = () => {
-    // console.log('이름 : ', name, ' 아이디 : ',id,  ' pw1 : ',  pw1, ' pw2 : ',  pw2,  ' email : ',  email);
+    console.log(
+      '이름 : ',
+      name,
+      ' 아이디 : ',
+      id,
+      ' pw1 : ',
+      pw1,
+      ' pw2 : ',
+      pw2,
+      ' email : ',
+      email
+    );
+
     if (!name || !id || !pw1 || !pw2 || !email) {
       alert('빈 칸을 모두 입력해주세요');
     } else if (pw1 !== pw2) {
       alert('비밀번호를 다시 입력해주세요');
     } else if (checkId === false) {
       alert('아이디 중복 확인을 해주세요');
+    } else if (!onCheckPwReg()) {
+      alert('비밀번호 조합을 확인해 주세요');
+    } else if (!onCheckEmailReg()) {
+      alert('이메일을 확인해 주세요');
     } else {
       nagivate(`/Main`);
     }

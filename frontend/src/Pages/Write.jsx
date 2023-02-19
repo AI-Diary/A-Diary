@@ -3,6 +3,11 @@ import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import Button from '../Components/Button';
 import Input from '../Components/Input';
+import Sunny from '../Images/sunny_grey.png';
+import Cloudy from '../Images/cloudy_grey.png';
+import Rain from '../Images/rain_grey.png';
+import Snow from '../Images/snow_grey.png';
+import Wind from '../Images/wind_grey.png';
 
 const Wrap = styled.div`
   /* position: absolute; */
@@ -29,7 +34,7 @@ const WrapDiary = styled.div`
   box-sizing: border-box;
   width: fit-content;
   height: fit-content;
-  margin: 7rem 0rem 5rem 0rem;
+  margin: 7rem auto 5rem auto;
   padding: 3rem 7rem 5rem 7rem;
   border-radius: 1.5rem;
   background-color: rgba(256, 256, 256, 0.8);
@@ -49,20 +54,25 @@ const WrapTop = styled.div`
 
 const DateForm = styled.div`
   width: fit-content;
-  /* margin: 1.2rem 0rem 0rem 2rem; */
-  /* border: 1px solid black; */
-  /* white-space: pre-wrap; */
   word-spacing: 0.4rem;
   font-size: 1.5rem;
+  margin-left: 1rem;
 `;
 
+const WrapWeather = styled.div`
+  width: fit-content;
+  height: fit-content;
+  float: right;
+  margin-left: 3.5rem;
+`;
 const Weather = styled.button`
   width: 1.8rem;
   height: 1.8rem;
-  margin-left: 1.3rem;
+  margin-left: 1rem;
   border: none;
   background-color: transparent;
-  font-size: 1.8rem;
+  background: ${(props) => `url(${props.backgroundImage}) no-repeat center`};
+  background-size: 1.8rem;
 `;
 
 const DrawDiary = styled.div`
@@ -71,11 +81,7 @@ const DrawDiary = styled.div`
   background-color: white;
   margin-bottom: -1.8px;
   border-radius: 1.5rem 1.5rem 0rem 0rem;
-  /* border-style: solid solid none solid; */
   border: 1.8px solid grey;
-  /* margin: 2rem 27rem 0rem 27rem; */
-
-  /* border-radius: 1.5rem; */
 `;
 
 const WriteDiary = styled.textarea`
@@ -83,11 +89,11 @@ const WriteDiary = styled.textarea`
   width: 40.2rem;
   height: 20rem;
   background-color: rgba(256, 256, 256, 0.7);
-  /* margin: 2rem 27rem; */
   padding: 2.8rem 2rem 1rem 2rem;
   border: 1.8px solid grey;
   border-radius: 0rem 0rem 1.5rem 1.5rem;
-  font-size: 25px;
+  font-size: 1rem;
+  font-family: 'NanumGothic';
   resize: none;
 
   background-attachment: local;
@@ -101,6 +107,9 @@ const WriteDiary = styled.textarea`
       white 40px
     );
   line-height: 40px;
+  &:focus {
+    outline: none;
+  }
 `;
 
 const WrapKeywordButton = styled.div`
@@ -126,20 +135,20 @@ function Write() {
       <Wrap>
         <WrapButtons>
           <Button
-            width='7rem'
+            width='5rem'
             height='2.5rem'
             name='일기 저장'
             color='white'
-            margin='2rem 0.5rem'
+            margin='2rem 1rem 0rem 0rem'
             border='2px solid white'
             backgroundColor='transparent;'
           />
           <Button
-            width='7rem'
+            width='5rem'
             height='2.5rem'
             name='SNS 공유'
             color='white'
-            margin='2rem 0.5rem'
+            margin='2rem 4rem 0rem 1rem'
             border='2px solid white'
             backgroundColor='transparent;'
           />
@@ -149,13 +158,13 @@ function Write() {
           <WrapTop>
             <DateForm>
               {date[0]}년 {date[1]}월 {date[2]}일 {day}요일
-              <WrapButtons>
-                <Weather>🌞</Weather>
-                <Weather>⛅️</Weather>
-                <Weather>🌧️</Weather>
-                <Weather>🌨️</Weather>
-                <Weather>🌬️</Weather>
-              </WrapButtons>
+              <WrapWeather>
+                <Weather backgroundImage={Sunny} />
+                <Weather backgroundImage={Rain} />
+                <Weather backgroundImage={Cloudy} />
+                <Weather backgroundImage={Snow} />
+                <Weather backgroundImage={Wind} />
+              </WrapWeather>
             </DateForm>
           </WrapTop>
           <DrawDiary />
@@ -165,8 +174,10 @@ function Write() {
               width='8rem'
               height='2.5rem'
               name='키워드 추출'
-              color='rgba(138, 80, 255, 0.5)'
-              border='2px solid rgba(138, 80, 255, 0.5)'
+              // color='rgba(138, 80, 255, 0.5)'
+              // border='2px solid rgba(138, 80, 255, 0.5)'
+              color='grey'
+              border='2px solid grey'
               backgroundColor='transparent;'
             />
           </WrapKeywordButton>
