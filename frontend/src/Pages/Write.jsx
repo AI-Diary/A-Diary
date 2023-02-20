@@ -3,11 +3,16 @@ import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import Button from '../Components/Button';
 import Input from '../Components/Input';
-import Sunny from '../Images/sunny_grey.png';
-import Cloudy from '../Images/cloudy_grey.png';
-import Rain from '../Images/rain_grey.png';
-import Snow from '../Images/snow_grey.png';
-import Wind from '../Images/wind_grey.png';
+import Sunny from '../Images/sunny_default.png';
+import Cloudy from '../Images/cloudy_default.png';
+import Rain from '../Images/rain_default.png';
+import Snow from '../Images/snow_default.png';
+import Wind from '../Images/wind_default.png';
+import SunnyGrey from '../Images/sunny_grey.png';
+import CloudyGrey from '../Images/cloudy_grey.png';
+import RainGrey from '../Images/rain_grey.png';
+import SnowGrey from '../Images/snow_grey.png';
+import WindGrey from '../Images/wind_grey.png';
 
 const Wrap = styled.div`
   /* position: absolute; */
@@ -20,6 +25,7 @@ const Wrap = styled.div`
     rgba(51, 153, 255),
     rgba(178, 102, 255)
   );
+  font-family: 'NanumGothic';
 `;
 
 const WrapButtons = styled.div`
@@ -45,7 +51,7 @@ const WrapTop = styled.div`
   box-sizing: border-box;
   width: 40rem;
   height: 4rem;
-  padding: 1rem;
+  padding: 1.1rem;
   margin-bottom: 1rem;
   border-radius: 1.2rem;
   background-color: rgba(256, 256, 256, 0.7);
@@ -54,18 +60,18 @@ const WrapTop = styled.div`
 
 const DateForm = styled.div`
   width: fit-content;
-  word-spacing: 0.4rem;
-  font-size: 1.5rem;
-  margin-left: 1rem;
+  word-spacing: 0.5rem;
+  font-size: 1.3rem;
+  margin-left: 1.5rem;
 `;
 
 const WrapWeather = styled.div`
   width: fit-content;
   height: fit-content;
   float: right;
-  margin-left: 3.5rem;
+  margin-left: 4rem;
 `;
-const Weather = styled.button`
+const Weather = styled.input`
   width: 1.8rem;
   height: 1.8rem;
   margin-left: 1rem;
@@ -73,6 +79,14 @@ const Weather = styled.button`
   background-color: transparent;
   background: ${(props) => `url(${props.backgroundImage}) no-repeat center`};
   background-size: 1.8rem;
+  &:hover {
+    background: ${(props) => `url(${props.hoverImage}) no-repeat center`};
+    background-size: 1.8rem;
+  }
+  &:visited {
+    background: ${(props) => `url(${props.hoverImage}) no-repeat center`};
+    background-size: 1.8rem;
+  }
 `;
 
 const DrawDiary = styled.div`
@@ -128,7 +142,13 @@ function Write() {
   const date = state.split('-');
   const daynum = new Date(state).getDay();
   const day = week[daynum];
-  console.log(state);
+  // 날씨 저장
+  const [weather, setWeather] = useState();
+  // console.log(state);
+
+  const onClickWeather = (e) => {
+    setWeather(e.target.value);
+  };
 
   return (
     <div>
@@ -153,17 +173,51 @@ function Write() {
             backgroundColor='transparent;'
           />
         </WrapButtons>
-        {/* WrapDiary 중앙정렬하기 */}
         <WrapDiary>
           <WrapTop>
             <DateForm>
               {date[0]}년 {date[1]}월 {date[2]}일 {day}요일
               <WrapWeather>
-                <Weather backgroundImage={Sunny} />
-                <Weather backgroundImage={Rain} />
-                <Weather backgroundImage={Cloudy} />
-                <Weather backgroundImage={Snow} />
-                <Weather backgroundImage={Wind} />
+                <Weather
+                  type='radio'
+                  name='weather'
+                  value='sun'
+                  backgroundImage={Sunny}
+                  hoverImage={SunnyGrey}
+                  onClick={onClickWeather}
+                />
+                <Weather
+                  type='radio'
+                  name='weather'
+                  value='rain'
+                  backgroundImage={Rain}
+                  hoverImage={RainGrey}
+                  onClick={onClickWeather}
+                />
+                <Weather
+                  type='radio'
+                  name='weather'
+                  value='cloudy'
+                  backgroundImage={Cloudy}
+                  hoverImage={CloudyGrey}
+                  onClick={onClickWeather}
+                />
+                <Weather
+                  type='radio'
+                  name='weather'
+                  value='snow'
+                  backgroundImage={Snow}
+                  hoverImage={SnowGrey}
+                  onClick={onClickWeather}
+                />
+                <Weather
+                  type='radio'
+                  name='weather'
+                  value='wind'
+                  backgroundImage={Wind}
+                  hoverImage={WindGrey}
+                  onClick={onClickWeather}
+                />
               </WrapWeather>
             </DateForm>
           </WrapTop>
@@ -182,6 +236,7 @@ function Write() {
             />
           </WrapKeywordButton>
         </WrapDiary>
+        <div>{weather}</div>
       </Wrap>
     </div>
   );

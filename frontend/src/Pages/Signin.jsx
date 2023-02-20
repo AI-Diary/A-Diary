@@ -1,5 +1,6 @@
 import { React, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import styled from 'styled-components';
 import Button from '../Components/Button';
 import Input from '../Components/Input';
@@ -57,7 +58,7 @@ function Signin() {
   const [email, setEmail] = useState();
   const [checkId, setCheckId] = useState(false);
 
-  const nagivate = useNavigate();
+  const navigate = useNavigate();
 
   // onChange~~ input값 받기
   const onChangeName = (e) => {
@@ -136,7 +137,9 @@ function Signin() {
     } else if (!onCheckEmailReg()) {
       alert('이메일을 확인해 주세요');
     } else {
-      nagivate(`/Main`);
+      alert('회원가입에 성공했습니다!');
+      navigate(`/Main`);
+      // navigate('/Login');
     }
   };
   return (
