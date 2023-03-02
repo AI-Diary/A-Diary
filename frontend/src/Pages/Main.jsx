@@ -42,10 +42,12 @@ const CustomCalendar = styled.div`
   text-align: center;
   font-family: 'NanumGothic';
   background-color: rgba(256, 256, 256, 0.5);
+
   .react-calendar__navigation__label {
     font-weight: bold;
     width: 15rem;
   }
+
   .react-calendar__navigation button {
     // 달력 위에 << < 년도 > >>
     background-color: transparent;
@@ -53,9 +55,11 @@ const CustomCalendar = styled.div`
     margin: 1rem 1rem 3rem 1rem;
     font-size: 1.5rem;
   }
+
   .react-calendar__month_view__weekdays {
     color: white;
   }
+
   abbr[title] {
     // 일 월 화 수 목 금 토 꾸미기
     text-decoration: none;
@@ -63,12 +67,12 @@ const CustomCalendar = styled.div`
     /* background-color: white; */
     /* border: 1px solid black; */
   }
+
   /* 버튼 */
   button {
     /* height: 80px; */
     margin: 3px;
-    /* background-color: #6f876f; */
-    border-radius: 10px;
+    border-radius: 1rem;
     color: white;
     font-size: 30px;
     padding: 5px 0;
@@ -91,15 +95,20 @@ const CustomCalendar = styled.div`
       max-width: initial !important;
     }
   }
+
   /* .react-calendar__month-view__days {
     display: grid !important;
     grid-template-columns: repeat(7, 1fr);
   } */
+
   .react-calendar__tile {
     // react-calendar 내의 버튼들
+    display: inline-block;
     height: 6rem;
     max-width: initial !important;
     padding: 0.5rem;
+    line-height: 50%;
+    /* padding-bottom: 4rem; */
     background-color: rgba(256, 256, 256, 0.2);
     border-color: rgba(256, 256, 256);
     border-radius: 0.5rem;
@@ -134,18 +143,19 @@ const ToDay = styled.div`
 `;
 
 function Main() {
+  console.log('--------------- Main ---------------');
+
   const [value, onChange] = useState(new Date());
   const navigate = useNavigate();
 
   // 통계 페이지 이동
   const NavigateToStatistics = () => {
-    navigate(`/Statistics`);
+    navigate(`/MyPage`);
   };
 
   // 글쓰기 페이지 이동
-  const NavigateToWrite = () => {
-    console.log('MainPage', moment(value));
-    navigate(`/Write`, { state: moment(value).format('YYYY-MM-DD') });
+  const NavigateToWrite = (date) => {
+    navigate(`/Write`, { state: date });
   };
 
   // 웰컴 페이지 이동
@@ -171,7 +181,7 @@ function Main() {
           <Button
             width='5rem'
             height='2.3rem'
-            name='일기 통계'
+            name='마이 페이지'
             color='white'
             border='2px solid white'
             backgroundColor='transparent'
@@ -195,7 +205,12 @@ function Main() {
               value={value}
               calendarType='US'
               formatDay={(locale, date) => moment(date).format('DD')}
-              onClickDay={NavigateToWrite}
+              // onClickDay={NavigateToWrite}
+              onClickDay={(value, e) => {
+                const momentDate = moment(value).format().slice(0, 10);
+                // console.log('momentDate : ', momentDate);
+                NavigateToWrite(momentDate);
+              }}
             />
           </CustomCalendar>
         </WrapCalendar>

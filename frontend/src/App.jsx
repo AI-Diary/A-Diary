@@ -4,7 +4,7 @@ import LogIn from './Pages/Login';
 import SignIn from './Pages/Signin';
 import Main from './Pages/Main';
 import Write from './Pages/Write';
-import Statistics from './Pages/Statistics';
+import MyPage from './Pages/MyPage';
 
 function App() {
   return (
@@ -16,7 +16,7 @@ function App() {
           <Route path='/SignIn' element={<SignIn />} />
           <Route path='/Main' element={<Main />} />
           <Route path='/Write' element={<Write />} />
-          <Route path='/Statistics' element={<Statistics />} />
+          <Route path='/Statistics' element={<MyPage />} />
         </Routes>
       </Router>
     </div>

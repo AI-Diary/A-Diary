@@ -71,23 +71,36 @@ const WrapWeather = styled.div`
   float: right;
   margin-left: 4rem;
 `;
+
+const WeatherLabel = styled.label`
+  [type='radio'] {
+    width: 0;
+    height: 0;
+    border: 0;
+  }
+  [type='radio'] + img {
+    cursor: pointer;
+    width: 1.8rem;
+    height: 1.8rem;
+    border: 1px solid white;
+    background-image: url(${(props) => props.backgroundImage});
+    background-size: 1.8rem;
+    border: 0;
+  }
+  [type='radio']:checked + img {
+    background-image: url(${(props) => props.backgroundChecked});
+    border: 0;
+  }
+`;
+
 const Weather = styled.input`
   width: 1.8rem;
   height: 1.8rem;
   margin-left: 1rem;
-  border: none;
-  background-color: transparent;
-  background: ${(props) => `url(${props.backgroundImage}) no-repeat center`};
-  background-size: 1.8rem;
-  &:hover {
-    background: ${(props) => `url(${props.hoverImage}) no-repeat center`};
-    background-size: 1.8rem;
-  }
-  &:visited {
-    background: ${(props) => `url(${props.hoverImage}) no-repeat center`};
-    background-size: 1.8rem;
-  }
+  border: 0;
 `;
+
+const WeatherImage = styled.img``;
 
 const DrawDiary = styled.div`
   width: 40rem;
@@ -133,23 +146,32 @@ const WrapKeywordButton = styled.div`
 `;
 function Write() {
   // const time = new Date();
+  // console.log('--------------- write ---------------');
+
   const { state } = useLocation();
-  const week = ['일', '월', '화', '수', '목', '금', '토'];
-  // const year = now.getFullYear();
-  // const month = now.getMonth() + 1;
-  // const date = now.getDate();
-  // const day = week[now.getDay()];
-  const date = state.split('-');
-  const daynum = new Date(state).getDay();
-  const day = week[daynum];
+
   // 날씨 저장
   const [weather, setWeather] = useState();
-  // console.log(state);
+  // 일기글 저장
+  const [write, setWrite] = useState('');
 
+  const onChangeText = (e) => {
+    setWrite(e.target.value);
+  };
   const onClickWeather = (e) => {
     setWeather(e.target.value);
   };
 
+  const week = ['일', '월', '화', '수', '목', '금', '토'];
+
+  const date = state.split('-');
+  const year = date[0];
+  const month = date[1];
+  const day = date[2];
+
+  const dayOfWeek = week[new Date(date).getDay()];
+
+  // console.log('year : ',year,'month : ',month,'day : ',day,'요일 : ',dayOfWeek);
   return (
     <div>
       <Wrap>
@@ -176,53 +198,80 @@ function Write() {
         <WrapDiary>
           <WrapTop>
             <DateForm>
-              {date[0]}년 {date[1]}월 {date[2]}일 {day}요일
+              {year}년 {month}월 {day}일 {dayOfWeek}요일
               <WrapWeather>
-                <Weather
-                  type='radio'
-                  name='weather'
-                  value='sun'
+                <WeatherLabel
                   backgroundImage={Sunny}
-                  hoverImage={SunnyGrey}
-                  onClick={onClickWeather}
-                />
-                <Weather
-                  type='radio'
-                  name='weather'
-                  value='rain'
+                  backgroundChecked={SunnyGrey}
+                >
+                  <Weather
+                    type='radio'
+                    name='weather'
+                    value='sun'
+                    onClick={onClickWeather}
+                  />
+                  <WeatherImage />
+                </WeatherLabel>
+
+                <WeatherLabel
                   backgroundImage={Rain}
-                  hoverImage={RainGrey}
-                  onClick={onClickWeather}
-                />
-                <Weather
-                  type='radio'
-                  name='weather'
-                  value='cloudy'
+                  backgroundChecked={RainGrey}
+                >
+                  <Weather
+                    type='radio'
+                    name='weather'
+                    value='rain'
+                    onClick={onClickWeather}
+                  />
+                  <WeatherImage />
+                </WeatherLabel>
+
+                <WeatherLabel
                   backgroundImage={Cloudy}
-                  hoverImage={CloudyGrey}
-                  onClick={onClickWeather}
-                />
-                <Weather
-                  type='radio'
-                  name='weather'
-                  value='snow'
-                  backgroundImage={Snow}
-                  hoverImage={SnowGrey}
-                  onClick={onClickWeather}
-                />
-                <Weather
-                  type='radio'
-                  name='weather'
-                  value='wind'
+                  backgroundChecked={CloudyGrey}
+                >
+                  <Weather
+                    type='radio'
+                    name='weather'
+                    value='cloudy'
+                    onClick={onClickWeather}
+                  />
+                  <WeatherImage />
+                </WeatherLabel>
+
+                <WeatherLabel
                   backgroundImage={Wind}
-                  hoverImage={WindGrey}
-                  onClick={onClickWeather}
-                />
+                  backgroundChecked={WindGrey}
+                >
+                  <Weather
+                    type='radio'
+                    name='weather'
+                    value='wind'
+                    onClick={onClickWeather}
+                  />
+                  <WeatherImage />
+                </WeatherLabel>
+
+                <WeatherLabel
+                  backgroundImage={Snow}
+                  backgroundChecked={SnowGrey}
+                >
+                  <Weather
+                    type='radio'
+                    name='weather'
+                    value='snow'
+                    onClick={onClickWeather}
+                  />
+                  <WeatherImage />
+                </WeatherLabel>
               </WrapWeather>
             </DateForm>
           </WrapTop>
+
           <DrawDiary />
-          <WriteDiary />
+
+          <WriteDiary onChange={onChangeText} />
+
           <WrapKeywordButton>
             <Button
               width='8rem'
