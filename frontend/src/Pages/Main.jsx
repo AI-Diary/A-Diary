@@ -12,9 +12,9 @@ import Button from '../Components/Button';
 const Wrap = styled.div`
   /* position: absolute; */
   width: 100vw;
-  height: 100vh;
+  height: fit-content;
   border: 0.1px solid transparent;
-  /* padding-bottom: 4rem; */
+  padding-bottom: 4rem;
   font-family: 'NanumGothic';
   background: linear-gradient(
     to bottom,
@@ -138,10 +138,6 @@ const CustomCalendar = styled.div`
   }
 `;
 
-const ToDay = styled.div`
-  font-size: 2rem;
-`;
-
 function Main() {
   console.log('--------------- Main ---------------');
 
@@ -165,8 +161,8 @@ function Main() {
 
   return (
     <div>
-      {/* <Menu /> */}
       <Wrap>
+        <Menu />
         <WrapButtons>
           <Button
             width='5rem'
@@ -208,14 +204,11 @@ function Main() {
               // onClickDay={NavigateToWrite}
               onClickDay={(value, e) => {
                 const momentDate = moment(value).format().slice(0, 10);
-                // console.log('momentDate : ', momentDate);
                 NavigateToWrite(momentDate);
               }}
             />
           </CustomCalendar>
         </WrapCalendar>
-
-        {/* <ToDay>{moment(value).format('YYYY년 MM일 DD일')}</ToDay> */}
       </Wrap>
     </div>
   );

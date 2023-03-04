@@ -1,5 +1,7 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import Button from '../Components/Button';
 
 const Wrap = styled.div`
   /* position: absolute; */
@@ -13,116 +15,128 @@ const Wrap = styled.div`
     rgba(178, 102, 255)
   );
 `;
-
-const WrapChart = styled.div`
-  box-sizing: border-box;
-  display: flex;
-  width: 40rem;
-  height: 20rem;
+const WrapList = styled.div`
+  width: 100vw;
+  /* height: 100vh; */
+  /* padding: 2rem; */
+  display: grid;
+  border: 2px solid black;
+  grid-template-columns: repeat(3, 25rem);
+  overflow: auto;
+  /* gap: 1rem; */
+  /* &::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+    border-radius: 10px;
+  }
+  &::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 5px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: white;
+    border-radius: 10px;
+  } */
+`;
+const WrapDiary = styled.div`
+  width: fit-content;
+  height: fit-content;
+  padding: 1.5rem;
+  border: 2px solid red;
+  border-radius: 1rem;
   background-color: rgba(256, 256, 256, 0.7);
-  border-radius: 4rem;
-  margin: 4rem auto 2rem auto;
-  padding: 2rem;
 `;
-const Chart = styled.div`
-  width: 15rem;
-  height: 15rem;
-  border-radius: 20rem;
-  background-color: coral;
-  margin: auto;
+const DiaryImage = styled.img`
+  width: 20rem;
+  height: 13rem;
+  background-color: white;
+  border-radius: 1rem;
 `;
-const Days1 = styled.div`
-  box-sizing: border-box;
-  width: 5rem;
-  height: 10rem;
-  margin: auto auto 2rem auto;
-  padding: 0.8rem;
-  border-radius: 0.4rem;
-  background-color: skyblue;
-  text-align: center;
+const Date = styled.div`
+  margin-top: 0.5rem;
+  margin-bottom: 0.3rem;
+  font-size: 0.85rem;
+  font-family: 'NanumGothic';
 `;
-const Days2 = styled.div`
-  box-sizing: border-box;
-  width: 5rem;
-  height: 8rem;
-  margin: auto auto 2rem auto;
-  padding: 0.8rem;
-  border-radius: 0.4rem;
-  background-color: skyblue;
-  text-align: center;
+const Title = styled.div`
+  font-family: 'NanumGothic';
 `;
-const Days3 = styled.div`
-  box-sizing: border-box;
-  width: 5rem;
-  height: 7rem;
-  margin: auto auto 2rem auto;
-  padding: 0.8rem;
-  border-radius: 0.4rem;
-  background-color: skyblue;
-  text-align: center;
-`;
-const Days4 = styled.div`
-  box-sizing: border-box;
-  width: 5rem;
-  height: 6rem;
-  margin: auto auto 2rem auto;
-  padding: 0.8rem;
-  border-radius: 0.4rem;
-  background-color: skyblue;
-  text-align: center;
-`;
-const Days5 = styled.div`
-  box-sizing: border-box;
-  width: 5rem;
-  height: 7rem;
-  margin: auto auto 2rem auto;
-  padding: 0.8rem;
-  border-radius: 0.4rem;
-  background-color: skyblue;
-  text-align: center;
-`;
-const Days6 = styled.div`
-  box-sizing: border-box;
-  width: 5rem;
-  height: 7rem;
-  margin: auto auto 2rem auto;
-  padding: 0.8rem;
-  border-radius: 0.4rem;
-  background-color: skyblue;
-  text-align: center;
-`;
-const Days7 = styled.div`
-  box-sizing: border-box;
-  width: 5rem;
-  height: 9rem;
-  margin: auto auto 2rem auto;
-  padding: 0.8rem;
-  border-radius: 0.4rem;
-  background-color: skyblue;
-  text-align: center;
-`;
-
-function Statistics() {
+function MyPage() {
+  const navigate = new useNavigate();
+  const NavigateToStatistics = () => {
+    navigate(`/Statistics`);
+  };
   return (
     <div>
       <Wrap>
-        <WrapChart>
-          {/* 원차트 가져오기 */}
-          <Chart />
-        </WrapChart>
-        <WrapChart>
-          {/* 막대 그래프로 횟수 보여주기 */}
-          <Days1></Days1>
-          <Days2></Days2>
-          <Days3></Days3>
-          <Days4></Days4>
-          <Days5></Days5>
-          <Days6></Days6>
-          <Days7></Days7>
-        </WrapChart>
+        <Button
+          width='5rem'
+          height='2.3rem'
+          name='일기 통계'
+          color='white'
+          margin='2rem 1rem'
+          border='2px solid white'
+          backgroundColor='transparent;'
+          onClick={NavigateToStatistics}
+        />
+        <WrapList>
+          <WrapDiary>
+            <DiaryImage />
+            <Date>2022.02.22</Date>
+            <Title>오늘은 롯데월드에 갔다</Title>
+          </WrapDiary>
+
+          <WrapDiary>
+            <DiaryImage />
+            <Date>2022.02.22</Date>
+            <Title>오늘은 롯데월드에 갔다</Title>
+          </WrapDiary>
+
+          <WrapDiary>
+            <DiaryImage />
+            <Date>2022.02.22</Date>
+            <Title>오늘은 롯데월드에 갔다</Title>
+          </WrapDiary>
+
+          <WrapDiary>
+            <DiaryImage />
+            <Date>2022.02.22</Date>
+            <Title>오늘은 롯데월드에 갔다</Title>
+          </WrapDiary>
+
+          <WrapDiary>
+            <DiaryImage />
+            <Date>2022.02.22</Date>
+            <Title>오늘은 롯데월드에 갔다</Title>
+          </WrapDiary>
+
+          <WrapDiary>
+            <DiaryImage />
+            <Date>2022.02.22</Date>
+            <Title>오늘은 롯데월드에 갔다</Title>
+          </WrapDiary>
+
+          <WrapDiary>
+            <DiaryImage />
+            <Date>2022.02.22</Date>
+            <Title>오늘은 롯데월드에 갔다</Title>
+          </WrapDiary>
+
+          <WrapDiary>
+            <DiaryImage />
+            <Date>2022.02.22</Date>
+            <Title>오늘은 롯데월드에 갔다</Title>
+          </WrapDiary>
+
+          <WrapDiary>
+            <DiaryImage />
+            <Date>2022.02.22</Date>
+            <Title>오늘은 롯데월드에 갔다</Title>
+          </WrapDiary>
+        </WrapList>
       </Wrap>
     </div>
   );
 }
 
-export default Statistics;
+export default MyPage;
