@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import styled from 'styled-components';
@@ -52,6 +52,8 @@ const WrapSignin = styled.div`
 `;
 
 function Login() {
+  const [id, setId] = useState('');
+  const [pw, setPw] = useState('');
   // 회원가입 페이지 이동
   const navigate = useNavigate();
   const NavigateToSignin = () => {
@@ -62,6 +64,36 @@ function Login() {
   const NavigateToMain = () => {
     navigate('/Main');
   };
+
+  const onChangeId = (e) => {
+    setId(e.target.value);
+  };
+
+  const onChangePw = (e) => {
+    setPw(e.target.value);
+  };
+  console.log('id : ', id, ' pw : ', pw);
+
+  const onClickLogin = () => {
+    if (!id) {
+      alert('아이디를 입력해 주세요.');
+    } else if (!pw) {
+      alert('비밀번호를 입력해 주세요.');
+    } else {
+      // id, pw 담아서 서버 보내기
+      axios
+        .post()
+        .then((res) => {
+          // 성공시
+          NavigateToMain();
+        })
+        .catch((err) => {
+          // 실패시
+          alert('로그인에 실패하였습니다.');
+        });
+    }
+  };
+
   return (
     <div>
       <Wrap>
@@ -75,6 +107,7 @@ function Login() {
             borderRadius='0.4rem 0.4rem 0rem 0rem'
             backgroundColor='rgba(256, 256, 256, 0.7)'
             borderStyle='solid solid none solid'
+            onChange={onChangeId}
           />
 
           <Input
@@ -83,6 +116,8 @@ function Login() {
             placeholder='비밀번호'
             borderRadius='0rem 0rem 0.4rem 0.4rem'
             backgroundColor='rgba(256, 256, 256, 0.7)'
+            onChange={onChangePw}
+            type='password'
           />
 
           <Button
@@ -93,7 +128,7 @@ function Login() {
             border='2px solid grey'
             background='white'
             color='grey'
-            onClick={NavigateToMain}
+            onClick={onClickLogin}
           />
           <WrapSignin onClick={NavigateToSignin}>
             회원가입이 필요한가요?
