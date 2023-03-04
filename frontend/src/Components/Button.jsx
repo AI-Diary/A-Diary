@@ -7,14 +7,23 @@ const ButtonStyle = styled.button`
   height: ${(props) => props.height};
   margin: ${(props) => props.margin};
   padding: 0.2rem 1rem;
-  border: 2px solid white;
+  border: ${(props) => props.border};
+  /* border: 1px solid; */
+  border-image: ${(props) => props.borderImage};
   border-radius: 10rem;
+  /* border-radius: ${(props) => props.borderRadius}; */
+  background-clip: padding-box;
   text-align: center;
-  font-size: 1rem;
+  /* font-size: 1rem; */
   color: ${(props) => props.color};
   background: ${(props) => props.background};
-  background: ${(props) => props.backgroundColor};
+  background-color: ${(props) => props.backgroundColor};
+  font-family: 'NanumGothic';
   cursor: pointer;
+  &:hover {
+    background-color: rgba(256, 256, 256, 0.35);
+    transition: 0.5s;
+  }
 `;
 
 export default function Button({
@@ -22,6 +31,9 @@ export default function Button({
   height,
   margin,
   color,
+  border,
+  borderImage,
+  borderRadius,
   background,
   backgroundColor,
   name,
@@ -33,6 +45,9 @@ export default function Button({
       height={height}
       margin={margin}
       color={color}
+      border={border}
+      borderImage={borderImage}
+      borderRadius={borderRadius}
       background={background}
       backgroundColor={backgroundColor}
       onClick={onClick}

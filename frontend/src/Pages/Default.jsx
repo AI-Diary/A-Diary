@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import '../Fonts/Font.css';
 import styled from 'styled-components';
 import Button from '../Components/Button';
 
@@ -18,6 +19,7 @@ const Welcome = styled.div`
   margin-top: 10rem;
   color: white;
   font-size: 4rem;
+  font-family: 'LogoFont';
   text-align: center;
 `;
 
@@ -29,11 +31,11 @@ const WrapButtons = styled.div`
 function Default() {
   const nagivate = useNavigate();
 
-  const TransLogin = () => {
+  const NavigateToLogin = () => {
     nagivate(`/Login`);
   };
 
-  const TransSignin = () => {
+  const NavigateToSignin = () => {
     nagivate(`/Signin`);
   };
 
@@ -48,8 +50,9 @@ function Default() {
             margin='4rem 1rem'
             name='로그인'
             color='white'
+            border='2px solid white'
             backgroundColor='transparent'
-            onClick={TransLogin}
+            onClick={NavigateToLogin}
           />
           <Button
             width='7rem'
@@ -57,8 +60,9 @@ function Default() {
             margin='4rem 1rem'
             name='회원가입'
             color='white'
+            border='2px solid white'
             backgroundColor='transparent'
-            onClick={TransSignin}
+            onClick={NavigateToSignin}
           />
         </WrapButtons>
       </Wrap>
