@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import Button from '../Components/Button';
-import Input from '../Components/Input';
 import Sunny from '../Images/sunny_default.png';
 import Cloudy from '../Images/cloudy_default.png';
 import Rain from '../Images/rain_default.png';
@@ -149,6 +148,48 @@ function Write() {
   // console.log('--------------- write ---------------');
 
   const { state } = useLocation();
+  const canvasRef = useRef(null);
+  const contextRef = useRef(null);
+
+  const [ctx, setCtx] = useState();
+  const [isDrawing, setIsDrawing] = useState(false);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    // canvas.width = window.innerWidth;
+    // canvas.height = window.innerHeight * 0.5;
+    canvas.width = 643;
+    canvas.height = 403;
+
+    const context = canvas.getContext('2d');
+    context.strokeStyle = 'black';
+    context.lineWidth = 2.5;
+    contextRef.current = context;
+
+    setCtx(contextRef.current);
+  }, []);
+
+  const startDrawing = () => {
+    setIsDrawing(true);
+  };
+
+  const finishDrawing = () => {
+    setIsDrawing(false);
+  };
+
+  const drawing = ({ nativeEvent }) => {
+    const { offsetX, offsetY } = nativeEvent;
+    if (ctx) {
+      if (!isDrawing) {
+        ctx.beginPath();
+        ctx.moveTo(offsetX, offsetY);
+      } else {
+        ctx.lineTo(offsetX, offsetY);
+        ctx.stroke();
+      }
+    }
+  };
+  console.log('ctx : ', ctx);
 
   // 날씨 저장
   const [weather, setWeather] = useState();
@@ -171,7 +212,6 @@ function Write() {
 
   const dayOfWeek = week[new Date(date).getDay()];
 
-  // console.log('year : ',year,'month : ',month,'day : ',day,'요일 : ',dayOfWeek);
   return (
     <div>
       <Wrap>
@@ -268,7 +308,15 @@ function Write() {
             </DateForm>
           </WrapTop>
 
-          <DrawDiary />
+          <DrawDiary>
+            <canvas
+              ref={canvasRef}
+              onMouseDown={startDrawing}
+              onMouseUp={finishDrawing}
+              onMouseMove={drawing}
+              onMouseLeave={finishDrawing}
+            ></canvas>
+          </DrawDiary>
 
           <WriteDiary onChange={onChangeText} />
 
