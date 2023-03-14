@@ -5,9 +5,11 @@ import Button from '../Components/Button';
 
 const Wrap = styled.div`
   /* position: absolute; */
-  width: 100vw;
+  width: fit-content;
   height: fit-content;
-  border: 0.1px solid transparent;
+  /* border: 0.1px solid transparent; */
+  /* border: 2px solid red; */
+
   /* padding-bottom: 4rem; */
   background: linear-gradient(
     to bottom,
@@ -16,15 +18,16 @@ const Wrap = styled.div`
   );
 `;
 const WrapList = styled.div`
-  width: 100vw;
-  /* height: 100vh; */
-  /* padding: 2rem; */
+  width: fit-content;
+  height: 100vh;
+  padding: 2rem 5.5rem 2rem 5.5rem;
   display: grid;
-  border: 2px solid black;
+  /* border: 2px solid black; */
   grid-template-columns: repeat(3, 25rem);
   overflow: auto;
-  /* gap: 1rem; */
-  /* &::-webkit-scrollbar {
+  overflow-x: hidden;
+  gap: 1rem;
+  &::-webkit-scrollbar {
     width: 8px;
     height: 8px;
     border-radius: 10px;
@@ -36,13 +39,13 @@ const WrapList = styled.div`
   &::-webkit-scrollbar-thumb {
     background: white;
     border-radius: 10px;
-  } */
+  }
 `;
 const WrapDiary = styled.div`
   width: fit-content;
   height: fit-content;
   padding: 1.5rem;
-  border: 2px solid red;
+  /* border: 2px solid red; */
   border-radius: 1rem;
   background-color: rgba(256, 256, 256, 0.7);
 `;
@@ -88,50 +91,50 @@ function MyPage() {
 
           <WrapDiary>
             <DiaryImage />
-            <Date>2022.02.22</Date>
-            <Title>오늘은 롯데월드에 갔다</Title>
+            <Date>2022.02.23</Date>
+            <Title>좀 있으면 개강한대</Title>
           </WrapDiary>
 
           <WrapDiary>
             <DiaryImage />
-            <Date>2022.02.22</Date>
-            <Title>오늘은 롯데월드에 갔다</Title>
+            <Date>2022.02.24</Date>
+            <Title>너무 슬프다</Title>
           </WrapDiary>
 
           <WrapDiary>
             <DiaryImage />
-            <Date>2022.02.22</Date>
-            <Title>오늘은 롯데월드에 갔다</Title>
+            <Date>2022.02.25</Date>
+            <Title>우헤헤</Title>
           </WrapDiary>
 
           <WrapDiary>
             <DiaryImage />
-            <Date>2022.02.22</Date>
-            <Title>오늘은 롯데월드에 갔다</Title>
+            <Date>2022.02.26</Date>
+            <Title>긱사가기 귀찮아아</Title>
           </WrapDiary>
 
           <WrapDiary>
             <DiaryImage />
-            <Date>2022.02.22</Date>
-            <Title>오늘은 롯데월드에 갔다</Title>
+            <Date>2022.02.27</Date>
+            <Title>이게 진짜 일리 없어</Title>
           </WrapDiary>
 
           <WrapDiary>
             <DiaryImage />
-            <Date>2022.02.22</Date>
-            <Title>오늘은 롯데월드에 갔다</Title>
+            <Date>2022.02.28</Date>
+            <Title>눈물도 나지 않는게</Title>
           </WrapDiary>
 
           <WrapDiary>
             <DiaryImage />
-            <Date>2022.02.22</Date>
-            <Title>오늘은 롯데월드에 갔다</Title>
+            <Date>2022.03.01</Date>
+            <Title>오늘은 노는 날~</Title>
           </WrapDiary>
 
           <WrapDiary>
             <DiaryImage />
-            <Date>2022.02.22</Date>
-            <Title>오늘은 롯데월드에 갔다</Title>
+            <Date>2022.03.02</Date>
+            <Title>오늘은 개강날ㅠㅠ</Title>
           </WrapDiary>
         </WrapList>
       </Wrap>

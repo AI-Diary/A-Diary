@@ -8,7 +8,7 @@ import Input from '../Components/Input';
 const Wrap = styled.div`
   position: absolute;
   width: 100vw;
-  height: 100vh;
+  height: fit-content;
   background: linear-gradient(
     to bottom,
     rgba(51, 153, 255),
@@ -174,6 +174,7 @@ function Signin() {
             color='grey'
             name='아이디 중복 확인'
             background='white'
+            hoverBackgroundColor='rgba(256, 256, 256, 0.2)'
             border='2px solid grey'
             borderRadius='10rem'
             // margin='0.5rem 2.5rem 0rem'
@@ -227,6 +228,7 @@ function Signin() {
             border='2px solid grey'
             borderRadius='10rem'
             backgroundColor='white'
+            hoverBackgroundColor='rgba(256, 256, 256, 0.2)'
             name='가입하기'
             onClick={CheckForms}
           />

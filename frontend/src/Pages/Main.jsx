@@ -13,7 +13,9 @@ const Wrap = styled.div`
   /* position: absolute; */
   width: 100vw;
   height: fit-content;
+  min-height: calc(100vh - 4rem);
   border: 0.1px solid transparent;
+  /* border: 2px solid red; */
   padding-bottom: 4rem;
   font-family: 'NanumGothic';
   background: linear-gradient(
@@ -23,15 +25,10 @@ const Wrap = styled.div`
   );
 `;
 
-const WrapButtons = styled.div`
-  width: fit-content;
-  height: fit-content;
-  float: right;
-`;
 const WrapCalendar = styled.div`
   width: fit-content;
   height: fit-content;
-  margin: 8rem auto 0rem auto;
+  margin: 3rem auto 0rem auto;
 `;
 const CustomCalendar = styled.div`
   width: 50rem;
@@ -139,61 +136,21 @@ const CustomCalendar = styled.div`
 `;
 
 function Main() {
-  console.log('--------------- Main ---------------');
+  // console.log('--------------- Main ---------------');
 
   const [value, onChange] = useState(new Date());
   const navigate = useNavigate();
 
-  // 통계 페이지 이동
-  const NavigateToStatistics = () => {
-    navigate(`/MyPage`);
-  };
-
-  // 글쓰기 페이지 이동
+  // 선택한 날짜로 글쓰기 페이지 이동
   const NavigateToWrite = (date) => {
     navigate(`/Write`, { state: date });
-  };
-
-  // 웰컴 페이지 이동
-  const NavigateToDefault = () => {
-    navigate('/');
   };
 
   return (
     <div>
       <Wrap>
         <Menu />
-        <WrapButtons>
-          <Button
-            width='5rem'
-            height='2.3rem'
-            name='일기 쓰기'
-            color='white'
-            margin='2rem 1rem'
-            border='2px solid white'
-            backgroundColor='transparent;'
-            onClick={NavigateToWrite}
-          />
-          <Button
-            width='5rem'
-            height='2.3rem'
-            name='마이 페이지'
-            color='white'
-            border='2px solid white'
-            backgroundColor='transparent'
-            onClick={NavigateToStatistics}
-          />
-          <Button
-            width='5rem'
-            height='2.3rem'
-            margin='2rem 1rem'
-            name='로그아웃'
-            color='white'
-            border='2px solid white'
-            backgroundColor='transparent'
-            onClick={NavigateToDefault}
-          />
-        </WrapButtons>
+
         <WrapCalendar>
           <CustomCalendar>
             <Calendar
