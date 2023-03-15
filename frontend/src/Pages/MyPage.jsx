@@ -1,16 +1,16 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import Menu from '../Components/Menu';
 import Button from '../Components/Button';
 
 const Wrap = styled.div`
-  /* position: absolute; */
-  width: fit-content;
+  width: 100vw;
   height: fit-content;
-  /* border: 0.1px solid transparent; */
-  /* border: 2px solid red; */
-
-  /* padding-bottom: 4rem; */
+  min-height: calc(100vh - 4rem);
+  border: 0.1px solid transparent;
+  padding-bottom: 4rem;
+  font-family: 'NanumGothic';
   background: linear-gradient(
     to bottom,
     rgba(51, 153, 255),
@@ -71,6 +71,7 @@ function MyPage() {
   };
   return (
     <div>
+      <Menu />
       <Wrap>
         <Button
           width='5rem'

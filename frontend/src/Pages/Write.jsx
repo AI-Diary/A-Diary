@@ -21,6 +21,7 @@ import WordSpeech from '../Images/word_speech.png';
 const Wrap = styled.div`
   /* position: absolute; */
   width: 100vw;
+  min-width: 60rem;
   height: fit-content;
   border: 0.1px solid transparent;
   /* padding-bottom: 4rem; */
@@ -71,23 +72,25 @@ const WrapWeather = styled.div`
 `;
 
 const WeatherLabel = styled.label`
+  border: none;
+
   [type='radio'] {
     width: 0;
     height: 0;
-    border: 0;
   }
   [type='radio'] + img {
     cursor: pointer;
     width: 1.8rem;
     height: 1.8rem;
-    border: 1px solid white;
+    /* border: 1px solid transparent; */
     background-image: url(${(props) => props.backgroundImage});
     background-size: 1.8rem;
-    border: 0;
+    border: none;
+    box-shadow: none;
   }
   [type='radio']:checked + img {
     background-image: url(${(props) => props.backgroundChecked});
-    border: 0;
+    border: none;
   }
 `;
 
@@ -104,17 +107,13 @@ const WrapShare = styled.div`
   position: absolute;
   width: fit-content;
   height: fit-content;
-  /* border: 2px solid black; */
   margin: 22.3rem 0rem 0rem 0.7rem;
   display: flex;
 `;
 const ShareButton = styled.div`
-  /* position: absolute; */
-  /* left: 40rem; */
   display: inline-block right;
   width: 1.8rem;
   height: 1.8rem;
-  /* border: 1px solid red; */
   background-image: url(${Share});
   &:hover {
     background-image: url(${ShareGrey});

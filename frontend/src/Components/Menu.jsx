@@ -6,6 +6,7 @@ import Button from '../Components/Button';
 const WrapMenu = styled.div`
   width: 100vw;
   height: 5rem;
+  min-width: 60rem;
   background-color: rgba(256, 256, 256, 0.8);
   border: 0.1px solid transparent;
 `;
@@ -21,6 +22,7 @@ const Logo = styled.div`
   text-align: center;
   margin-top: 1rem;
   margin-left: 1rem;
+  cursor: pointer;
 `;
 const WrapButtons = styled.div`
   width: fit-content;
@@ -34,7 +36,7 @@ const WrapButtons = styled.div`
 
 function Menu() {
   const navigate = useNavigate();
-  // 통계 페이지 이동
+  // 마이페이지 페이지 이동
   const NavigateToStatistics = () => {
     navigate(`/MyPage`);
   };
@@ -46,10 +48,15 @@ function Menu() {
   const NavigateToDefault = () => {
     navigate('/');
   };
+
+  // 메인 페이지 이동
+  const NavigateToMain = () => {
+    navigate('/Main');
+  };
   return (
     <div>
       <WrapMenu>
-        <Logo>A- Diary</Logo>
+        <Logo onClick={NavigateToMain}>A- Diary</Logo>
         <WrapButtons>
           <Button
             width='5rem'

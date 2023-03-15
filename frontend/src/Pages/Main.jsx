@@ -10,14 +10,13 @@ import Button from '../Components/Button';
 // import Input from '../Components/Input';
 
 const Wrap = styled.div`
-  /* position: absolute; */
   width: 100vw;
   height: fit-content;
   min-height: calc(100vh - 4rem);
   border: 0.1px solid transparent;
-  /* border: 2px solid red; */
   padding-bottom: 4rem;
   font-family: 'NanumGothic';
+  overflow-x: none;
   background: linear-gradient(
     to bottom,
     rgba(51, 153, 255),
@@ -51,6 +50,7 @@ const CustomCalendar = styled.div`
     border: none;
     margin: 1rem 1rem 3rem 1rem;
     font-size: 1.5rem;
+    cursor: pointer;
   }
 
   .react-calendar__month_view__weekdays {
@@ -113,6 +113,7 @@ const CustomCalendar = styled.div`
     font-size: 1.2rem;
     vertical-align: top;
     text-align: left;
+    cursor: pointer;
   }
   /* .react-calendar__tile:enabled:hover,
   .react-calendar__tile:enabled:focus {
@@ -125,6 +126,8 @@ const CustomCalendar = styled.div`
     /* border-radius: 6px; */
     font-weight: bold;
     background-color: rgba(114, 92, 255, 0.2);
+    border-color: #6f48eb33;
+    border-style: none solid solid none;
     /* color: #6f48eb; */
   }
   .react-calendar__month-view__days__day--neighboringMonth {
