@@ -16,6 +16,7 @@ import RainGrey from '../Images/rain_grey.png';
 import SnowGrey from '../Images/snow_grey.png';
 import WindGrey from '../Images/wind_grey.png';
 import ShareGrey from '../Images/share_grey.png';
+import WordSpeech from '../Images/word_speech.png';
 
 const Wrap = styled.div`
   /* position: absolute; */
@@ -99,13 +100,21 @@ const Weather = styled.input`
 
 const WeatherImage = styled.img``;
 
-const ShareButton = styled.div`
+const WrapShare = styled.div`
   position: absolute;
+  width: fit-content;
+  height: fit-content;
+  /* border: 2px solid black; */
+  margin: 22.3rem 0rem 0rem 0.7rem;
+  display: flex;
+`;
+const ShareButton = styled.div`
+  /* position: absolute; */
   /* left: 40rem; */
   display: inline-block right;
   width: 1.8rem;
   height: 1.8rem;
-  /* border: 2px solid black; */
+  /* border: 1px solid red; */
   background-image: url(${Share});
   &:hover {
     background-image: url(${ShareGrey});
@@ -114,6 +123,30 @@ const ShareButton = styled.div`
     background-image: url(${ShareGrey});
   }
 `;
+
+const WrapSNS = styled.div`
+  width: 10rem;
+  height: 2.5rem;
+  display: flex;
+  visibility: ${(props) => props.visibility};
+  /* visibility: hidden; */
+  margin-left: 0.3rem;
+  padding-top: 0.4rem;
+  background-image: url(${WordSpeech});
+  background-repeat: no-repeat;
+  background-size: 10rem 2.5rem;
+  /* border: 1px solid yellow; */
+`;
+
+const SNSButton = styled.div`
+  width: 1.8rem;
+  height: 1.8rem;
+  margin-left: 1.25rem;
+  background-size: 1.8rem;
+  background-image: url(${(props) => props.backgroundImage});
+  /* border: 1px solid orange; */
+`;
+
 const DrawDiary = styled.div`
   width: 40rem;
   height: 25rem;
@@ -164,8 +197,12 @@ function Write() {
 
   // 날씨 저장
   const [weather, setWeather] = useState();
+
   // 일기글 저장
   const [write, setWrite] = useState('');
+
+  // 공유 보이기 안보이기
+  const [visibleShare, setVisibleShare] = useState(false);
 
   const [ctx, setCtx] = useState();
   const [isDrawing, setIsDrawing] = useState(false);
@@ -316,7 +353,20 @@ function Write() {
           </WrapTop>
 
           <DrawDiary>
-            <ShareButton />
+            <WrapShare>
+              <ShareButton
+                onClick={() => {
+                  setVisibleShare(!visibleShare);
+                }}
+              />
+              {visibleShare && (
+                <WrapSNS>
+                  <SNSButton backgroundImage={Snow} />
+                  <SNSButton backgroundImage={Sunny} />
+                  <SNSButton backgroundImage={Rain} />
+                </WrapSNS>
+              )}
+            </WrapShare>
             <canvas
               ref={canvasRef}
               onMouseDown={startDrawing}
