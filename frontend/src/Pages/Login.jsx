@@ -127,6 +127,7 @@ function Login() {
             name='로그인'
             border='2px solid grey'
             background='white'
+            hoverBackgroundColor='rgba(256, 256, 256, 0.2)'
             color='grey'
             onClick={onClickLogin}
           />

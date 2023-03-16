@@ -52,6 +52,7 @@ function Default() {
             color='white'
             border='2px solid white'
             backgroundColor='transparent'
+            hoverBackgroundColor='rgba(256, 256, 256, 0.2)'
             onClick={NavigateToLogin}
           />
           <Button
@@ -62,6 +63,7 @@ function Default() {
             color='white'
             border='2px solid white'
             backgroundColor='transparent'
+            hoverBackgroundColor='rgba(256, 256, 256, 0.2)'
             onClick={NavigateToSignin}
           />
         </WrapButtons>

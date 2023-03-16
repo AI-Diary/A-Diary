@@ -21,7 +21,8 @@ const ButtonStyle = styled.button`
   font-family: 'NanumGothic';
   cursor: pointer;
   &:hover {
-    background-color: rgba(256, 256, 256, 0.35);
+    /* background-color: rgba(256, 256, 256, 0.35); */
+    background-color: ${(props) => props.hoverBackgroundColor};
     transition: 0.5s;
   }
 `;
@@ -36,6 +37,7 @@ export default function Button({
   borderRadius,
   background,
   backgroundColor,
+  hoverBackgroundColor,
   name,
   onClick,
 }) {
@@ -50,6 +52,7 @@ export default function Button({
       borderRadius={borderRadius}
       background={background}
       backgroundColor={backgroundColor}
+      hoverBackgroundColor={hoverBackgroundColor}
       onClick={onClick}
     >
       {name}

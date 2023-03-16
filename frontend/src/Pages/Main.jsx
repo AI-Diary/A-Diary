@@ -10,12 +10,13 @@ import Button from '../Components/Button';
 // import Input from '../Components/Input';
 
 const Wrap = styled.div`
-  /* position: absolute; */
   width: 100vw;
   height: fit-content;
+  min-height: calc(100vh - 4rem);
   border: 0.1px solid transparent;
   padding-bottom: 4rem;
   font-family: 'NanumGothic';
+  overflow-x: none;
   background: linear-gradient(
     to bottom,
     rgba(51, 153, 255),
@@ -23,15 +24,10 @@ const Wrap = styled.div`
   );
 `;
 
-const WrapButtons = styled.div`
-  width: fit-content;
-  height: fit-content;
-  float: right;
-`;
 const WrapCalendar = styled.div`
   width: fit-content;
   height: fit-content;
-  margin: 8rem auto 0rem auto;
+  margin: 3rem auto 0rem auto;
 `;
 const CustomCalendar = styled.div`
   width: 50rem;
@@ -54,6 +50,7 @@ const CustomCalendar = styled.div`
     border: none;
     margin: 1rem 1rem 3rem 1rem;
     font-size: 1.5rem;
+    cursor: pointer;
   }
 
   .react-calendar__month_view__weekdays {
@@ -116,6 +113,7 @@ const CustomCalendar = styled.div`
     font-size: 1.2rem;
     vertical-align: top;
     text-align: left;
+    cursor: pointer;
   }
   /* .react-calendar__tile:enabled:hover,
   .react-calendar__tile:enabled:focus {
@@ -128,6 +126,8 @@ const CustomCalendar = styled.div`
     /* border-radius: 6px; */
     font-weight: bold;
     background-color: rgba(114, 92, 255, 0.2);
+    border-color: #6f48eb33;
+    border-style: none solid solid none;
     /* color: #6f48eb; */
   }
   .react-calendar__month-view__days__day--neighboringMonth {
@@ -139,61 +139,21 @@ const CustomCalendar = styled.div`
 `;
 
 function Main() {
-  console.log('--------------- Main ---------------');
+  // console.log('--------------- Main ---------------');
 
   const [value, onChange] = useState(new Date());
   const navigate = useNavigate();
 
-  // 통계 페이지 이동
-  const NavigateToStatistics = () => {
-    navigate(`/MyPage`);
-  };
-
-  // 글쓰기 페이지 이동
+  // 선택한 날짜로 글쓰기 페이지 이동
   const NavigateToWrite = (date) => {
     navigate(`/Write`, { state: date });
-  };
-
-  // 웰컴 페이지 이동
-  const NavigateToDefault = () => {
-    navigate('/');
   };
 
   return (
     <div>
       <Wrap>
         <Menu />
-        <WrapButtons>
-          <Button
-            width='5rem'
-            height='2.3rem'
-            name='일기 쓰기'
-            color='white'
-            margin='2rem 1rem'
-            border='2px solid white'
-            backgroundColor='transparent;'
-            onClick={NavigateToWrite}
-          />
-          <Button
-            width='5rem'
-            height='2.3rem'
-            name='마이 페이지'
-            color='white'
-            border='2px solid white'
-            backgroundColor='transparent'
-            onClick={NavigateToStatistics}
-          />
-          <Button
-            width='5rem'
-            height='2.3rem'
-            margin='2rem 1rem'
-            name='로그아웃'
-            color='white'
-            border='2px solid white'
-            backgroundColor='transparent'
-            onClick={NavigateToDefault}
-          />
-        </WrapButtons>
+
         <WrapCalendar>
           <CustomCalendar>
             <Calendar
