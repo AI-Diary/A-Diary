@@ -24,3 +24,6 @@ yarn-error.log*
 node_modules
 node_modules
 node_modules
+
+# pt파일들 못올리게 하기
+*.pt
