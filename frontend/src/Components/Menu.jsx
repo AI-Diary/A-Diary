@@ -36,13 +36,14 @@ const WrapButtons = styled.div`
 
 function Menu() {
   const navigate = useNavigate();
+
   // 마이페이지 페이지 이동
   const NavigateToStatistics = () => {
     navigate(`/MyPage`);
   };
   // 글쓰기 페이지 이동
-  const NavigateToWrite = (date) => {
-    navigate(`/Write`, { state: date });
+  const NavigateToWrite = () => {
+    navigate(`/Write`, { state: null });
   };
   // 웰컴 페이지 이동
   const NavigateToDefault = () => {
@@ -56,7 +57,7 @@ function Menu() {
   return (
     <div>
       <WrapMenu>
-        <Logo onClick={NavigateToMain}>A- Diary</Logo>
+        <Logo onClick={NavigateToMain}>A - Diary</Logo>
         <WrapButtons>
           <Button
             width='5rem'

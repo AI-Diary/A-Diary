@@ -21,8 +21,8 @@ import WordSpeech from '../Images/word_speech.png';
 const Wrap = styled.div`
   /* position: absolute; */
   width: 100vw;
-  min-width: 60rem;
   height: fit-content;
+  min-width: 60rem;
   border: 0.1px solid transparent;
   /* padding-bottom: 4rem; */
   background: linear-gradient(

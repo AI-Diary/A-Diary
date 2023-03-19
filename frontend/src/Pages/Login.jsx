@@ -7,8 +7,9 @@ import Input from '../Components/Input';
 
 const Wrap = styled.div`
   position: absolute;
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
+  min-width: 60rem;
   background: linear-gradient(
     to bottom,
     rgba(51, 153, 255),

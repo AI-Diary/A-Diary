@@ -8,6 +8,7 @@ const Wrap = styled.div`
   position: absolute;
   width: 100vw;
   height: 100vh;
+  min-width: 60rem;
   background: linear-gradient(
     to bottom,
     rgba(51, 153, 255),
@@ -42,7 +43,7 @@ function Default() {
   return (
     <div>
       <Wrap>
-        <Welcome>Welcome to A-Diary</Welcome>
+        <Welcome>Welcome to A - Diary</Welcome>
         <WrapButtons>
           <Button
             width='7rem'

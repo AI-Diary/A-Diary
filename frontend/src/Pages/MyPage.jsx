@@ -7,10 +7,12 @@ import Button from '../Components/Button';
 const Wrap = styled.div`
   width: 100vw;
   height: fit-content;
+  min-width: 60rem;
   min-height: calc(100vh - 4rem);
   border: 0.1px solid transparent;
   padding-bottom: 4rem;
   font-family: 'NanumGothic';
+  overflow-x: none;
   background: linear-gradient(
     to bottom,
     rgba(51, 153, 255),
@@ -71,8 +73,8 @@ function MyPage() {
   };
   return (
     <div>
-      <Menu />
       <Wrap>
+        <Menu />
         <Button
           width='5rem'
           height='2.3rem'
