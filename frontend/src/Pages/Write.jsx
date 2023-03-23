@@ -4,19 +4,25 @@ import styled from 'styled-components';
 import Menu from '../Components/Menu';
 import Button from '../Components/Button';
 import moment from 'moment';
+import WordSpeech from '../Images/speech.png';
 import Sunny from '../Images/sunny_default.png';
 import Cloudy from '../Images/cloudy_default.png';
 import Rain from '../Images/rain_default.png';
 import Snow from '../Images/snow_default.png';
 import Wind from '../Images/wind_default.png';
 import Share from '../Images/share_default.png';
+import Instargram from '../Images/instargram_default.png';
+import Twitter from '../Images/twitter_default.png';
+import Kakaotalk from '../Images/kakaotalk_default.png';
 import SunnyGrey from '../Images/sunny_grey.png';
 import CloudyGrey from '../Images/cloudy_grey.png';
 import RainGrey from '../Images/rain_grey.png';
 import SnowGrey from '../Images/snow_grey.png';
 import WindGrey from '../Images/wind_grey.png';
 import ShareGrey from '../Images/share_grey.png';
-import WordSpeech from '../Images/word_speech.png';
+import InstargramGrey from '../Images/instargram_grey.png';
+import TwitterGrey from '../Images/twitter_grey.png';
+import KakaotalkGrey from '../Images/kakaotalk_grey.png';
 
 const Wrap = styled.div`
   /* position: absolute; */
@@ -38,7 +44,7 @@ const WrapDiary = styled.div`
   width: fit-content;
   height: fit-content;
   margin: 3rem auto 5rem auto;
-  padding: 3rem 7rem 5rem 7rem;
+  padding: 3rem 5rem 5rem 5rem;
   border-radius: 1.5rem;
   background-color: rgba(256, 256, 256, 0.8);
   box-shadow: 0.4rem 0.4rem 1rem rgba(120, 120, 120, 0.3);
@@ -111,6 +117,7 @@ const WrapShare = styled.div`
   display: flex;
 `;
 const ShareButton = styled.div`
+  /* border: 2px solid black; */
   display: inline-block right;
   width: 1.8rem;
   height: 1.8rem;
@@ -125,10 +132,11 @@ const ShareButton = styled.div`
 
 const WrapSNS = styled.div`
   width: 10rem;
-  height: 2.5rem;
+  height: 2.1rem;
   display: flex;
   visibility: ${(props) => props.visibility};
   /* visibility: hidden; */
+  margin-top: -0.3rem;
   margin-left: 0.3rem;
   padding-top: 0.4rem;
   background-image: url(${WordSpeech});
@@ -143,6 +151,9 @@ const SNSButton = styled.div`
   margin-left: 1.25rem;
   background-size: 1.8rem;
   background-image: url(${(props) => props.backgroundImage});
+  &:hover {
+    background-image: url(${(props) => props.backgroundChecked});
+  }
   /* border: 1px solid orange; */
 `;
 
@@ -273,6 +284,8 @@ function Write() {
     dayOfWeek = week[new Date(date).getDay()];
   }
 
+  const onClickInsta = () => {};
+
   return (
     <div>
       <Wrap>
@@ -360,9 +373,18 @@ function Write() {
               />
               {visibleShare && (
                 <WrapSNS>
-                  <SNSButton backgroundImage={Snow} />
-                  <SNSButton backgroundImage={Sunny} />
-                  <SNSButton backgroundImage={Rain} />
+                  <SNSButton
+                    backgroundImage={Instargram}
+                    backgroundChecked={InstargramGrey}
+                  />
+                  <SNSButton
+                    backgroundImage={Twitter}
+                    backgroundChecked={TwitterGrey}
+                  />
+                  <SNSButton
+                    backgroundImage={Kakaotalk}
+                    backgroundChecked={KakaotalkGrey}
+                  />
                 </WrapSNS>
               )}
             </WrapShare>

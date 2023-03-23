@@ -1,7 +1,79 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, PureComponent } from 'react';
 import styled from 'styled-components';
 import Menu from '../Components/Menu';
-import { PieChart, Pie, Cell } from 'recharts';
+import {
+  // Radar Chart 사용할 때 필요
+  Radar,
+  RadarChart,
+  PolarGrid,
+  PolarAngleAxis,
+  PolarRadiusAxis,
+  // Bar Chart 사용할 때 필요
+  BarChart,
+  Bar,
+  Cell,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  // 모든 차트를 사용할 때 필요
+  ResponsiveContainer,
+} from 'recharts';
+
+const EMOTIONS = [
+  { emotion: '기쁨', value: 10 },
+  { emotion: '슬픔', value: 8 },
+  { emotion: '당황', value: 4 },
+  { emotion: '불안', value: 9 },
+  { emotion: '분노', value: 7 },
+  { emotion: '상처', value: 2 },
+];
+
+const DATES = [
+  { date: 'Mon', count: 9 },
+  { date: 'Tue', count: 5 },
+  { date: 'Wed', count: 4 },
+  { date: 'Thu', count: 3 },
+  { date: 'Fri', count: 6 },
+  { date: 'Sat', count: 1 },
+  { date: 'Sun', count: 11 },
+];
+
+// const COLORS = [
+//   '#0088feb3', // 슬픔
+//   '#00c49fb3', // 기쁨
+//   '#ffbb28b3', // 당황
+//   '#ff8042b3', // 불안
+//   '#b9002bb3', // 분노
+//   '#5321a9b3', // 상처
+// ];
+
+// const RADIAN = Math.PI / 180;
+// const renderCustomizedLabel = ({
+//   cx,
+//   cy,
+//   midAngle,
+//   innerRadius,
+//   outerRadius,
+//   percent,
+//   index,
+// }) => {
+//   const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
+//   const x = cx + radius * Math.cos(-midAngle * RADIAN);
+//   const y = cy + radius * Math.sin(-midAngle * RADIAN);
+//   return (
+//     <text
+//       x={x}
+//       y={y}
+//       fill='white'
+//       textAnchor={x > cx ? 'start' : 'end'}
+//       dominantBaseline='central'
+//     >
+//       {`${(percent * 100).toFixed(0)}%`}
+//     </text>
+//   );
+// };
 
 const Wrap = styled.div`
   /* position: absolute; */
@@ -17,109 +89,15 @@ const Wrap = styled.div`
   );
 `;
 
-const COLORS = [
-  '#0088feb3', // 슬픔
-  '#00c49fb3', // 기쁨
-  '#ffbb28b3', // 당황
-  '#ff8042b3', // 불안
-  '#b9002bb3', // 분노
-  '#5321a9b3', // 상처
-];
-
 const WrapChart = styled.div`
   box-sizing: border-box;
   display: flex;
   width: 40rem;
-  height: 20rem;
-  background-color: rgba(256, 256, 256, 0.7);
+  height: 25rem;
+  background-color: rgba(256, 256, 256, 0.8);
   border-radius: 4rem;
   margin: 4rem auto 2rem auto;
   padding: 2rem;
-`;
-const Chart = styled.div`
-  width: 15rem;
-  height: 15rem;
-  border-radius: 20rem;
-  background-color: rgba();
-  margin: auto;
-`;
-const Days1 = styled.div`
-  box-sizing: border-box;
-  width: 5rem;
-  height: 10rem;
-  margin: auto auto 2rem auto;
-  padding: 0.8rem;
-  border-radius: 0.4rem;
-  background-color: #0088feb3;
-  /* background-color: rgba(0, 136, 254, 0.7); */
-  text-align: center;
-`;
-const Days2 = styled.div`
-  box-sizing: border-box;
-  width: 5rem;
-  height: 8rem;
-  margin: auto auto 2rem auto;
-  padding: 0.8rem;
-  border-radius: 0.4rem;
-  background-color: #00c49fb3;
-  /* background-color: rgba(0, 196, 159, 0.7); */
-  text-align: center;
-`;
-const Days3 = styled.div`
-  box-sizing: border-box;
-  width: 5rem;
-  height: 7rem;
-  margin: auto auto 2rem auto;
-  padding: 0.8rem;
-  border-radius: 0.4rem;
-  background-color: #ffbb28b3;
-  /* background-color: rgba(255, 187, 40, 0.7); */
-
-  text-align: center;
-`;
-const Days4 = styled.div`
-  box-sizing: border-box;
-  width: 5rem;
-  height: 6rem;
-  margin: auto auto 2rem auto;
-  padding: 0.8rem;
-  border-radius: 0.4rem;
-  background-color: #ff8042b3;
-  /* background-color: rgba(255, 128, 66, 0.7); */
-
-  text-align: center;
-`;
-const Days5 = styled.div`
-  box-sizing: border-box;
-  width: 5rem;
-  height: 7rem;
-  margin: auto auto 2rem auto;
-  padding: 0.8rem;
-  border-radius: 0.4rem;
-  background-color: #b9002bb3;
-  /* background-color: rgba(185, 0, 43, 0.7); */
-  text-align: center;
-`;
-const Days6 = styled.div`
-  box-sizing: border-box;
-  width: 5rem;
-  height: 7rem;
-  margin: auto auto 2rem auto;
-  padding: 0.8rem;
-  border-radius: 0.4rem;
-  background-color: #5321a9b3;
-  /* background-color: rgba(83, 33, 169, 0.7); */
-  text-align: center;
-`;
-const Days7 = styled.div`
-  box-sizing: border-box;
-  width: 5rem;
-  height: 9rem;
-  margin: auto auto 2rem auto;
-  padding: 0.8rem;
-  border-radius: 0.4rem;
-  background-color: skyblue;
-  text-align: center;
 `;
 
 function Statics() {
@@ -128,18 +106,48 @@ function Statics() {
       <Wrap>
         <Menu />
         <WrapChart>
-          {/* 원차트 가져오기 */}
-          <Chart />
+          <ResponsiveContainer width='100%' height='100%'>
+            <RadarChart cx='50%' cy='50%' outerRadius='90%' data={EMOTIONS}>
+              <PolarGrid />
+              <PolarAngleAxis
+                dataKey='emotion'
+                margin={{
+                  top: 20,
+                }}
+              />
+              <PolarRadiusAxis angle={30} />
+              <Radar
+                name='emotion'
+                dataKey='value'
+                stroke='rgba(51, 153, 255, 0.8)'
+                fill='rgba(51, 153, 255, 0.8)'
+                // stroke='#8884d8'
+                // fill='#8884d8'
+                fillOpacity={0.6}
+              />
+            </RadarChart>
+          </ResponsiveContainer>
         </WrapChart>
         <WrapChart>
-          {/* 막대 그래프로 횟수 보여주기 */}
-          <Days1>슬픔</Days1>
-          <Days2>기쁨</Days2>
-          <Days3>당황</Days3>
-          <Days4>불안</Days4>
-          <Days5>분노</Days5>
-          <Days6>상처</Days6>
-          <Days7></Days7>
+          <ResponsiveContainer width='100%' height='100%'>
+            <BarChart
+              width={500}
+              height={300}
+              data={DATES}
+              margin={{
+                top: 5,
+                right: 30,
+                left: 20,
+                bottom: 5,
+              }}
+            >
+              <CartesianGrid strokeDasharray='3 3' />
+              <XAxis dataKey='date' />
+              <YAxis />
+              <Tooltip />
+              <Bar dataKey='count' stroke='#8884d8e3' fill='#8884d8a0' />
+            </BarChart>
+          </ResponsiveContainer>
         </WrapChart>
       </Wrap>
     </div>
