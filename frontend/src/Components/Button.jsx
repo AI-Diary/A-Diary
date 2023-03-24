@@ -6,23 +6,26 @@ const ButtonStyle = styled.button`
   width: ${(props) => props.width};
   height: ${(props) => props.height};
   margin: ${(props) => props.margin};
-  padding: 0.2rem 1rem;
+  /* padding: 0.2rem 1rem; */
   border: ${(props) => props.border};
   /* border: 1px solid; */
   border-image: ${(props) => props.borderImage};
-  border-radius: 10rem;
+  border-radius: ${(props) => props.borderRadius};
   /* border-radius: ${(props) => props.borderRadius}; */
   background-clip: padding-box;
   text-align: center;
-  /* font-size: 1rem; */
+  font-size: ${(props) => props.fontSize};
   color: ${(props) => props.color};
   background: ${(props) => props.background};
   background-color: ${(props) => props.backgroundColor};
   font-family: 'NanumGothic';
+  float: ${(props) => props.float};
   cursor: pointer;
   &:hover {
     /* background-color: rgba(256, 256, 256, 0.35); */
     background-color: ${(props) => props.hoverBackgroundColor};
+    color: ${(props) => props.hoverColor};
+    border: ${(props) => props.hoverBorder};
     transition: 0.5s;
   }
 `;
@@ -38,8 +41,12 @@ export default function Button({
   background,
   backgroundColor,
   hoverBackgroundColor,
+  hoverColor,
+  hoverBorder,
   name,
   onClick,
+  float,
+  fontSize,
 }) {
   return (
     <ButtonStyle
@@ -53,7 +60,11 @@ export default function Button({
       background={background}
       backgroundColor={backgroundColor}
       hoverBackgroundColor={hoverBackgroundColor}
+      hoverColor={hoverColor}
+      hoverBorder={hoverBorder}
       onClick={onClick}
+      float={float}
+      fontSize={fontSize}
     >
       {name}
     </ButtonStyle>
