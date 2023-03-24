@@ -47,22 +47,24 @@ function Default() {
         <WrapButtons>
           <Button
             width='7rem'
-            height='2.5rem'
+            height='2.9rem'
             margin='4rem 1rem'
             name='로그인'
             color='white'
             border='2px solid white'
+            borderRadius='10rem'
             backgroundColor='transparent'
             hoverBackgroundColor='rgba(256, 256, 256, 0.2)'
             onClick={NavigateToLogin}
           />
           <Button
             width='7rem'
-            height='2.5rem'
+            height='2.9rem'
             margin='4rem 1rem'
             name='회원가입'
             color='white'
             border='2px solid white'
+            borderRadius='10rem'
             backgroundColor='transparent'
             hoverBackgroundColor='rgba(256, 256, 256, 0.2)'
             onClick={NavigateToSignin}

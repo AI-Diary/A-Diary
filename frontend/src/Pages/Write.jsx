@@ -401,27 +401,32 @@ function Write() {
 
           <WrapKeywordButton>
             <Button
-              width='5rem'
-              height='2.5rem'
+              width='7rem'
+              height='2.7rem'
               name='키워드 추출'
               color='rgba(138, 80, 255, 0.6)'
               border='2px solid rgba(138, 80, 255, 0.6)'
+              borderRadius='10rem'
               // color='grey'
               // border='2px solid grey'
-              backgroundColor='transparent;'
-              hoverBackgroundColor='rgba(256, 256, 256, 0.4)'
+              backgroundColor='white'
+              hoverBackgroundColor='rgba(138, 80, 255, 0.6)'
+              hoverColor='white'
+              // hoverBorder='2px solid white'
             />
             <Button
-              width='5rem'
-              height='2.5rem'
+              width='7rem'
+              height='2.7rem'
               name='일기 저장'
               margin='0rem 0rem 0rem 2rem'
               color='rgba(138, 80, 255, 0.6)'
               border='2px solid rgba(138, 80, 255, 0.6)'
+              borderRadius='10rem'
               // color='grey'
               // border='2px solid grey'
-              backgroundColor='transparent;'
-              hoverBackgroundColor='rgba(256, 256, 256, 0.4)'
+              backgroundColor='white'
+              hoverBackgroundColor='rgba(138, 80, 255, 0.6)'
+              hoverColor='white'
             />
           </WrapKeywordButton>
         </WrapDiary>

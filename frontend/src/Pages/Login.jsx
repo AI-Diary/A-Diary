@@ -122,13 +122,16 @@ function Login() {
           />
 
           <Button
-            width='15rem'
-            height='2.5rem'
-            margin='2rem 0rem 0rem 0rem'
+            width='16rem'
+            height='2.9rem'
+            margin='1.5rem 0rem 0rem 0rem'
             name='로그인'
             border='2px solid grey'
+            borderRadius='10rem'
             background='white'
-            hoverBackgroundColor='rgba(256, 256, 256, 0.2)'
+            hoverBackgroundColor='rgba(115, 133, 255)'
+            hoverBorder='2px solid rgba(115, 133, 255)'
+            hoverColor='white'
             color='grey'
             onClick={onClickLogin}
           />

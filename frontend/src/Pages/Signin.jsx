@@ -6,10 +6,12 @@ import Button from '../Components/Button';
 import Input from '../Components/Input';
 
 const Wrap = styled.div`
-  position: absolute;
+  /* position: absolute; */
   width: 100vw;
   min-width: 60rem;
+  min-height: 100vh;
   height: fit-content;
+  border: 0.1px solid transparent;
   background: linear-gradient(
     to bottom,
     rgba(51, 153, 255),
@@ -170,16 +172,19 @@ function Signin() {
             maxLength='16'
           />
           <Button
-            width='15rem'
-            height='2rem'
+            width='16.2rem'
+            height='2.8rem'
             color='grey'
             name='아이디 중복 확인'
             background='white'
-            hoverBackgroundColor='rgba(256, 256, 256, 0.2)'
+            hoverBackgroundColor='rgba(108, 132, 247)'
+            hoverColor='white'
+            hoverBorder='2px solid rgba(108, 132, 247)'
             border='2px solid grey'
             borderRadius='10rem'
             // margin='0.5rem 2.5rem 0rem'
             margin='0.5rem 0rem 0rem 0rem'
+            fontSize='0.8rem'
             onClick={onClickCheckId}
           />
 
@@ -222,14 +227,16 @@ function Signin() {
           />
 
           <Button
-            width='15rem'
-            height='2.5rem'
+            width='16.2rem'
+            height='2.8rem'
             margin='2rem 0rem 1.5rem 0rem'
             color='grey'
             border='2px solid grey'
             borderRadius='10rem'
             backgroundColor='white'
-            hoverBackgroundColor='rgba(256, 256, 256, 0.2)'
+            hoverBackgroundColor='rgba(153, 111, 247)'
+            hoverColor='white'
+            hoverBorder='2px solid rgba(153, 111, 247)'
             name='가입하기'
             onClick={CheckForms}
           />
