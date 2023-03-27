@@ -6,7 +6,8 @@ import Button from '../Components/Button';
 const WrapMenu = styled.div`
   width: 100vw;
   height: 5rem;
-  min-width: 60rem;
+  /* min-width: 60rem; */
+  min-width: ${(props) => props.minWidth};
   background-color: rgba(256, 256, 256, 0.8);
   border: 0.1px solid transparent;
 `;
@@ -34,7 +35,7 @@ const WrapButtons = styled.div`
   /* position: absolute; */
 `;
 
-function Menu() {
+function Menu({ minWidth }) {
   const navigate = useNavigate();
 
   // 마이페이지 페이지 이동
@@ -56,7 +57,7 @@ function Menu() {
   };
   return (
     <div>
-      <WrapMenu>
+      <WrapMenu minWidth={minWidth}>
         <Logo onClick={NavigateToMain}>A - Diary</Logo>
         <WrapButtons>
           <Button
