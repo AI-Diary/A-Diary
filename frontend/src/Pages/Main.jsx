@@ -153,7 +153,7 @@ function Main() {
   return (
     <div>
       <Wrap>
-        <Menu />
+        <Menu minWidth='60rem' />
 
         <WrapCalendar>
           <CustomCalendar>

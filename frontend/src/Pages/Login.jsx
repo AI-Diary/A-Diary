@@ -105,6 +105,7 @@ function Login() {
             width='15rem'
             height='2.8rem'
             placeholder='아이디'
+            border='1.5px solid grey'
             borderRadius='0.4rem 0.4rem 0rem 0rem'
             backgroundColor='rgba(256, 256, 256, 0.7)'
             borderStyle='solid solid none solid'
@@ -115,6 +116,7 @@ function Login() {
             width='15rem'
             height='2.8rem'
             placeholder='비밀번호'
+            border='1.5px solid grey'
             borderRadius='0rem 0rem 0.4rem 0.4rem'
             backgroundColor='rgba(256, 256, 256, 0.7)'
             onChange={onChangePw}

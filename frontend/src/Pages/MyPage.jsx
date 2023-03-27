@@ -7,7 +7,7 @@ import Button from '../Components/Button';
 const Wrap = styled.div`
   width: 100vw;
   height: 100vh;
-  min-width: 60rem;
+  min-width: 80rem;
   min-height: calc(100vh - 4rem);
   /* border: 0.1px solid transparent; */
   /* padding-bottom: 4rem; */
@@ -87,7 +87,7 @@ function MyPage() {
   return (
     <div>
       <Wrap>
-        <Menu />
+        <Menu minWidth='80rem' />
 
         <WrapList>
           <Button

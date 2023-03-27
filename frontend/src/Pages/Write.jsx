@@ -3,6 +3,7 @@ import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import Menu from '../Components/Menu';
 import Button from '../Components/Button';
+import Input from '../Components/Input';
 import moment from 'moment';
 import WordSpeech from '../Images/speech.png';
 import Sunny from '../Images/sunny_default.png';
@@ -109,6 +110,33 @@ const Weather = styled.input`
 
 const WeatherImage = styled.img``;
 
+const WrapTitle = styled.div`
+  width: 40rem;
+  height: 3.8rem;
+  margin-bottom: -1.8px;
+  background-color: white;
+  border: 1.8px solid grey;
+  border-radius: 1.5rem 1.5rem 0rem 0rem;
+`;
+const WrapTitleContents = styled.div`
+  /* border: 2px solid red; */
+  width: fit-content;
+  height: fit-content;
+  margin: 0.4rem auto 0rem auto;
+  display: flex;
+`;
+const Title = styled.div`
+  width: fit-content;
+  height: fit-content;
+  margin-top: 0.7rem;
+  /* border: 2px solid black; */
+  font-size: 1.3rem;
+  align-items: center;
+  justify-content: center;
+  vertical-align: middle;
+  display: table-cell;
+`;
+
 const WrapShare = styled.div`
   position: absolute;
   width: fit-content;
@@ -162,7 +190,7 @@ const DrawDiary = styled.div`
   height: 25rem;
   background-color: white;
   margin-bottom: -1.8px;
-  border-radius: 1.5rem 1.5rem 0rem 0rem;
+  /* border-radius: 1.5rem 1.5rem 0rem 0rem; */
   border: 1.8px solid grey;
 `;
 
@@ -206,7 +234,10 @@ function Write() {
   const contextRef = useRef(null);
 
   // 날씨 저장
-  const [weather, setWeather] = useState();
+  const [weather, setWeather] = useState('');
+
+  // 제목 저장
+  const [title, setTitle] = useState('');
 
   // 일기글 저장
   const [write, setWrite] = useState('');
@@ -258,12 +289,18 @@ function Write() {
       }
     }
   };
-
+  const onChangeTitle = (e) => {
+    setTitle(e.target.value);
+  };
   const onChangeText = (e) => {
     setWrite(e.target.value);
   };
   const onClickWeather = (e) => {
     setWeather(e.target.value);
+  };
+
+  const onClickSave = () => {
+    console.log('weather : ', weather, 'title : ', title, 'write : ', write);
   };
 
   if (state === null) {
@@ -289,7 +326,7 @@ function Write() {
   return (
     <div>
       <Wrap>
-        <Menu />
+        <Menu minWidth='60rem' />
 
         <WrapDiary>
           <WrapTop>
@@ -363,7 +400,20 @@ function Write() {
               </WrapWeather>
             </DateForm>
           </WrapTop>
-
+          <WrapTitle>
+            <WrapTitleContents>
+              <Title>제목 : </Title>
+              <Input
+                width='28rem'
+                height='3rem'
+                border='none'
+                fontSize='1.3rem'
+                onChangee={onChangeTitle}
+                maxLength='24'
+                placeholder='24자내의 제목을 작성해주세요!'
+              />
+            </WrapTitleContents>
+          </WrapTitle>
           <DrawDiary>
             <WrapShare>
               <ShareButton
@@ -427,6 +477,7 @@ function Write() {
               backgroundColor='white'
               hoverBackgroundColor='rgba(138, 80, 255, 0.6)'
               hoverColor='white'
+              onClick={onClickSave}
             />
           </WrapKeywordButton>
         </WrapDiary>

@@ -42,6 +42,8 @@ const DATES = [
   { date: 'Sun', count: 11 },
 ];
 
+// 지우면 안됨!
+
 // const COLORS = [
 //   '#0088feb3', // 슬픔
 //   '#00c49fb3', // 기쁨
@@ -127,7 +129,7 @@ function Statics() {
   return (
     <div>
       <Wrap>
-        <Menu />
+        <Menu minWidth='60rem' />
         <Button
           // width='5rem'
           // height='2.3rem'
