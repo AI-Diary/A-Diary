@@ -83,14 +83,20 @@ function Login() {
     } else {
       // id, pw 담아서 서버 보내기
       axios
-        .post()
+        .post(`http://127.0.0.1:5000/login`, {
+          id: id,
+          pw: pw,
+        })
         .then((res) => {
           // 성공시
-          NavigateToMain();
+          // NavigateToMain();
+          console.log('성공했습니다!');
+          console.log(res);
         })
         .catch((err) => {
           // 실패시
           alert('로그인에 실패하였습니다.');
+          console.log(err);
         });
     }
   };

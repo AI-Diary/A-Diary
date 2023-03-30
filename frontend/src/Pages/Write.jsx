@@ -242,6 +242,15 @@ function Write() {
   // 일기글 저장
   const [write, setWrite] = useState('');
 
+  // 펜 두께 초기 설정
+  const [penWidth, setPenWidth] = useState(1.5);
+
+  // 펜 색 초기 설정
+  const [penColor, setPenColor] = useState('black');
+
+  // 현재 마우스가 어떤 버튼을 눌렀는지
+  const [mouseState, setMouseState] = useState('draw');
+
   // 공유 보이기 안보이기
   const [visibleShare, setVisibleShare] = useState(false);
 
@@ -261,9 +270,8 @@ function Write() {
     canvas.height = 403;
 
     const context = canvas.getContext('2d');
-    context.strokeStyle = 'black';
-    // context.strokeStyle = 'transparent';
-    context.lineWidth = 2;
+    context.strokeStyle = penColor;
+    context.lineWidth = penWidth;
     contextRef.current = context;
 
     setCtx(contextRef.current);
