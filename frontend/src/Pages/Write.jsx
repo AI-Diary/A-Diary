@@ -3,26 +3,33 @@ import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import Menu from '../Components/Menu';
 import Button from '../Components/Button';
+import Input from '../Components/Input';
 import moment from 'moment';
+import WordSpeech from '../Images/speech.png';
 import Sunny from '../Images/sunny_default.png';
 import Cloudy from '../Images/cloudy_default.png';
 import Rain from '../Images/rain_default.png';
 import Snow from '../Images/snow_default.png';
 import Wind from '../Images/wind_default.png';
 import Share from '../Images/share_default.png';
+import Instargram from '../Images/instargram_default.png';
+import Twitter from '../Images/twitter_default.png';
+import Kakaotalk from '../Images/kakaotalk_default.png';
 import SunnyGrey from '../Images/sunny_grey.png';
 import CloudyGrey from '../Images/cloudy_grey.png';
 import RainGrey from '../Images/rain_grey.png';
 import SnowGrey from '../Images/snow_grey.png';
 import WindGrey from '../Images/wind_grey.png';
 import ShareGrey from '../Images/share_grey.png';
-import WordSpeech from '../Images/word_speech.png';
+import InstargramGrey from '../Images/instargram_grey.png';
+import TwitterGrey from '../Images/twitter_grey.png';
+import KakaotalkGrey from '../Images/kakaotalk_grey.png';
 
 const Wrap = styled.div`
   /* position: absolute; */
   width: 100vw;
-  min-width: 60rem;
   height: fit-content;
+  min-width: 60rem;
   border: 0.1px solid transparent;
   /* padding-bottom: 4rem; */
   background: linear-gradient(
@@ -38,7 +45,7 @@ const WrapDiary = styled.div`
   width: fit-content;
   height: fit-content;
   margin: 3rem auto 5rem auto;
-  padding: 3rem 7rem 5rem 7rem;
+  padding: 3rem 5rem 5rem 5rem;
   border-radius: 1.5rem;
   background-color: rgba(256, 256, 256, 0.8);
   box-shadow: 0.4rem 0.4rem 1rem rgba(120, 120, 120, 0.3);
@@ -103,6 +110,33 @@ const Weather = styled.input`
 
 const WeatherImage = styled.img``;
 
+const WrapTitle = styled.div`
+  width: 40rem;
+  height: 3.8rem;
+  margin-bottom: -1.8px;
+  background-color: white;
+  border: 1.8px solid grey;
+  border-radius: 1.5rem 1.5rem 0rem 0rem;
+`;
+const WrapTitleContents = styled.div`
+  /* border: 2px solid red; */
+  width: fit-content;
+  height: fit-content;
+  margin: 0.4rem auto 0rem auto;
+  display: flex;
+`;
+const Title = styled.div`
+  width: fit-content;
+  height: fit-content;
+  margin-top: 0.7rem;
+  /* border: 2px solid black; */
+  font-size: 1.3rem;
+  align-items: center;
+  justify-content: center;
+  vertical-align: middle;
+  display: table-cell;
+`;
+
 const WrapShare = styled.div`
   position: absolute;
   width: fit-content;
@@ -111,6 +145,7 @@ const WrapShare = styled.div`
   display: flex;
 `;
 const ShareButton = styled.div`
+  /* border: 2px solid black; */
   display: inline-block right;
   width: 1.8rem;
   height: 1.8rem;
@@ -125,10 +160,11 @@ const ShareButton = styled.div`
 
 const WrapSNS = styled.div`
   width: 10rem;
-  height: 2.5rem;
+  height: 2.1rem;
   display: flex;
   visibility: ${(props) => props.visibility};
   /* visibility: hidden; */
+  margin-top: -0.3rem;
   margin-left: 0.3rem;
   padding-top: 0.4rem;
   background-image: url(${WordSpeech});
@@ -143,6 +179,9 @@ const SNSButton = styled.div`
   margin-left: 1.25rem;
   background-size: 1.8rem;
   background-image: url(${(props) => props.backgroundImage});
+  &:hover {
+    background-image: url(${(props) => props.backgroundChecked});
+  }
   /* border: 1px solid orange; */
 `;
 
@@ -151,7 +190,7 @@ const DrawDiary = styled.div`
   height: 25rem;
   background-color: white;
   margin-bottom: -1.8px;
-  border-radius: 1.5rem 1.5rem 0rem 0rem;
+  /* border-radius: 1.5rem 1.5rem 0rem 0rem; */
   border: 1.8px solid grey;
 `;
 
@@ -195,10 +234,22 @@ function Write() {
   const contextRef = useRef(null);
 
   // 날씨 저장
-  const [weather, setWeather] = useState();
+  const [weather, setWeather] = useState('');
+
+  // 제목 저장
+  const [title, setTitle] = useState('');
 
   // 일기글 저장
   const [write, setWrite] = useState('');
+
+  // 펜 두께 초기 설정
+  const [penWidth, setPenWidth] = useState(1.5);
+
+  // 펜 색 초기 설정
+  const [penColor, setPenColor] = useState('black');
+
+  // 현재 마우스가 어떤 버튼을 눌렀는지
+  const [mouseState, setMouseState] = useState('draw');
 
   // 공유 보이기 안보이기
   const [visibleShare, setVisibleShare] = useState(false);
@@ -219,9 +270,8 @@ function Write() {
     canvas.height = 403;
 
     const context = canvas.getContext('2d');
-    context.strokeStyle = 'black';
-    // context.strokeStyle = 'transparent';
-    context.lineWidth = 2;
+    context.strokeStyle = penColor;
+    context.lineWidth = penWidth;
     contextRef.current = context;
 
     setCtx(contextRef.current);
@@ -247,12 +297,18 @@ function Write() {
       }
     }
   };
-
+  const onChangeTitle = (e) => {
+    setTitle(e.target.value);
+  };
   const onChangeText = (e) => {
     setWrite(e.target.value);
   };
   const onClickWeather = (e) => {
     setWeather(e.target.value);
+  };
+
+  const onClickSave = () => {
+    console.log('weather : ', weather, 'title : ', title, 'write : ', write);
   };
 
   if (state === null) {
@@ -273,10 +329,12 @@ function Write() {
     dayOfWeek = week[new Date(date).getDay()];
   }
 
+  const onClickInsta = () => {};
+
   return (
     <div>
       <Wrap>
-        <Menu />
+        <Menu minWidth='60rem' />
 
         <WrapDiary>
           <WrapTop>
@@ -350,7 +408,20 @@ function Write() {
               </WrapWeather>
             </DateForm>
           </WrapTop>
-
+          <WrapTitle>
+            <WrapTitleContents>
+              <Title>제목 : </Title>
+              <Input
+                width='28rem'
+                height='3rem'
+                border='none'
+                fontSize='1.3rem'
+                onChangee={onChangeTitle}
+                maxLength='24'
+                placeholder='24자내의 제목을 작성해주세요!'
+              />
+            </WrapTitleContents>
+          </WrapTitle>
           <DrawDiary>
             <WrapShare>
               <ShareButton
@@ -360,9 +431,18 @@ function Write() {
               />
               {visibleShare && (
                 <WrapSNS>
-                  <SNSButton backgroundImage={Snow} />
-                  <SNSButton backgroundImage={Sunny} />
-                  <SNSButton backgroundImage={Rain} />
+                  <SNSButton
+                    backgroundImage={Instargram}
+                    backgroundChecked={InstargramGrey}
+                  />
+                  <SNSButton
+                    backgroundImage={Twitter}
+                    backgroundChecked={TwitterGrey}
+                  />
+                  <SNSButton
+                    backgroundImage={Kakaotalk}
+                    backgroundChecked={KakaotalkGrey}
+                  />
                 </WrapSNS>
               )}
             </WrapShare>
@@ -379,27 +459,33 @@ function Write() {
 
           <WrapKeywordButton>
             <Button
-              width='5rem'
-              height='2.5rem'
+              width='7rem'
+              height='2.7rem'
               name='키워드 추출'
               color='rgba(138, 80, 255, 0.6)'
               border='2px solid rgba(138, 80, 255, 0.6)'
+              borderRadius='10rem'
               // color='grey'
               // border='2px solid grey'
-              backgroundColor='transparent;'
-              hoverBackgroundColor='rgba(256, 256, 256, 0.4)'
+              backgroundColor='white'
+              hoverBackgroundColor='rgba(138, 80, 255, 0.6)'
+              hoverColor='white'
+              // hoverBorder='2px solid white'
             />
             <Button
-              width='5rem'
-              height='2.5rem'
+              width='7rem'
+              height='2.7rem'
               name='일기 저장'
               margin='0rem 0rem 0rem 2rem'
               color='rgba(138, 80, 255, 0.6)'
               border='2px solid rgba(138, 80, 255, 0.6)'
+              borderRadius='10rem'
               // color='grey'
               // border='2px solid grey'
-              backgroundColor='transparent;'
-              hoverBackgroundColor='rgba(256, 256, 256, 0.4)'
+              backgroundColor='white'
+              hoverBackgroundColor='rgba(138, 80, 255, 0.6)'
+              hoverColor='white'
+              onClick={onClickSave}
             />
           </WrapKeywordButton>
         </WrapDiary>

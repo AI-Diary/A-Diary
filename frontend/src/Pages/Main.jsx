@@ -12,8 +12,9 @@ import Button from '../Components/Button';
 const Wrap = styled.div`
   width: 100vw;
   height: fit-content;
+  min-width: 60rem;
   min-height: calc(100vh - 4rem);
-  border: 0.1px solid transparent;
+  /* border: 0.1px solid transparent; */
   padding-bottom: 4rem;
   font-family: 'NanumGothic';
   overflow-x: none;
@@ -106,12 +107,11 @@ const CustomCalendar = styled.div`
     padding: 0.5rem;
     line-height: 50%;
     /* padding-bottom: 4rem; */
-    background-color: rgba(256, 256, 256, 0.2);
+    background-color: rgba(256, 256, 256, 0.3);
     border-color: rgba(256, 256, 256);
     border-radius: 0.5rem;
     border-style: none solid solid none;
     font-size: 1.2rem;
-    vertical-align: top;
     text-align: left;
     cursor: pointer;
   }
@@ -125,9 +125,10 @@ const CustomCalendar = styled.div`
     /* background: #6f48eb33; */
     /* border-radius: 6px; */
     font-weight: bold;
-    background-color: rgba(114, 92, 255, 0.2);
-    border-color: #6f48eb33;
+    background-color: rgba(114, 92, 255, 0.3);
+    border-color: #6f48eb8c;
     border-style: none solid solid none;
+    vertical-align: top;
     /* color: #6f48eb; */
   }
   .react-calendar__month-view__days__day--neighboringMonth {
@@ -152,7 +153,7 @@ function Main() {
   return (
     <div>
       <Wrap>
-        <Menu />
+        <Menu minWidth='60rem' />
 
         <WrapCalendar>
           <CustomCalendar>

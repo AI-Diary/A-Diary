@@ -6,7 +6,8 @@ import Button from '../Components/Button';
 const WrapMenu = styled.div`
   width: 100vw;
   height: 5rem;
-  min-width: 60rem;
+  /* min-width: 60rem; */
+  min-width: ${(props) => props.minWidth};
   background-color: rgba(256, 256, 256, 0.8);
   border: 0.1px solid transparent;
 `;
@@ -29,20 +30,21 @@ const WrapButtons = styled.div`
   height: fit-content;
   float: right;
   /* border: 2px solid black; */
-  margin-top: -2.5rem;
-  margin-right: 2rem;
+  margin-top: -4rem;
+  /* margin-right: 2rem; */
   /* position: absolute; */
 `;
 
-function Menu() {
+function Menu({ minWidth }) {
   const navigate = useNavigate();
+
   // 마이페이지 페이지 이동
   const NavigateToStatistics = () => {
     navigate(`/MyPage`);
   };
   // 글쓰기 페이지 이동
-  const NavigateToWrite = (date) => {
-    navigate(`/Write`, { state: date });
+  const NavigateToWrite = () => {
+    navigate(`/Write`, { state: null });
   };
   // 웰컴 페이지 이동
   const NavigateToDefault = () => {
@@ -55,40 +57,49 @@ function Menu() {
   };
   return (
     <div>
-      <WrapMenu>
-        <Logo onClick={NavigateToMain}>A- Diary</Logo>
+      <WrapMenu minWidth={minWidth}>
+        <Logo onClick={NavigateToMain}>A - Diary</Logo>
         <WrapButtons>
           <Button
-            width='5rem'
-            height='2.3rem'
+            width='8rem'
+            height='5rem'
             name='오늘의 일기'
-            color='grey'
-            margin='0rem 1rem 0rem 0rem'
-            border='2px solid grey'
+            color='rgba(69, 149, 255)'
+            // margin='0rem 1rem 0rem 0rem'
+            border='2px solid transparent'
             backgroundColor='transparent;'
-            hoverBackgroundColor='rgba(256,256,256,0.6)'
+            hoverBackgroundColor='rgba(69, 149, 255)'
+            hoverColor='white'
+            hoverBorder='2px solid rgba(69, 149, 255)'
+            fontSize='1rem'
             onClick={NavigateToWrite}
           />
           <Button
-            width='5rem'
-            height='2.3rem'
+            width='8rem'
+            height='5rem'
             name='마이 페이지'
-            color='grey'
-            margin='0rem 1rem 0rem 0rem'
-            border='2px solid grey'
+            color='rgba(69, 149, 255)'
+            // margin='0rem 1rem 0rem 0rem'
+            border='2px solid transparent'
             backgroundColor='transparent'
-            hoverBackgroundColor='rgba(256,256,256,0.6)'
+            hoverBackgroundColor='rgba(69, 149, 255)'
+            hoverColor='white'
+            hoverBorder='2px solid rgba(69, 149, 255)'
+            fontSize='1rem'
             onClick={NavigateToStatistics}
           />
           <Button
-            width='5rem'
-            height='2.3rem'
-            margin='0rem 0rem 1rem 0rem'
+            width='8rem'
+            height='5rem'
+            // margin='0rem 0rem 1rem 0rem'
             name='로그아웃'
             color='grey'
-            border='2px solid grey'
+            border='2px solid transparent'
             backgroundColor='transparent'
-            hoverBackgroundColor='rgba(256,256,256,0.6)'
+            hoverBackgroundColor='grey'
+            hoverBorder='2px solid grey'
+            hoverColor='white'
+            fontSize='1rem'
             onClick={NavigateToDefault}
           />
         </WrapButtons>
