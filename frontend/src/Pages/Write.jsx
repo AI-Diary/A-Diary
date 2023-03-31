@@ -12,7 +12,7 @@ import Rain from '../Images/rain_default.png';
 import Snow from '../Images/snow_default.png';
 import Wind from '../Images/wind_default.png';
 import Share from '../Images/share_default.png';
-import Instargram from '../Images/instargram_default.png';
+import Instargram from '../Images/instagram_default.png';
 import Twitter from '../Images/twitter_default.png';
 import Kakaotalk from '../Images/kakaotalk_default.png';
 import SunnyGrey from '../Images/sunny_grey.png';
@@ -21,7 +21,7 @@ import RainGrey from '../Images/rain_grey.png';
 import SnowGrey from '../Images/snow_grey.png';
 import WindGrey from '../Images/wind_grey.png';
 import ShareGrey from '../Images/share_grey.png';
-import InstargramGrey from '../Images/instargram_grey.png';
+import InstargramGrey from '../Images/instagram_grey.png';
 import TwitterGrey from '../Images/twitter_grey.png';
 import KakaotalkGrey from '../Images/kakaotalk_grey.png';
 
@@ -329,7 +329,15 @@ function Write() {
     dayOfWeek = week[new Date(date).getDay()];
   }
 
-  const onClickInsta = () => {};
+  const onClickInsta = () => {
+    console.log('insta');
+  };
+  const onClickTwitter = () => {
+    console.log('twitter');
+  };
+  const onClickKakao = () => {
+    console.log('kakao');
+  };
 
   return (
     <div>
@@ -434,14 +442,17 @@ function Write() {
                   <SNSButton
                     backgroundImage={Instargram}
                     backgroundChecked={InstargramGrey}
+                    onClick={onClickInsta}
                   />
                   <SNSButton
                     backgroundImage={Twitter}
                     backgroundChecked={TwitterGrey}
+                    onClick={onClickTwitter}
                   />
                   <SNSButton
                     backgroundImage={Kakaotalk}
                     backgroundChecked={KakaotalkGrey}
+                    onClick={onClickKakao}
                   />
                 </WrapSNS>
               )}
