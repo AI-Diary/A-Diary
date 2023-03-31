@@ -11,6 +11,10 @@ import Cloudy from '../Images/cloudy_default.png';
 import Rain from '../Images/rain_default.png';
 import Snow from '../Images/snow_default.png';
 import Wind from '../Images/wind_default.png';
+import Eraser from '../Images/eraser_default.png';
+import EraserGrey from '../Images/eraser_grey.png';
+import Draw from '../Images/draw_default.png';
+import DrawGrey from '../Images/draw_grey.png';
 import Share from '../Images/share_default.png';
 import Instargram from '../Images/instagram_default.png';
 import Twitter from '../Images/twitter_default.png';
@@ -26,9 +30,9 @@ import TwitterGrey from '../Images/twitter_grey.png';
 import KakaotalkGrey from '../Images/kakaotalk_grey.png';
 
 const Wrap = styled.div`
-  /* position: absolute; */
+  position: absolute;
   width: 100vw;
-  height: fit-content;
+  height: 165vh;
   min-width: 60rem;
   border: 0.1px solid transparent;
   /* padding-bottom: 4rem; */
@@ -45,7 +49,7 @@ const WrapDiary = styled.div`
   width: fit-content;
   height: fit-content;
   margin: 3rem auto 5rem auto;
-  padding: 3rem 5rem 5rem 5rem;
+  padding: 3rem 8rem 5rem 5rem;
   border-radius: 1.5rem;
   background-color: rgba(256, 256, 256, 0.8);
   box-shadow: 0.4rem 0.4rem 1rem rgba(120, 120, 120, 0.3);
@@ -78,7 +82,7 @@ const WrapWeather = styled.div`
   margin-top: -0.15rem;
 `;
 
-const WeatherLabel = styled.label`
+const RadioLabel = styled.label`
   border: none;
 
   [type='radio'] {
@@ -105,10 +109,10 @@ const Weather = styled.input`
   width: 1.8rem;
   height: 1.8rem;
   margin-left: 1rem;
-  border: 0;
+  border: none;
 `;
 
-const WeatherImage = styled.img``;
+const LabelImage = styled.img``;
 
 const WrapTitle = styled.div`
   width: 40rem;
@@ -118,6 +122,7 @@ const WrapTitle = styled.div`
   border: 1.8px solid grey;
   border-radius: 1.5rem 1.5rem 0rem 0rem;
 `;
+
 const WrapTitleContents = styled.div`
   /* border: 2px solid red; */
   width: fit-content;
@@ -125,6 +130,7 @@ const WrapTitleContents = styled.div`
   margin: 0.4rem auto 0rem auto;
   display: flex;
 `;
+
 const Title = styled.div`
   width: fit-content;
   height: fit-content;
@@ -137,54 +143,6 @@ const Title = styled.div`
   display: table-cell;
 `;
 
-const WrapShare = styled.div`
-  position: absolute;
-  width: fit-content;
-  height: fit-content;
-  margin: 22.3rem 0rem 0rem 0.7rem;
-  display: flex;
-`;
-const ShareButton = styled.div`
-  /* border: 2px solid black; */
-  display: inline-block right;
-  width: 1.8rem;
-  height: 1.8rem;
-  background-image: url(${Share});
-  &:hover {
-    background-image: url(${ShareGrey});
-  }
-  &:after {
-    background-image: url(${ShareGrey});
-  }
-`;
-
-const WrapSNS = styled.div`
-  width: 10rem;
-  height: 2.1rem;
-  display: flex;
-  visibility: ${(props) => props.visibility};
-  /* visibility: hidden; */
-  margin-top: -0.3rem;
-  margin-left: 0.3rem;
-  padding-top: 0.4rem;
-  background-image: url(${WordSpeech});
-  background-repeat: no-repeat;
-  background-size: 10rem 2.5rem;
-  /* border: 1px solid yellow; */
-`;
-
-const SNSButton = styled.div`
-  width: 1.8rem;
-  height: 1.8rem;
-  margin-left: 1.25rem;
-  background-size: 1.8rem;
-  background-image: url(${(props) => props.backgroundImage});
-  &:hover {
-    background-image: url(${(props) => props.backgroundChecked});
-  }
-  /* border: 1px solid orange; */
-`;
-
 const DrawDiary = styled.div`
   width: 40rem;
   height: 25rem;
@@ -192,6 +150,40 @@ const DrawDiary = styled.div`
   margin-bottom: -1.8px;
   /* border-radius: 1.5rem 1.5rem 0rem 0rem; */
   border: 1.8px solid grey;
+`;
+
+const WrapDrawTools = styled.div`
+  /* position: absolute; */
+  width: 4.7rem;
+  height: 14rem;
+  border: 1.8px solid grey;
+  border-radius: 0.5rem;
+  background-color: white;
+  padding: 0.7rem 0.5rem 0.7rem 0rem;
+  /* margin-left: 50rem; */
+  margin-top: -60.3rem;
+`;
+
+const Tool = styled.input`
+  width: 1.8rem;
+  height: 1.8rem;
+  /* margin-top: 0.5rem; */
+  border: none;
+`;
+
+const WrapRange = styled.div`
+  width: fit-content;
+  height: fit-content;
+  /* border: 1px solid grey; */
+  margin-top: 5rem;
+  margin-left: -3.8rem;
+  transform: rotate(-90deg);
+`;
+
+const PenWidthState = styled.div`
+  font-size: 0.8rem;
+  margin-top: 4.5rem;
+  margin-left: 0.8rem;
 `;
 
 const WriteDiary = styled.textarea`
@@ -220,6 +212,53 @@ const WriteDiary = styled.textarea`
   &:focus {
     outline: none;
   }
+`;
+
+const WrapShare = styled.div`
+  position: absolute;
+  width: fit-content;
+  height: fit-content;
+  margin: 22.3rem 0rem 0rem 0.7rem;
+  display: flex;
+`;
+const ShareButton = styled.div`
+  /* border: 2px solid black; */
+  display: inline-block right;
+  width: 1.8rem;
+  height: 1.8rem;
+  background-image: url(${Share});
+  &:hover {
+    background-image: url(${ShareGrey});
+  }
+  &:after {
+    background-image: url(${ShareGrey});
+  }
+`;
+
+const WrapSNS = styled.div`
+  width: 10rem;
+  height: 2.1rem;
+  display: flex;
+  visibility: ${(props) => props.visibility};
+  margin-top: -0.3rem;
+  margin-left: 0.3rem;
+  padding-top: 0.4rem;
+  background-image: url(${WordSpeech});
+  background-repeat: no-repeat;
+  background-size: 10rem 2.5rem;
+  /* border: 1px solid yellow; */
+`;
+
+const SNSButton = styled.div`
+  width: 1.8rem;
+  height: 1.8rem;
+  margin-left: 1.25rem;
+  background-size: 1.8rem;
+  background-image: url(${(props) => props.backgroundImage});
+  &:hover {
+    background-image: url(${(props) => props.backgroundChecked});
+  }
+  /* border: 1px solid orange; */
 `;
 
 const WrapKeywordButton = styled.div`
@@ -303,8 +342,20 @@ function Write() {
   const onChangeText = (e) => {
     setWrite(e.target.value);
   };
+  const onChangePenWidth = (e) => {
+    setPenWidth(e.target.value);
+    console.log(penWidth);
+  };
   const onClickWeather = (e) => {
     setWeather(e.target.value);
+  };
+  const onClickEraser = (e) => {
+    setMouseState(e.target.value);
+    // console.log(mouseState);
+  };
+  const onClickDraw = (e) => {
+    setMouseState(e.target.value);
+    // console.log(mouseState);
   };
 
   const onClickSave = () => {
@@ -349,7 +400,7 @@ function Write() {
             <DateForm>
               {year}년 {month}월 {day}일 {dayOfWeek}요일
               <WrapWeather>
-                <WeatherLabel
+                <RadioLabel
                   backgroundImage={Sunny}
                   backgroundChecked={SunnyGrey}
                 >
@@ -359,23 +410,20 @@ function Write() {
                     value='sun'
                     onClick={onClickWeather}
                   />
-                  <WeatherImage />
-                </WeatherLabel>
+                  <LabelImage />
+                </RadioLabel>
 
-                <WeatherLabel
-                  backgroundImage={Rain}
-                  backgroundChecked={RainGrey}
-                >
+                <RadioLabel backgroundImage={Rain} backgroundChecked={RainGrey}>
                   <Weather
                     type='radio'
                     name='weather'
                     value='rain'
                     onClick={onClickWeather}
                   />
-                  <WeatherImage />
-                </WeatherLabel>
+                  <LabelImage />
+                </RadioLabel>
 
-                <WeatherLabel
+                <RadioLabel
                   backgroundImage={Cloudy}
                   backgroundChecked={CloudyGrey}
                 >
@@ -385,34 +433,28 @@ function Write() {
                     value='cloudy'
                     onClick={onClickWeather}
                   />
-                  <WeatherImage />
-                </WeatherLabel>
+                  <LabelImage />
+                </RadioLabel>
 
-                <WeatherLabel
-                  backgroundImage={Wind}
-                  backgroundChecked={WindGrey}
-                >
+                <RadioLabel backgroundImage={Wind} backgroundChecked={WindGrey}>
                   <Weather
                     type='radio'
                     name='weather'
                     value='wind'
                     onClick={onClickWeather}
                   />
-                  <WeatherImage />
-                </WeatherLabel>
+                  <LabelImage />
+                </RadioLabel>
 
-                <WeatherLabel
-                  backgroundImage={Snow}
-                  backgroundChecked={SnowGrey}
-                >
+                <RadioLabel backgroundImage={Snow} backgroundChecked={SnowGrey}>
                   <Weather
                     type='radio'
                     name='weather'
                     value='snow'
                     onClick={onClickWeather}
                   />
-                  <WeatherImage />
-                </WeatherLabel>
+                  <LabelImage />
+                </RadioLabel>
               </WrapWeather>
             </DateForm>
           </WrapTop>
@@ -465,8 +507,9 @@ function Write() {
               onMouseLeave={finishDrawing}
             ></canvas>
           </DrawDiary>
-          {/* <Button width='3rem' height='2.5rem' name='지우개' /> */}
+
           <WriteDiary onChange={onChangeText} />
+          {/* <Button width='3rem' height='2.5rem' name='지우개' /> */}
 
           <WrapKeywordButton>
             <Button
@@ -476,12 +519,9 @@ function Write() {
               color='rgba(138, 80, 255, 0.6)'
               border='2px solid rgba(138, 80, 255, 0.6)'
               borderRadius='10rem'
-              // color='grey'
-              // border='2px solid grey'
               backgroundColor='white'
               hoverBackgroundColor='rgba(138, 80, 255, 0.6)'
               hoverColor='white'
-              // hoverBorder='2px solid white'
             />
             <Button
               width='7rem'
@@ -491,8 +531,6 @@ function Write() {
               color='rgba(138, 80, 255, 0.6)'
               border='2px solid rgba(138, 80, 255, 0.6)'
               borderRadius='10rem'
-              // color='grey'
-              // border='2px solid grey'
               backgroundColor='white'
               hoverBackgroundColor='rgba(138, 80, 255, 0.6)'
               hoverColor='white'
@@ -500,6 +538,37 @@ function Write() {
             />
           </WrapKeywordButton>
         </WrapDiary>
+        <WrapDrawTools>
+          <RadioLabel backgroundImage={Draw} backgroundChecked={DrawGrey}>
+            <Tool
+              type='radio'
+              name='tools'
+              value='draw'
+              onClick={onClickDraw}
+            />
+            <LabelImage />
+          </RadioLabel>
+          <RadioLabel backgroundImage={Eraser} backgroundChecked={EraserGrey}>
+            <Tool
+              type='radio'
+              name='tools'
+              value='eraser'
+              onClick={onClickEraser}
+            />
+            <LabelImage />
+          </RadioLabel>
+
+          <WrapRange>
+            <Input
+              type='range'
+              min='0.2'
+              max='2'
+              step='0.1'
+              onChange={onChangePenWidth}
+            />
+          </WrapRange>
+          <PenWidthState>{penWidth}</PenWidthState>
+        </WrapDrawTools>
       </Wrap>
     </div>
   );

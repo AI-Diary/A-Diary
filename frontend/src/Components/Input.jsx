@@ -15,6 +15,7 @@ const InputStyle = styled.input`
   font-size: ${(props) => props.fontSize};
   font-family: 'NanumGothic';
   color: ${(props) => props.color};
+  transform: rotate(${(props) => props.degree});
   &:focus {
     outline: none;
   }
@@ -33,6 +34,7 @@ export default function Input({
   type,
   fontSize,
   maxLength,
+  degree,
 }) {
   return (
     <div>
@@ -49,6 +51,7 @@ export default function Input({
         type={type}
         fontSize={fontSize}
         maxLength={maxLength}
+        degree={degree}
       />
     </div>
   );
