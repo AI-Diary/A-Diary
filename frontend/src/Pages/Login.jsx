@@ -73,7 +73,7 @@ function Login() {
   const onChangePw = (e) => {
     setPw(e.target.value);
   };
-  console.log('id : ', id, ' pw : ', pw);
+  // console.log('id : ', id, ' pw : ', pw);
 
   const onClickLogin = () => {
     if (!id) {
@@ -82,14 +82,13 @@ function Login() {
       alert('비밀번호를 입력해 주세요.');
     } else {
       // id, pw 담아서 서버 보내기
+      const data = { id: id, pw: pw };
       axios
-        .post(`http://127.0.0.1:5000/login`, {
-          id: id,
-          pw: pw,
-        })
+        .post(`http://127.0.0.1:5000/login`, data)
         .then((res) => {
           // 성공시
           // NavigateToMain();
+          console.log('data : ', data);
           console.log('성공했습니다!');
           console.log(res);
         })

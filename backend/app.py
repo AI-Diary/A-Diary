@@ -1,5 +1,8 @@
 from flask import Flask, render_template, request
+from flask_cors import CORS, cross_origin
+
 app = Flask(__name__)
+CORS(app)
 
 @app.route('/')
 def home():
@@ -7,9 +10,11 @@ def home():
 
 @app.route('/login', methods = ['POST'])
 def post():
-    id = request.form['id']
-    pw = request.form['pw']
-    msg = "id: %s, pw: %s" %id %pw
+    params = request.get_json()
+    id = params['id']
+    pw = params['pw']
+    msg = "id: %s, pw: %s" %(id, pw)
+    print(msg)
     return msg
 
 if __name__=='__main__':
