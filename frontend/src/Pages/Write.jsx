@@ -11,10 +11,6 @@ import Cloudy from '../Images/cloudy_default.png';
 import Rain from '../Images/rain_default.png';
 import Snow from '../Images/snow_default.png';
 import Wind from '../Images/wind_default.png';
-import Eraser from '../Images/eraser_default.png';
-import EraserGrey from '../Images/eraser_grey.png';
-import Draw from '../Images/draw_default.png';
-import DrawGrey from '../Images/draw_grey.png';
 import Share from '../Images/share_default.png';
 import Instargram from '../Images/instagram_default.png';
 import Twitter from '../Images/twitter_default.png';
@@ -28,6 +24,7 @@ import ShareGrey from '../Images/share_grey.png';
 import InstargramGrey from '../Images/instagram_grey.png';
 import TwitterGrey from '../Images/twitter_grey.png';
 import KakaotalkGrey from '../Images/kakaotalk_grey.png';
+import WriteModal from './WriteModal';
 
 const Wrap = styled.div`
   position: absolute;
@@ -152,40 +149,6 @@ const DrawDiary = styled.div`
   border: 1.8px solid grey;
 `;
 
-const WrapDrawTools = styled.div`
-  /* position: absolute; */
-  width: 4.7rem;
-  height: 14rem;
-  border: 1.8px solid grey;
-  border-radius: 0.5rem;
-  background-color: white;
-  padding: 0.7rem 0.5rem 0.7rem 0rem;
-  /* margin-left: 50rem; */
-  margin-top: -60.3rem;
-`;
-
-const Tool = styled.input`
-  width: 1.8rem;
-  height: 1.8rem;
-  /* margin-top: 0.5rem; */
-  border: none;
-`;
-
-const WrapRange = styled.div`
-  width: fit-content;
-  height: fit-content;
-  /* border: 1px solid grey; */
-  margin-top: 5rem;
-  margin-left: -3.8rem;
-  transform: rotate(-90deg);
-`;
-
-const PenWidthState = styled.div`
-  font-size: 0.8rem;
-  margin-top: 4.5rem;
-  margin-left: 0.8rem;
-`;
-
 const WriteDiary = styled.textarea`
   box-sizing: border-box;
   width: 40.2rem;
@@ -220,12 +183,14 @@ const WrapShare = styled.div`
   height: fit-content;
   margin: 22.3rem 0rem 0rem 0.7rem;
   display: flex;
+  z-index: 1;
 `;
 const ShareButton = styled.div`
   /* border: 2px solid black; */
   display: inline-block right;
   width: 1.8rem;
   height: 1.8rem;
+
   background-image: url(${Share});
   &:hover {
     background-image: url(${ShareGrey});
@@ -265,12 +230,12 @@ const WrapKeywordButton = styled.div`
   width: fit-content;
   height: fit-content;
   margin: 2rem auto 0rem auto;
+
   /* border: 2px solid black; */
 `;
 function Write() {
+  // Main에서 가져온 정보
   const { state } = useLocation();
-  const canvasRef = useRef(null);
-  const contextRef = useRef(null);
 
   // 날씨 저장
   const [weather, setWeather] = useState('');
@@ -281,20 +246,11 @@ function Write() {
   // 일기글 저장
   const [write, setWrite] = useState('');
 
-  // 펜 두께 초기 설정
-  const [penWidth, setPenWidth] = useState(1.5);
-
-  // 펜 색 초기 설정
-  const [penColor, setPenColor] = useState('black');
-
-  // 현재 마우스가 어떤 버튼을 눌렀는지
-  const [mouseState, setMouseState] = useState('draw');
-
-  // 공유 보이기 안보이기
+  // SNS 공유 창 보이기
   const [visibleShare, setVisibleShare] = useState(false);
 
-  const [ctx, setCtx] = useState();
-  const [isDrawing, setIsDrawing] = useState(false);
+  // WriteModal 보이기
+  const [visibleModal, setVisibleModal] = useState(false);
 
   const week = ['일', '월', '화', '수', '목', '금', '토'];
   let date = '';
@@ -303,63 +259,35 @@ function Write() {
   let day = '';
   let dayOfWeek = '';
 
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    canvas.width = 643;
-    canvas.height = 403;
-
-    const context = canvas.getContext('2d');
-    context.strokeStyle = penColor;
-    context.lineWidth = penWidth;
-    contextRef.current = context;
-
-    setCtx(contextRef.current);
-  }, []);
-
-  const startDrawing = () => {
-    setIsDrawing(true);
-  };
-
-  const finishDrawing = () => {
-    setIsDrawing(false);
-  };
-
-  const drawing = ({ nativeEvent }) => {
-    const { offsetX, offsetY } = nativeEvent;
-    if (ctx) {
-      if (!isDrawing) {
-        ctx.beginPath();
-        ctx.moveTo(offsetX, offsetY);
-      } else {
-        ctx.lineTo(offsetX, offsetY);
-        ctx.stroke();
-      }
-    }
-  };
-  const onChangeTitle = (e) => {
-    setTitle(e.target.value);
-  };
-  const onChangeText = (e) => {
-    setWrite(e.target.value);
-  };
-  const onChangePenWidth = (e) => {
-    setPenWidth(e.target.value);
-    console.log(penWidth);
-  };
+  // 날짜 저장
   const onClickWeather = (e) => {
     setWeather(e.target.value);
   };
-  const onClickEraser = (e) => {
-    setMouseState(e.target.value);
-    // console.log(mouseState);
-  };
-  const onClickDraw = (e) => {
-    setMouseState(e.target.value);
-    // console.log(mouseState);
+
+  // 제목 저장
+  const onChangeTitle = (e) => {
+    setTitle(e.target.value);
   };
 
+  // 일기글 저장
+  const onChangeText = (e) => {
+    setWrite(e.target.value);
+  };
+
+  // 서버로 값 보내기
   const onClickSave = () => {
     console.log('weather : ', weather, 'title : ', title, 'write : ', write);
+  };
+
+  // SNS 연동
+  const onClickInsta = () => {
+    console.log('insta');
+  };
+  const onClickTwitter = () => {
+    console.log('twitter');
+  };
+  const onClickKakao = () => {
+    console.log('kakao');
   };
 
   if (state === null) {
@@ -380,19 +308,10 @@ function Write() {
     dayOfWeek = week[new Date(date).getDay()];
   }
 
-  const onClickInsta = () => {
-    console.log('insta');
-  };
-  const onClickTwitter = () => {
-    console.log('twitter');
-  };
-  const onClickKakao = () => {
-    console.log('kakao');
-  };
-
   return (
     <div>
       <Wrap>
+        {visibleModal && <WriteModal />}
         <Menu minWidth='60rem' />
 
         <WrapDiary>
@@ -499,13 +418,6 @@ function Write() {
                 </WrapSNS>
               )}
             </WrapShare>
-            <canvas
-              ref={canvasRef}
-              onMouseDown={startDrawing}
-              onMouseUp={finishDrawing}
-              onMouseMove={drawing}
-              onMouseLeave={finishDrawing}
-            ></canvas>
           </DrawDiary>
 
           <WriteDiary onChange={onChangeText} />
@@ -522,6 +434,10 @@ function Write() {
               backgroundColor='white'
               hoverBackgroundColor='rgba(138, 80, 255, 0.6)'
               hoverColor='white'
+              onClick={() => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                setVisibleModal(true);
+              }}
             />
             <Button
               width='7rem'
@@ -538,37 +454,6 @@ function Write() {
             />
           </WrapKeywordButton>
         </WrapDiary>
-        <WrapDrawTools>
-          <RadioLabel backgroundImage={Draw} backgroundChecked={DrawGrey}>
-            <Tool
-              type='radio'
-              name='tools'
-              value='draw'
-              onClick={onClickDraw}
-            />
-            <LabelImage />
-          </RadioLabel>
-          <RadioLabel backgroundImage={Eraser} backgroundChecked={EraserGrey}>
-            <Tool
-              type='radio'
-              name='tools'
-              value='eraser'
-              onClick={onClickEraser}
-            />
-            <LabelImage />
-          </RadioLabel>
-
-          <WrapRange>
-            <Input
-              type='range'
-              min='0.2'
-              max='2'
-              step='0.1'
-              onChange={onChangePenWidth}
-            />
-          </WrapRange>
-          <PenWidthState>{penWidth}</PenWidthState>
-        </WrapDrawTools>
       </Wrap>
     </div>
   );
