@@ -14,7 +14,7 @@ mysql.init_app(app)
 
 @app.route('/')
 def main():
-    return render_template('../frontend/src/Pages/Default.jsx', error=None)
+    return render_template('Default.jsx', error=None)
 
 @app.route('/signin', methods = ['POST'])
 def signin():
