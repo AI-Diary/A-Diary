@@ -101,6 +101,12 @@ const WrapSaveDraw = styled.div`
   margin: 0rem auto 0rem auto;
 `;
 
+const KeywordBackground = styled.div`
+  width: 20rem;
+  height: 20rem;
+  background-color: 'red';
+`;
+
 function WriteModal() {
   const canvasRef = useRef(null);
   const contextRef = useRef(null);
@@ -177,7 +183,9 @@ function WriteModal() {
   return (
     <div>
       <Wrap>
-        <WrapKeyword></WrapKeyword>
+        <WrapKeyword>
+          <KeywordBackground />
+        </WrapKeyword>
         <WrapCanvas>
           <canvas
             ref={canvasRef}
