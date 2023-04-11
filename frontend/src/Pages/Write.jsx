@@ -29,7 +29,7 @@ import WriteModal from './WriteModal';
 const Wrap = styled.div`
   position: absolute;
   width: 100vw;
-  height: 165vh;
+  height: 80rem;
   min-width: 60rem;
   border: 0.1px solid transparent;
   /* padding-bottom: 4rem; */
@@ -131,7 +131,7 @@ const WrapTitleContents = styled.div`
 const Title = styled.div`
   width: fit-content;
   height: fit-content;
-  margin-top: 0.7rem;
+  margin-top: 0.75rem;
   /* border: 2px solid black; */
   font-size: 1.3rem;
   align-items: center;

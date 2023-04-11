@@ -10,26 +10,45 @@ import DrawGrey from '../Images/draw_grey.png';
 const Wrap = styled.div`
   position: absolute;
   width: 100vw;
-  height: 165vh;
+  height: 80rem;
   background-color: rgba(128, 128, 128, 0.4);
   z-index: 10;
 `;
 
-const WrapKeyword = styled.div`
-  width: 833px;
+const WrapKeywordBackground = styled.div`
+  width: 100vw;
   height: 10rem;
   background-color: white;
   border: 1.8px solid grey;
-  border-radius: 0rem 0rem 0.5rem 0.5rem;
+  border-radius: 0.5rem 0rem 0rem 0.5rem;
   margin: -1.8px auto 0rem auto;
 `;
+
+const WrapKeyword = styled.div`
+  width: 90%;
+  height: 3rem;
+  /* background-color: red; */
+  margin: 1rem auto;
+`;
+
+const KeywordLabel = styled.div`
+  width: fit-content;
+  height: fit-content;
+  /* background-color: red; */
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+`;
+
+const Keyword = styled.div``;
+
 const WrapCanvas = styled.div`
   width: fit-content;
   height: fit-content;
   border: 1.8px solid grey;
-  margin: 0.5rem auto 0rem auto;
+  margin: 6rem auto 0rem auto;
   background-color: white;
 `;
+
 const RadioLabel = styled.label`
   border: none;
 
@@ -98,13 +117,10 @@ const PenWidthState = styled.div`
 `;
 
 const WrapSaveDraw = styled.div`
-  margin: 0rem auto 0rem auto;
-`;
-
-const KeywordBackground = styled.div`
-  width: 20rem;
-  height: 20rem;
-  background-color: 'red';
+  /* margin: 0rem auto 0rem auto; */
+  width: 7rem;
+  height: 2.7rem;
+  margin: 1rem auto;
 `;
 
 function WriteModal() {
@@ -160,11 +176,11 @@ function WriteModal() {
           ctx.lineTo(offsetX, offsetY);
           ctx.stroke();
         } else if (mouseState === 'eraser') {
-          ctx.strokeStyle = 'transparent';
-          ctx.lineWidth = penWidth;
-          ctx.lineTo(offsetX, offsetY);
-          ctx.stroke();
-          // ctx.clearRect(offsetX, offsetY, penWidth * 2, penWidth * 2);
+          // ctx.strokeStyle = 'transparent';
+          // ctx.lineWidth = penWidth;
+          // ctx.lineTo(offsetX, offsetY);
+          // ctx.stroke();
+          ctx.clearRect(offsetX, offsetY, penWidth * 3, penWidth * 3);
         }
       }
     }
@@ -183,9 +199,6 @@ function WriteModal() {
   return (
     <div>
       <Wrap>
-        <WrapKeyword>
-          <KeywordBackground />
-        </WrapKeyword>
         <WrapCanvas>
           <canvas
             ref={canvasRef}
@@ -202,7 +215,7 @@ function WriteModal() {
               name='tools'
               value='draw'
               onClick={onClickTools}
-              checked='checked'
+              // checked='checked'
             />
             <LabelImage />
           </RadioLabel>
@@ -309,7 +322,7 @@ function WriteModal() {
               name='colors'
               value='black'
               onClick={onClickColor}
-              //   checked='checked'
+              // checked='checked'
             />
             <LabelImage />
           </RadioLabel>
