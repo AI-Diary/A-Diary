@@ -46,7 +46,7 @@ const WrapDiary = styled.div`
   width: fit-content;
   height: fit-content;
   margin: 3rem auto 5rem auto;
-  padding: 3rem 8rem 5rem 5rem;
+  padding: 3rem 8rem 5rem 8rem;
   border-radius: 1.5rem;
   background-color: rgba(256, 256, 256, 0.8);
   box-shadow: 0.4rem 0.4rem 1rem rgba(120, 120, 120, 0.3);
@@ -250,7 +250,7 @@ function Write() {
   const [visibleShare, setVisibleShare] = useState(false);
 
   // WriteModal 보이기
-  const [visibleModal, setVisibleModal] = useState(false);
+  const [visibleModal, setVisibleModal] = useState(state.show);
 
   const week = ['일', '월', '화', '수', '목', '금', '토'];
   let date = '';
@@ -301,7 +301,7 @@ function Write() {
     dayOfWeek = week[new Date(date).getDay()];
   } else {
     // 원하는 날짜 버튼 눌렀을 때
-    date = state.split('-');
+    date = state.date.split('-');
     year = date[0];
     month = date[1];
     day = date[2];
@@ -311,7 +311,7 @@ function Write() {
   return (
     <div>
       <Wrap>
-        {visibleModal && <WriteModal />}
+        {visibleModal ? <WriteModal show={true} /> : setVisibleModal(true)}
         <Menu minWidth='60rem' />
 
         <WrapDiary>

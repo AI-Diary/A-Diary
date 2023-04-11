@@ -15,10 +15,11 @@ def get_keyword():
     
     word=Word(text)
     Ko_word=word.list_word()
+    
     # papago=Papago(list1)
     # list1=papago.papa()
+
     En_word=word.Word_Translation(Ko_word)
-    
     re_En_word=word.Word_inspection(En_word)
     
     kp=Kobert_predict()

@@ -9,6 +9,7 @@ import DrawGrey from '../Images/draw_grey.png';
 
 const Wrap = styled.div`
   position: absolute;
+  /* display: flex; */
   width: 100vw;
   height: 80rem;
   background-color: rgba(128, 128, 128, 0.4);
@@ -16,11 +17,11 @@ const Wrap = styled.div`
 `;
 
 const WrapKeywordBackground = styled.div`
-  width: 100vw;
+  width: 52rem;
   height: 10rem;
   background-color: white;
   border: 1.8px solid grey;
-  border-radius: 0.5rem 0rem 0rem 0.5rem;
+  border-radius: 0rem 0rem 0.5rem 0.5rem;
   margin: -1.8px auto 0rem auto;
 `;
 
@@ -36,16 +37,40 @@ const KeywordLabel = styled.div`
   height: fit-content;
   /* background-color: red; */
   margin-bottom: 0.5rem;
-  font-weight: bold;
+  font-weight: 700;
 `;
 
-const Keyword = styled.div``;
+const Keyword = styled.div`
+  width: fit-content;
+  height: 1.5rem;
+  display: flex;
+  overflow-x: auto;
+`;
+
+const GetPictures = styled.div`
+  margin-right: 0.8rem;
+  justify-content: center;
+  /* border: 1px solid black; */
+`;
+
+const Cancel = styled.div`
+  position: absolute;
+  width: 2rem;
+  height: 2rem;
+  font-size: 2rem;
+  background-color: transparent;
+  float: right;
+  /* margin-left: calc(15% + 900px); */
+  /* margin-top: -33rem; */
+  top: 10.1rem;
+  right: calc((100vw - 57.3rem) / 2);
+`;
 
 const WrapCanvas = styled.div`
   width: fit-content;
   height: fit-content;
   border: 1.8px solid grey;
-  margin: 6rem auto 0rem auto;
+  margin: 0.5rem auto 0rem auto;
   background-color: white;
 `;
 
@@ -123,12 +148,12 @@ const WrapSaveDraw = styled.div`
   margin: 1rem auto;
 `;
 
-function WriteModal() {
+function WriteModal({ show }) {
   const canvasRef = useRef(null);
   const contextRef = useRef(null);
 
   // 펜 두께 초기 설정
-  const [penWidth, setPenWidth] = useState(1.5);
+  const [penWidth, setPenWidth] = useState(1);
 
   // 펜 색 초기 설정
   const [penColor, setPenColor] = useState('black');
@@ -137,7 +162,7 @@ function WriteModal() {
   const [mouseState, setMouseState] = useState('draw');
 
   // WriteModal 없애기
-  const [visibleModal, setVisibleModal] = useState(true);
+  const [visibleModal, setVisibleModal] = useState(show);
 
   const [ctx, setCtx] = useState();
   const [isDrawing, setIsDrawing] = useState(false);
@@ -176,11 +201,7 @@ function WriteModal() {
           ctx.lineTo(offsetX, offsetY);
           ctx.stroke();
         } else if (mouseState === 'eraser') {
-          // ctx.strokeStyle = 'transparent';
-          // ctx.lineWidth = penWidth;
-          // ctx.lineTo(offsetX, offsetY);
-          // ctx.stroke();
-          ctx.clearRect(offsetX, offsetY, penWidth * 3, penWidth * 3);
+          ctx.clearRect(offsetX, offsetY, penWidth * 3.5, penWidth * 3.5);
         }
       }
     }
@@ -196,9 +217,38 @@ function WriteModal() {
     setPenColor(e.target.value);
     console.log(penColor);
   };
+  const onClickCancel = (e) => {
+    setVisibleModal(false);
+  };
   return (
     <div>
       <Wrap>
+        <Cancel onClick={onClickCancel}>x</Cancel>
+        <WrapKeywordBackground>
+          <WrapKeyword>
+            <KeywordLabel>배경</KeywordLabel>
+            <Keyword>
+              집 -<GetPictures>거실1</GetPictures>
+              <GetPictures>거실2</GetPictures>
+              <GetPictures>방1</GetPictures>
+              <GetPictures>방2</GetPictures>
+              <GetPictures>방3</GetPictures>
+              <GetPictures>부엌1</GetPictures>
+              <GetPictures>부엌2</GetPictures>
+              <GetPictures>부엌3</GetPictures>
+              <GetPictures>마당</GetPictures>
+            </Keyword>
+          </WrapKeyword>
+          <WrapKeyword>
+            <KeywordLabel>키워드</KeywordLabel>
+            <Keyword>
+              <GetPictures>쿠키</GetPictures>
+              <GetPictures>브라우니</GetPictures>
+              <GetPictures>바게트</GetPictures>
+              <GetPictures>수박</GetPictures>
+            </Keyword>
+          </WrapKeyword>
+        </WrapKeywordBackground>
         <WrapCanvas>
           <canvas
             ref={canvasRef}
@@ -208,6 +258,7 @@ function WriteModal() {
             onMouseLeave={finishDrawing}
           ></canvas>
         </WrapCanvas>
+
         <WrapDrawTools>
           <RadioLabel backgroundImage={Draw} backgroundChecked={DrawGrey}>
             <Content
@@ -233,10 +284,10 @@ function WriteModal() {
             <Input
               width='10rem'
               type='range'
-              min='0'
-              max='10'
+              min='1'
+              max='50'
               step='1'
-              onClick={onChangePenWidth}
+              onChange={onChangePenWidth}
             />
           </WrapRange>
           <PenWidthState>{penWidth}</PenWidthState>
@@ -342,11 +393,11 @@ function WriteModal() {
             width='7rem'
             height='2.7rem'
             name='그림 저장'
-            color='rgba(138, 80, 255)'
-            border='2px solid rgba(138, 80, 255, 0.6)'
+            color='rgba(157, 108, 255)'
+            border='2px solid rgba(157, 108, 255)'
             borderRadius='10rem'
             backgroundColor='white'
-            hoverBackgroundColor='rgba(138, 80, 255, 0.6)'
+            hoverBackgroundColor='rgba(157, 108, 255)'
             hoverColor='white'
           />
         </WrapSaveDraw>
