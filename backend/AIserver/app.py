@@ -13,18 +13,25 @@ def get_keyword():
     # list1=okt.nouns(text)
     
     kp=Kobert_predict()
+    # 감정분석
     emotion=kp.predict(text)
     # render_template('Write.jsx',emotion=emotion[-1])
     
     word=Word(text)
+    # 한글 쪼개는거
     Ko_word=word.list_word()
     # papago=Papago(list1)
     # list1=papago.papa()
     En_word=word.Word_Translation(Ko_word)
     
     re_En_word=word.Word_inspection(En_word)
+
+    print("Ko_word : ",Ko_word)
+    print("re_En_word : ",re_En_word)
+
     
-    return render_template('Write.jsx',keyword=(str(Ko_word)),emotion=emotion[-1])
+    # return render_template('Write.jsx',keyword=(str(Ko_word)),emotion=emotion[-1])
+    return True
 
 @app.route('/drawpic')
 def get_drawpic():
