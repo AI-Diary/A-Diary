@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, session, redirect, url_for
 from WordControl.Word import Word
 from WordControl.papago import Papago
+from Kobert.Kobert import Kobert_predict
 
 app = Flask(__name__)
 
@@ -13,12 +14,22 @@ def get_keyword():
     # list1=okt.nouns(text)
     
     word=Word(text)
-    list1=word.list_word()
+    Ko_word=word.list_word()
     # papago=Papago(list1)
     # list1=papago.papa()
-    list1=word.Word_Translation(list1)
-    return str(list1)
+    En_word=word.Word_Translation(Ko_word)
+    
+    re_En_word=word.Word_inspection(En_word)
+    
+    kp=Kobert_predict()
+    kp.predict(text)
+    
+    return str(Ko_word)
 
+@app.route('/drawpic')
+def get_drawpic():
+
+    return
     
     
     

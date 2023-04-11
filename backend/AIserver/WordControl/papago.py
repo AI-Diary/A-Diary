@@ -4,6 +4,7 @@ import urllib.request
 import json
 
 
+
      
 class Papago:
 
