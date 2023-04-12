@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
+import axios from 'axios';
 import Menu from '../Components/Menu';
 import Button from '../Components/Button';
 import Input from '../Components/Input';
@@ -12,7 +13,7 @@ import Rain from '../Images/rain_default.png';
 import Snow from '../Images/snow_default.png';
 import Wind from '../Images/wind_default.png';
 import Share from '../Images/share_default.png';
-import Instargram from '../Images/instargram_default.png';
+import Instargram from '../Images/instagram_default.png';
 import Twitter from '../Images/twitter_default.png';
 import Kakaotalk from '../Images/kakaotalk_default.png';
 import SunnyGrey from '../Images/sunny_grey.png';
@@ -21,14 +22,15 @@ import RainGrey from '../Images/rain_grey.png';
 import SnowGrey from '../Images/snow_grey.png';
 import WindGrey from '../Images/wind_grey.png';
 import ShareGrey from '../Images/share_grey.png';
-import InstargramGrey from '../Images/instargram_grey.png';
+import InstargramGrey from '../Images/instagram_grey.png';
 import TwitterGrey from '../Images/twitter_grey.png';
 import KakaotalkGrey from '../Images/kakaotalk_grey.png';
+import WriteModal from './WriteModal';
 
 const Wrap = styled.div`
-  /* position: absolute; */
+  position: absolute;
   width: 100vw;
-  height: fit-content;
+  height: 80rem;
   min-width: 60rem;
   border: 0.1px solid transparent;
   /* padding-bottom: 4rem; */
@@ -45,7 +47,7 @@ const WrapDiary = styled.div`
   width: fit-content;
   height: fit-content;
   margin: 3rem auto 5rem auto;
-  padding: 3rem 5rem 5rem 5rem;
+  padding: 3rem 8rem 5rem 8rem;
   border-radius: 1.5rem;
   background-color: rgba(256, 256, 256, 0.8);
   box-shadow: 0.4rem 0.4rem 1rem rgba(120, 120, 120, 0.3);
@@ -78,7 +80,7 @@ const WrapWeather = styled.div`
   margin-top: -0.15rem;
 `;
 
-const WeatherLabel = styled.label`
+const RadioLabel = styled.label`
   border: none;
 
   [type='radio'] {
@@ -105,10 +107,10 @@ const Weather = styled.input`
   width: 1.8rem;
   height: 1.8rem;
   margin-left: 1rem;
-  border: 0;
+  border: none;
 `;
 
-const WeatherImage = styled.img``;
+const LabelImage = styled.img``;
 
 const WrapTitle = styled.div`
   width: 40rem;
@@ -118,6 +120,7 @@ const WrapTitle = styled.div`
   border: 1.8px solid grey;
   border-radius: 1.5rem 1.5rem 0rem 0rem;
 `;
+
 const WrapTitleContents = styled.div`
   /* border: 2px solid red; */
   width: fit-content;
@@ -125,64 +128,17 @@ const WrapTitleContents = styled.div`
   margin: 0.4rem auto 0rem auto;
   display: flex;
 `;
+
 const Title = styled.div`
   width: fit-content;
   height: fit-content;
-  margin-top: 0.7rem;
+  margin-top: 0.75rem;
   /* border: 2px solid black; */
   font-size: 1.3rem;
   align-items: center;
   justify-content: center;
   vertical-align: middle;
   display: table-cell;
-`;
-
-const WrapShare = styled.div`
-  position: absolute;
-  width: fit-content;
-  height: fit-content;
-  margin: 22.3rem 0rem 0rem 0.7rem;
-  display: flex;
-`;
-const ShareButton = styled.div`
-  /* border: 2px solid black; */
-  display: inline-block right;
-  width: 1.8rem;
-  height: 1.8rem;
-  background-image: url(${Share});
-  &:hover {
-    background-image: url(${ShareGrey});
-  }
-  &:after {
-    background-image: url(${ShareGrey});
-  }
-`;
-
-const WrapSNS = styled.div`
-  width: 10rem;
-  height: 2.1rem;
-  display: flex;
-  visibility: ${(props) => props.visibility};
-  /* visibility: hidden; */
-  margin-top: -0.3rem;
-  margin-left: 0.3rem;
-  padding-top: 0.4rem;
-  background-image: url(${WordSpeech});
-  background-repeat: no-repeat;
-  background-size: 10rem 2.5rem;
-  /* border: 1px solid yellow; */
-`;
-
-const SNSButton = styled.div`
-  width: 1.8rem;
-  height: 1.8rem;
-  margin-left: 1.25rem;
-  background-size: 1.8rem;
-  background-image: url(${(props) => props.backgroundImage});
-  &:hover {
-    background-image: url(${(props) => props.backgroundChecked});
-  }
-  /* border: 1px solid orange; */
 `;
 
 const DrawDiary = styled.div`
@@ -222,16 +178,65 @@ const WriteDiary = styled.textarea`
   }
 `;
 
+const WrapShare = styled.div`
+  position: absolute;
+  width: fit-content;
+  height: fit-content;
+  margin: 22.3rem 0rem 0rem 0.7rem;
+  display: flex;
+  z-index: 1;
+`;
+const ShareButton = styled.div`
+  /* border: 2px solid black; */
+  display: inline-block right;
+  width: 1.8rem;
+  height: 1.8rem;
+
+  background-image: url(${Share});
+  &:hover {
+    background-image: url(${ShareGrey});
+  }
+  &:after {
+    background-image: url(${ShareGrey});
+  }
+`;
+
+const WrapSNS = styled.div`
+  width: 10rem;
+  height: 2.1rem;
+  display: flex;
+  visibility: ${(props) => props.visibility};
+  margin-top: -0.3rem;
+  margin-left: 0.3rem;
+  padding-top: 0.4rem;
+  background-image: url(${WordSpeech});
+  background-repeat: no-repeat;
+  background-size: 10rem 2.5rem;
+  /* border: 1px solid yellow; */
+`;
+
+const SNSButton = styled.div`
+  width: 1.8rem;
+  height: 1.8rem;
+  margin-left: 1.25rem;
+  background-size: 1.8rem;
+  background-image: url(${(props) => props.backgroundImage});
+  &:hover {
+    background-image: url(${(props) => props.backgroundChecked});
+  }
+  /* border: 1px solid orange; */
+`;
+
 const WrapKeywordButton = styled.div`
   width: fit-content;
   height: fit-content;
   margin: 2rem auto 0rem auto;
+
   /* border: 2px solid black; */
 `;
 function Write() {
+  // Main에서 가져온 정보
   const { state } = useLocation();
-  const canvasRef = useRef(null);
-  const contextRef = useRef(null);
 
   // 날씨 저장
   const [weather, setWeather] = useState('');
@@ -242,20 +247,11 @@ function Write() {
   // 일기글 저장
   const [write, setWrite] = useState('');
 
-  // 펜 두께 초기 설정
-  const [penWidth, setPenWidth] = useState(1.5);
-
-  // 펜 색 초기 설정
-  const [penColor, setPenColor] = useState('black');
-
-  // 현재 마우스가 어떤 버튼을 눌렀는지
-  const [mouseState, setMouseState] = useState('draw');
-
-  // 공유 보이기 안보이기
+  // SNS 공유 창 보이기
   const [visibleShare, setVisibleShare] = useState(false);
 
-  const [ctx, setCtx] = useState();
-  const [isDrawing, setIsDrawing] = useState(false);
+  // WriteModal 보이기
+  const [visibleModal, setVisibleModal] = useState(false);
 
   const week = ['일', '월', '화', '수', '목', '금', '토'];
   let date = '';
@@ -264,51 +260,45 @@ function Write() {
   let day = '';
   let dayOfWeek = '';
 
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    canvas.width = 643;
-    canvas.height = 403;
-
-    const context = canvas.getContext('2d');
-    context.strokeStyle = penColor;
-    context.lineWidth = penWidth;
-    contextRef.current = context;
-
-    setCtx(contextRef.current);
-  }, []);
-
-  const startDrawing = () => {
-    setIsDrawing(true);
-  };
-
-  const finishDrawing = () => {
-    setIsDrawing(false);
-  };
-
-  const drawing = ({ nativeEvent }) => {
-    const { offsetX, offsetY } = nativeEvent;
-    if (ctx) {
-      if (!isDrawing) {
-        ctx.beginPath();
-        ctx.moveTo(offsetX, offsetY);
-      } else {
-        ctx.lineTo(offsetX, offsetY);
-        ctx.stroke();
-      }
-    }
-  };
-  const onChangeTitle = (e) => {
-    setTitle(e.target.value);
-  };
-  const onChangeText = (e) => {
-    setWrite(e.target.value);
-  };
+  // 날짜 저장
   const onClickWeather = (e) => {
     setWeather(e.target.value);
   };
 
+  // 제목 저장
+  const onChangeTitle = (e) => {
+    setTitle(e.target.value);
+  };
+
+  // 일기글 저장
+  const onChangeText = (e) => {
+    setWrite(e.target.value);
+  };
+
+  // 서버로 값 보내기
   const onClickSave = () => {
     console.log('weather : ', weather, 'title : ', title, 'write : ', write);
+  };
+
+  // SNS 연동
+  const onClickInsta = () => {
+    console.log('insta');
+  };
+  const onClickTwitter = () => {
+    console.log('twitter');
+  };
+  const onClickKakao = () => {
+    console.log('kakao');
+  };
+  const onClickKeyword = () => {
+    axios
+      .post(`http://127.0.0.1:5001/keyword`, { text: write })
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   if (state === null) {
@@ -322,18 +312,17 @@ function Write() {
     dayOfWeek = week[new Date(date).getDay()];
   } else {
     // 원하는 날짜 버튼 눌렀을 때
-    date = state.split('-');
+    date = state.date.split('-');
     year = date[0];
     month = date[1];
     day = date[2];
     dayOfWeek = week[new Date(date).getDay()];
   }
 
-  const onClickInsta = () => {};
-
   return (
     <div>
       <Wrap>
+        {visibleModal ? <WriteModal /> : onClickSave}
         <Menu minWidth='60rem' />
 
         <WrapDiary>
@@ -341,7 +330,7 @@ function Write() {
             <DateForm>
               {year}년 {month}월 {day}일 {dayOfWeek}요일
               <WrapWeather>
-                <WeatherLabel
+                <RadioLabel
                   backgroundImage={Sunny}
                   backgroundChecked={SunnyGrey}
                 >
@@ -351,23 +340,20 @@ function Write() {
                     value='sun'
                     onClick={onClickWeather}
                   />
-                  <WeatherImage />
-                </WeatherLabel>
+                  <LabelImage />
+                </RadioLabel>
 
-                <WeatherLabel
-                  backgroundImage={Rain}
-                  backgroundChecked={RainGrey}
-                >
+                <RadioLabel backgroundImage={Rain} backgroundChecked={RainGrey}>
                   <Weather
                     type='radio'
                     name='weather'
                     value='rain'
                     onClick={onClickWeather}
                   />
-                  <WeatherImage />
-                </WeatherLabel>
+                  <LabelImage />
+                </RadioLabel>
 
-                <WeatherLabel
+                <RadioLabel
                   backgroundImage={Cloudy}
                   backgroundChecked={CloudyGrey}
                 >
@@ -377,34 +363,28 @@ function Write() {
                     value='cloudy'
                     onClick={onClickWeather}
                   />
-                  <WeatherImage />
-                </WeatherLabel>
+                  <LabelImage />
+                </RadioLabel>
 
-                <WeatherLabel
-                  backgroundImage={Wind}
-                  backgroundChecked={WindGrey}
-                >
+                <RadioLabel backgroundImage={Wind} backgroundChecked={WindGrey}>
                   <Weather
                     type='radio'
                     name='weather'
                     value='wind'
                     onClick={onClickWeather}
                   />
-                  <WeatherImage />
-                </WeatherLabel>
+                  <LabelImage />
+                </RadioLabel>
 
-                <WeatherLabel
-                  backgroundImage={Snow}
-                  backgroundChecked={SnowGrey}
-                >
+                <RadioLabel backgroundImage={Snow} backgroundChecked={SnowGrey}>
                   <Weather
                     type='radio'
                     name='weather'
                     value='snow'
                     onClick={onClickWeather}
                   />
-                  <WeatherImage />
-                </WeatherLabel>
+                  <LabelImage />
+                </RadioLabel>
               </WrapWeather>
             </DateForm>
           </WrapTop>
@@ -434,28 +414,25 @@ function Write() {
                   <SNSButton
                     backgroundImage={Instargram}
                     backgroundChecked={InstargramGrey}
+                    onClick={onClickInsta}
                   />
                   <SNSButton
                     backgroundImage={Twitter}
                     backgroundChecked={TwitterGrey}
+                    onClick={onClickTwitter}
                   />
                   <SNSButton
                     backgroundImage={Kakaotalk}
                     backgroundChecked={KakaotalkGrey}
+                    onClick={onClickKakao}
                   />
                 </WrapSNS>
               )}
             </WrapShare>
-            <canvas
-              ref={canvasRef}
-              onMouseDown={startDrawing}
-              onMouseUp={finishDrawing}
-              onMouseMove={drawing}
-              onMouseLeave={finishDrawing}
-            ></canvas>
           </DrawDiary>
-          {/* <Button width='3rem' height='2.5rem' name='지우개' /> */}
+
           <WriteDiary onChange={onChangeText} />
+          {/* <Button width='3rem' height='2.5rem' name='지우개' /> */}
 
           <WrapKeywordButton>
             <Button
@@ -465,12 +442,14 @@ function Write() {
               color='rgba(138, 80, 255, 0.6)'
               border='2px solid rgba(138, 80, 255, 0.6)'
               borderRadius='10rem'
-              // color='grey'
-              // border='2px solid grey'
               backgroundColor='white'
               hoverBackgroundColor='rgba(138, 80, 255, 0.6)'
               hoverColor='white'
-              // hoverBorder='2px solid white'
+              onClick={onClickKeyword}
+              // onClick={() => {
+              //   window.scrollTo({ top: 0, behavior: 'smooth' });
+              //   setVisibleModal(true);
+              // }}
             />
             <Button
               width='7rem'
@@ -480,8 +459,6 @@ function Write() {
               color='rgba(138, 80, 255, 0.6)'
               border='2px solid rgba(138, 80, 255, 0.6)'
               borderRadius='10rem'
-              // color='grey'
-              // border='2px solid grey'
               backgroundColor='white'
               hoverBackgroundColor='rgba(138, 80, 255, 0.6)'
               hoverColor='white'

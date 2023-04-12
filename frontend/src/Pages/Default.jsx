@@ -54,7 +54,8 @@ function Default() {
             border='2px solid white'
             borderRadius='10rem'
             backgroundColor='transparent'
-            hoverBackgroundColor='rgba(256, 256, 256, 0.2)'
+            hoverColor='rgba( 118, 132, 247)'
+            hoverBackgroundColor='white'
             onClick={NavigateToLogin}
           />
           <Button
@@ -66,7 +67,8 @@ function Default() {
             border='2px solid white'
             borderRadius='10rem'
             backgroundColor='transparent'
-            hoverBackgroundColor='rgba(256, 256, 256, 0.2)'
+            hoverColor='rgba( 118, 132, 247)'
+            hoverBackgroundColor='white'
             onClick={NavigateToSignin}
           />
         </WrapButtons>

@@ -140,9 +140,23 @@ function Signin() {
     } else if (!onCheckEmailReg()) {
       alert('이메일을 확인해 주세요');
     } else {
-      alert('회원가입에 성공했습니다!');
-      navigate(`/Main`);
-      // navigate('/Login');
+      axios
+        .post(`http://127.0.0.1:5000/signin`, {
+          username: name,
+          id: id,
+          pw: pw1,
+          email: email,
+        })
+        .then((res) => {
+          console.log(res);
+          alert('회원가입에 성공했습니다.');
+          // navigate(`/Main`);
+          navigate('/Login');
+        })
+        .catch((err) => {
+          console.log(err);
+          alert('회원가입에 실패했습니다.');
+        });
     }
   };
   return (
@@ -176,13 +190,13 @@ function Signin() {
           <Button
             width='16.2rem'
             height='2.8rem'
-            color='grey'
+            color='rgba(108, 132, 247)'
             name='아이디 중복 확인'
             background='white'
             hoverBackgroundColor='rgba(108, 132, 247)'
             hoverColor='white'
             hoverBorder='2px solid rgba(108, 132, 247)'
-            border='2px solid grey'
+            border='2px solid rgba(108, 132, 247)'
             borderRadius='10rem'
             // margin='0.5rem 2.5rem 0rem'
             margin='0.5rem 0rem 0rem 0rem'
@@ -235,8 +249,8 @@ function Signin() {
             width='16.2rem'
             height='2.8rem'
             margin='2rem 0rem 1.5rem 0rem'
-            color='grey'
-            border='2px solid grey'
+            color='rgba(153, 111, 247)'
+            border='2px solid rgba(153, 111, 247)'
             borderRadius='10rem'
             backgroundColor='white'
             hoverBackgroundColor='rgba(153, 111, 247)'

@@ -133,13 +133,13 @@ function Login() {
             height='2.9rem'
             margin='1.5rem 0rem 0rem 0rem'
             name='로그인'
-            border='2px solid grey'
+            border='2px solid rgba(115, 133, 255)'
             borderRadius='10rem'
             background='white'
             hoverBackgroundColor='rgba(115, 133, 255)'
             hoverBorder='2px solid rgba(115, 133, 255)'
             hoverColor='white'
-            color='grey'
+            color='rgba(115, 133, 255)'
             onClick={onClickLogin}
           />
           <WrapSignin onClick={NavigateToSignin}>
