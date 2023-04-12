@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
+import axios from 'axios';
 import Menu from '../Components/Menu';
 import Button from '../Components/Button';
 import Input from '../Components/Input';
@@ -250,7 +251,7 @@ function Write() {
   const [visibleShare, setVisibleShare] = useState(false);
 
   // WriteModal 보이기
-  const [visibleModal, setVisibleModal] = useState(state.show);
+  const [visibleModal, setVisibleModal] = useState(false);
 
   const week = ['일', '월', '화', '수', '목', '금', '토'];
   let date = '';
@@ -289,6 +290,16 @@ function Write() {
   const onClickKakao = () => {
     console.log('kakao');
   };
+  const onClickKeyword = () => {
+    axios
+      .post(`http://127.0.0.1:5001/keyword`, { text: write })
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   if (state === null) {
     // 오늘의 일기 작성 버튼 눌렀을 때
@@ -311,7 +322,7 @@ function Write() {
   return (
     <div>
       <Wrap>
-        {visibleModal ? <WriteModal show={true} /> : setVisibleModal(true)}
+        {visibleModal ? <WriteModal /> : onClickSave}
         <Menu minWidth='60rem' />
 
         <WrapDiary>
@@ -434,10 +445,11 @@ function Write() {
               backgroundColor='white'
               hoverBackgroundColor='rgba(138, 80, 255, 0.6)'
               hoverColor='white'
-              onClick={() => {
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-                setVisibleModal(true);
-              }}
+              onClick={onClickKeyword}
+              // onClick={() => {
+              //   window.scrollTo({ top: 0, behavior: 'smooth' });
+              //   setVisibleModal(true);
+              // }}
             />
             <Button
               width='7rem'

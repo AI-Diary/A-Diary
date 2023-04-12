@@ -148,7 +148,7 @@ function Main() {
   // 선택한 날짜로 글쓰기 페이지 이동
   const NavigateToWrite = (date) => {
     const show = false;
-    navigate(`/Write`, { state: { date, show } });
+    navigate(`/Write`, { state: { date } });
   };
 
   return (

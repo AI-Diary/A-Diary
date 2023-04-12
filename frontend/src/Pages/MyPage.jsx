@@ -63,6 +63,7 @@ const WrapDiary = styled.div`
   /* border: 0.1px solid transparent; */
   border-radius: 1rem;
   background-color: rgba(256, 256, 256, 0.7);
+  box-shadow: 0.4rem 0.4rem 1rem rgba(120, 120, 120, 0.3);
 `;
 const DiaryImage = styled.img`
   width: 20rem;

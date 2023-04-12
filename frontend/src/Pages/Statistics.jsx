@@ -119,6 +119,7 @@ const WrapChart = styled.div`
   border-radius: 3rem;
   margin: 1rem auto;
   padding: 2.3rem 2rem 2rem 2rem;
+  box-shadow: 0.4rem 0.4rem 1rem rgba(120, 120, 120, 0.3);
 `;
 
 function Statics() {

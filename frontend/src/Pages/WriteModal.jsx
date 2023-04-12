@@ -148,7 +148,7 @@ const WrapSaveDraw = styled.div`
   margin: 1rem auto;
 `;
 
-function WriteModal({ show }) {
+function WriteModal() {
   const canvasRef = useRef(null);
   const contextRef = useRef(null);
 
@@ -162,7 +162,7 @@ function WriteModal({ show }) {
   const [mouseState, setMouseState] = useState('draw');
 
   // WriteModal 없애기
-  const [visibleModal, setVisibleModal] = useState(show);
+  const [visibleModal, setVisibleModal] = useState(true);
 
   const [ctx, setCtx] = useState();
   const [isDrawing, setIsDrawing] = useState(false);
