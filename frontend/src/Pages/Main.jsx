@@ -5,7 +5,11 @@ import moment from 'moment';
 // import 'react-calendar/dist/Calendar.css';
 import styled from 'styled-components';
 import Menu from '../Components/Menu';
+<<<<<<< Updated upstream
 import Button from '../Components/Button';
+=======
+// import Button from '../Components/Button';
+>>>>>>> Stashed changes
 
 // import Input from '../Components/Input';
 
@@ -147,7 +151,10 @@ function Main() {
 
   // 선택한 날짜로 글쓰기 페이지 이동
   const NavigateToWrite = (date) => {
+<<<<<<< Updated upstream
     const show = false;
+=======
+>>>>>>> Stashed changes
     navigate(`/Write`, { state: { date } });
   };
 
@@ -163,7 +170,10 @@ function Main() {
               value={value}
               calendarType='US'
               formatDay={(locale, date) => moment(date).format('DD')}
+<<<<<<< Updated upstream
               // onClickDay={NavigateToWrite}
+=======
+>>>>>>> Stashed changes
               onClickDay={(value, e) => {
                 const momentDate = moment(value).format().slice(0, 10);
                 NavigateToWrite(momentDate);

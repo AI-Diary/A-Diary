@@ -1,4 +1,8 @@
+<<<<<<< Updated upstream
 import React, { useCallback, useState, PureComponent } from 'react';
+=======
+import React from 'react';
+>>>>>>> Stashed changes
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import Menu from '../Components/Menu';
@@ -13,12 +17,20 @@ import {
   // Bar Chart 사용할 때 필요
   BarChart,
   Bar,
+<<<<<<< Updated upstream
   Cell,
+=======
+  // Cell,
+>>>>>>> Stashed changes
   XAxis,
   YAxis,
   CartesianGrid,
   Tooltip,
+<<<<<<< Updated upstream
   Legend,
+=======
+  // Legend,
+>>>>>>> Stashed changes
   // 모든 차트를 사용할 때 필요
   ResponsiveContainer,
 } from 'recharts';

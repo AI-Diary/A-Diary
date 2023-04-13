@@ -62,6 +62,7 @@ function Login() {
   };
 
   // 메인 페이지 이동
+<<<<<<< Updated upstream
   const NavigateToMain = () => {
     navigate('/Main');
   };
@@ -73,6 +74,19 @@ function Login() {
   const onChangePw = (e) => {
     setPw(e.target.value);
   };
+=======
+  // const NavigateToMain = () => {
+  //   navigate('/Main');
+  // };
+
+  const onChangeId = (e) => {
+    setId(e.target.value);
+  };
+
+  const onChangePw = (e) => {
+    setPw(e.target.value);
+  };
+>>>>>>> Stashed changes
   // console.log('id : ', id, ' pw : ', pw);
 
   const onClickLogin = () => {

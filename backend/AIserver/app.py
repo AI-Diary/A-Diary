@@ -14,9 +14,8 @@ def get_keyword():
     # okt=Okt()
     # list1=okt.nouns(text)
     
-    kp=Kobert_predict()
-    # 감정분석
-    emotion=kp.predict(text)
+    # kp=Kobert_predict()
+    # emotion=kp.predict(text)
     # render_template('Write.jsx',emotion=emotion[-1])
     
     word=Word(text)

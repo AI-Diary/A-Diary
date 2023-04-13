@@ -1,7 +1,15 @@
+<<<<<<< Updated upstream
 import React, { useState, useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import axios from 'axios';
+=======
+// import React, { useState, useEffect, useRef } from 'react';
+import React, { useState } from 'react';
+import { useLocation } from 'react-router-dom';
+import styled from 'styled-components';
+// import axios from 'axios';
+>>>>>>> Stashed changes
 import Menu from '../Components/Menu';
 import Button from '../Components/Button';
 import Input from '../Components/Input';
@@ -290,6 +298,7 @@ function Write() {
   const onClickKakao = () => {
     console.log('kakao');
   };
+<<<<<<< Updated upstream
   const onClickKeyword = () => {
     axios
       .post(`http://127.0.0.1:5001/keyword`, { text: write })
@@ -300,6 +309,18 @@ function Write() {
         console.log(err);
       });
   };
+=======
+  // const onClickKeyword = () => {
+  //   axios
+  //     .post(`http://127.0.0.1:5001/keyword`, { text: write })
+  //     .then((res) => {
+  //       console.log(res);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // };
+>>>>>>> Stashed changes
 
   if (state === null) {
     // 오늘의 일기 작성 버튼 눌렀을 때
@@ -445,11 +466,19 @@ function Write() {
               backgroundColor='white'
               hoverBackgroundColor='rgba(138, 80, 255, 0.6)'
               hoverColor='white'
+<<<<<<< Updated upstream
               onClick={onClickKeyword}
               // onClick={() => {
               //   window.scrollTo({ top: 0, behavior: 'smooth' });
               //   setVisibleModal(true);
               // }}
+=======
+              // onClick={onClickKeyword}
+              onClick={() => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                setVisibleModal(true);
+              }}
+>>>>>>> Stashed changes
             />
             <Button
               width='7rem'

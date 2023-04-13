@@ -162,6 +162,10 @@ function WriteModal() {
   const [mouseState, setMouseState] = useState('draw');
 
   // WriteModal 없애기
+<<<<<<< Updated upstream
+=======
+  // eslint-disable-next-line
+>>>>>>> Stashed changes
   const [visibleModal, setVisibleModal] = useState(true);
 
   const [ctx, setCtx] = useState();
@@ -178,6 +182,10 @@ function WriteModal() {
     contextRef.current = context;
 
     setCtx(contextRef.current);
+<<<<<<< Updated upstream
+=======
+    // eslint-disable-next-line
+>>>>>>> Stashed changes
   }, []);
 
   const startDrawing = () => {
