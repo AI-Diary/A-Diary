@@ -162,6 +162,7 @@ function WriteModal() {
   const [mouseState, setMouseState] = useState('draw');
 
   // WriteModal 없애기
+  // eslint-disable-next-line
   const [visibleModal, setVisibleModal] = useState(true);
 
   const [ctx, setCtx] = useState();
@@ -178,6 +179,7 @@ function WriteModal() {
     contextRef.current = context;
 
     setCtx(contextRef.current);
+    // eslint-disable-next-line
   }, []);
 
   const startDrawing = () => {

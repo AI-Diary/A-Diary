@@ -1,4 +1,4 @@
-import React, { useCallback, useState, PureComponent } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import Menu from '../Components/Menu';
@@ -13,12 +13,12 @@ import {
   // Bar Chart 사용할 때 필요
   BarChart,
   Bar,
-  Cell,
+  // Cell,
   XAxis,
   YAxis,
   CartesianGrid,
   Tooltip,
-  Legend,
+  // Legend,
   // 모든 차트를 사용할 때 필요
   ResponsiveContainer,
 } from 'recharts';
