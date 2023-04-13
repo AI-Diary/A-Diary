@@ -1,13 +1,15 @@
 from flask import Flask, render_template, request, session, redirect, url_for
+from flask_cors import CORS
 from WordControl.Word import Word
 from Kobert.Kobert import Kobert_predict
 
 app = Flask(__name__)
-
+CORS(app)
 
 @app.route('/keyword',methods=['POST'])
 def get_keyword():
-    text=request.form['text']
+    params = request.get_json()
+    text=params['text']
     # text="나는 너무 행복해 말이 너무 많아 너는 그렇게 생각하니 나는 아무것도 하고 싶지 않아 그냥 쿠키가 너무나도 먹고싶어 쿠키는 맛있어 그냥 바나나를 먹을까"
     # okt=Okt()
     # list1=okt.nouns(text)
@@ -20,10 +22,11 @@ def get_keyword():
     word=Word(text)
     # 한글 쪼개는거
     Ko_word=word.list_word()
+    
     # papago=Papago(list1)
     # list1=papago.papa()
+
     En_word=word.Word_Translation(Ko_word)
-    
     re_En_word=word.Word_inspection(En_word)
 
     print("Ko_word : ",Ko_word)

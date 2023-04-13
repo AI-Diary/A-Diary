@@ -39,7 +39,7 @@ parentPath = Path(__file__).parent
 
 model = BERTClassifier(bertmodel,  dr_rate=0.5).to(device)
 
-model.load_state_dict(torch.load(str(parentPath)+"\SentimentAnalysisKOBert_StateDict.pt", map_location='cpu'))  # state_dict를 불러 온 후, 모델에 저장
+model.load_state_dict(torch.load(str(parentPath)+"/SentimentAnalysisKOBert_StateDict.pt", map_location='cpu'))  # state_dict를 불러 온 후, 모델에 저장
 # model = torch.load(str(parentPath)+"\SentimentAnalysisKOBert.pt", map_location='cpu')  # 전체 모델을 통째로 불러옴, 클래스 선언 필수
 # model.load_state_dict(torch.load(str(parentPath)+"\SentimentAnalysisKOBert_StateDict.pt", map_location='cpu'))  # state_dict를 불러 온 후, 모델에 저장
 

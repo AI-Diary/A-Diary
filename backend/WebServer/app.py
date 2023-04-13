@@ -1,9 +1,11 @@
 from flask import Flask, render_template, request, session, redirect, url_for
+from flask_cors import CORS
 from flaskext.mysql import MySQL
 
 
 mysql = MySQL()
 app = Flask(__name__)
+CORS(app)
 
 app.config['MYSQL_DATABASE_USER'] = 'root'
 app.config['MYSQL_DATABASE_PASSWORD'] = 'passwd'
@@ -18,12 +20,14 @@ def main():
 
 @app.route('/signin', methods = ['POST'])
 def signin():
+    params=request.get_json()
     error = None
     if request.method == 'POST':
-        username = request.form['username']
-        id = request.form['id']
-        pw = request.form['pw']
-        email = request.form['email']
+        username = params['username']
+        id = params['id']
+        pw = params['pw']
+        email = params['email']
+        print('username : ',username, ' id : ',id, ' pw : ', pw, ' email : ', email)
 
         conn = mysql.connect()
         cursor = conn.cursor()
@@ -46,9 +50,10 @@ def signin():
 
 @app.route('/login', methods = ['POST'])
 def login():
-    id = request.form['id']
-    pw = request.form['pw']
-    msg = "id: %s, pw: %s" %id %pw
+    params=request.get_json()
+    id = params['id']
+    pw = params['pw']
+    msg = "id: %s, pw: %s" %(id, pw)
     return msg
 
 
