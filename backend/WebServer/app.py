@@ -9,7 +9,7 @@ CORS(app)
 
 app.config['MYSQL_DATABASE_USER'] = 'root'
 app.config['MYSQL_DATABASE_PASSWORD'] = 'passwd'
-app.config['MYSQL_DATABASE_DB'] = 'user_info'
+app.config['MYSQL_DATABASE_DB'] = 'adiary'
 app.config['MYSQL_DATABASE_HOST'] = 'localhost'
 app.secret_key = "ABCDEFG"
 mysql.init_app(app)
@@ -31,21 +31,23 @@ def signin():
 
         conn = mysql.connect()
         cursor = conn.cursor()
-        sql = "INSERT INTO users VALUES ('%s', '%s', '%s', '%s')" % (username, id, pw, email)
-        cursor.execute(sql)
+        # cur.execute("INSERT INTO 'login'('fname','lname','username','password','email','question','answer') VALUES (%s,%s,%s,%s,%s,%s,%s,%s)",(fname,lname,username,password,cpassword,email,selection,answer))  
+        # sql = """INSERT INTO user(username, id, pw, email) VALUES (%s, %s, %s, %s)"""
+        cursor.execute("INSERT INTO user(username, id, pw, email) VALUES (%s, %s, %s, %s)", (username, id, pw, email))
+        # cursor.execute(sql, [username, id, pw, email])
         
-        data = cursor.fetchall()
+        # data = cursor.fetchall()
 
-        if not data:
-            conn.commit()
-            return redirect(url_for('main'))
-        else:
-            conn.rollback()
-            return "회원가입 실패"
+        # if not data:
+        #     conn.commit()
+        #     return redirect(url_for('main'))
+        # else:
+        #     conn.rollback()
+        #     return "회원가입 실패"
         
         cursor.close()
         conn.close()
-    return render_template('Login.jsx', error=error)
+    return "success"
 
 
 @app.route('/login', methods = ['POST'])
