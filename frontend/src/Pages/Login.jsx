@@ -62,9 +62,9 @@ function Login() {
   };
 
   // 메인 페이지 이동
-  const NavigateToMain = () => {
-    navigate('/Main');
-  };
+  // const NavigateToMain = () => {
+  //   navigate('/Main');
+  // };
 
   const onChangeId = (e) => {
     setId(e.target.value);
