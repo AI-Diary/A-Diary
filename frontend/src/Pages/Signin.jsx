@@ -84,11 +84,14 @@ function Signin() {
   const onClickCheckId = () => {
     // || 추가 예정 뒤에 axios로 받아서 검사 후 true로 바꾸기
     if (!resPass.test(id)) {
-      console.log('조건 미달');
-      alert('조건 미달');
+      // console.log('조건 미달');
+      alert('영문 숫자 조합 8~16자로 설정해 주십시오.');
     } else {
-      console.log(id);
+      // console.log(id);
+      // axios.post(`http:`)
+
       setCheckId(true);
+      alert('사용 가능한 아이디 입니다.');
     }
   };
 

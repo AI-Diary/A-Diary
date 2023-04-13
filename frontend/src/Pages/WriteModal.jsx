@@ -6,12 +6,15 @@ import Eraser from '../Images/eraser_default.png';
 import EraserGrey from '../Images/eraser_grey.png';
 import Draw from '../Images/draw_default.png';
 import DrawGrey from '../Images/draw_grey.png';
+import Close from '../Images/closedefault.png';
+import CloseGrey from '../Images/closegrey.png';
 
 const Wrap = styled.div`
   position: absolute;
   /* display: flex; */
   width: 100vw;
   height: 80rem;
+  min-width: 60rem;
   background-color: rgba(128, 128, 128, 0.4);
   z-index: 10;
 `;
@@ -55,15 +58,18 @@ const GetPictures = styled.div`
 
 const Cancel = styled.div`
   position: absolute;
-  width: 2rem;
-  height: 2rem;
-  font-size: 2rem;
+  width: 4rem;
+  height: 4rem;
+  /* font-size: 2rem; */
   background-color: transparent;
   float: right;
-  /* margin-left: calc(15% + 900px); */
-  /* margin-top: -33rem; */
   top: 10.1rem;
-  right: calc((100vw - 57.3rem) / 2);
+  right: calc((100vw - 61rem) / 2);
+
+  background-image: url(${Close});
+  &:hover {
+    background-image: url(${CloseGrey});
+  }
 `;
 
 const WrapCanvas = styled.div`
@@ -148,7 +154,7 @@ const WrapSaveDraw = styled.div`
   margin: 1rem auto;
 `;
 
-function WriteModal() {
+function WriteModal({ setVisibleModal }) {
   const canvasRef = useRef(null);
   const contextRef = useRef(null);
 
@@ -160,10 +166,6 @@ function WriteModal() {
 
   // 현재 마우스가 어떤 버튼을 눌렀는지
   const [mouseState, setMouseState] = useState('draw');
-
-  // WriteModal 없애기
-  // eslint-disable-next-line
-  const [visibleModal, setVisibleModal] = useState(true);
 
   const [ctx, setCtx] = useState();
   const [isDrawing, setIsDrawing] = useState(false);
@@ -225,7 +227,7 @@ function WriteModal() {
   return (
     <div>
       <Wrap>
-        <Cancel onClick={onClickCancel}>x</Cancel>
+        <Cancel onClick={onClickCancel} />
         <WrapKeywordBackground>
           <WrapKeyword>
             <KeywordLabel>배경</KeywordLabel>
