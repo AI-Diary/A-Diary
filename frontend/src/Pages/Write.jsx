@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
-// import axios from 'axios';
+import axios from 'axios';
 import Menu from '../Components/Menu';
 import Button from '../Components/Button';
 import Input from '../Components/Input';
@@ -26,6 +26,7 @@ import ShareGrey from '../Images/share_grey.png';
 import InstargramGrey from '../Images/instagram_grey.png';
 import TwitterGrey from '../Images/twitter_grey.png';
 import KakaotalkGrey from '../Images/kakaotalk_grey.png';
+import Plus from '../Images/drawplus_256.png';
 import WriteModal from './WriteModal';
 
 const Wrap = styled.div`
@@ -151,6 +152,20 @@ const DrawDiary = styled.div`
   border: 1.8px solid grey;
 `;
 
+const WrapPlus = styled.div`
+  width: 16rem;
+  height: 16rem;
+  margin: 3rem auto 0rem auto;
+  border-radius: 10rem;
+  background-image: url(${Plus});
+  background-repeat: no-repeat;
+  background-size: 16rem;
+  transition: all 0.1s linear;
+  &:hover {
+    transform: scale(1.2);
+  }
+`;
+
 const WriteDiary = styled.textarea`
   box-sizing: border-box;
   width: 40.2rem;
@@ -183,7 +198,7 @@ const WrapShare = styled.div`
   position: absolute;
   width: fit-content;
   height: fit-content;
-  margin: 22.3rem 0rem 0rem 0.7rem;
+  margin: 3.5rem 0rem 0rem 0.7rem;
   display: flex;
   z-index: 1;
 `;
@@ -195,9 +210,6 @@ const ShareButton = styled.div`
 
   background-image: url(${Share});
   &:hover {
-    background-image: url(${ShareGrey});
-  }
-  &:after {
     background-image: url(${ShareGrey});
   }
 `;
@@ -235,6 +247,7 @@ const WrapKeywordButton = styled.div`
 
   /* border: 2px solid black; */
 `;
+
 function Write() {
   // Main에서 가져온 정보
   const { state } = useLocation();
@@ -291,16 +304,17 @@ function Write() {
   const onClickKakao = () => {
     console.log('kakao');
   };
-  // const onClickKeyword = () => {
-  //   axios
-  //     .post(`http://127.0.0.1:5001/keyword`, { text: write })
-  //     .then((res) => {
-  //       console.log(res);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // };
+
+  const onClickKeyword = () => {
+    axios
+      .post(`http://127.0.0.1:5001/keyword`, { text: write })
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   if (state === null) {
     // 오늘의 일기 작성 버튼 눌렀을 때
@@ -323,7 +337,7 @@ function Write() {
   return (
     <div>
       <Wrap>
-        {visibleModal ? <WriteModal /> : onClickSave}
+        {visibleModal && <WriteModal setVisibleModal={setVisibleModal} />}
         <Menu minWidth='60rem' />
 
         <WrapDiary>
@@ -404,6 +418,12 @@ function Write() {
             </WrapTitleContents>
           </WrapTitle>
           <DrawDiary>
+            <WrapPlus
+              onClick={() => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                setVisibleModal(true);
+              }}
+            />
             <WrapShare>
               <ShareButton
                 onClick={() => {
@@ -446,11 +466,7 @@ function Write() {
               backgroundColor='white'
               hoverBackgroundColor='rgba(138, 80, 255, 0.6)'
               hoverColor='white'
-              // onClick={onClickKeyword}
-              onClick={() => {
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-                setVisibleModal(true);
-              }}
+              onClick={onClickKeyword}
             />
             <Button
               width='7rem'
