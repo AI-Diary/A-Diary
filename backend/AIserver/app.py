@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, session, redirect, url_for
 from flask_cors import CORS
 from WordControl.Word import Word
 from Kobert.Kobert import Kobert_predict
-
+import json
 app = Flask(__name__)
 CORS(app)
 
@@ -38,8 +38,18 @@ def get_keyword():
 
 @app.route('/drawpic')
 def get_drawpic():
-
-    return
+    text="나는 너무 행복해 말이 너무 많아 너는 그렇게 생각하니 나는 아무것도 하고 싶지 않아 그냥 쿠키가 너무나도 먹고싶어 쿠키는 맛있어 그냥 바나나를 먹을까"   
+    word=Word(text)
+    Ko_word=word.list_word()
+    En_word=word.Word_Translation(Ko_word)
+    member={}
+    for i in range(len(Ko_word)):
+        member[Ko_word[i]]=En_word[i]
+        # member.append({"korea":Ko_word[i],"English":En_word[i]})
+        # print(member)   
+    # {"members": [{ En_word:Ko_word  }]}
+    print(member)
+    return text
     
     
     
