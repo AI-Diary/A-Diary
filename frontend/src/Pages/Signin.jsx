@@ -95,11 +95,10 @@ function Signin() {
         })
         .then((res) => {
           // 안에서도 된다 안된다로 또 나눠야됨.
-          if (res.data === 'success') {
+          if (res.data === 'fail') {
             setCheckId(true);
             alert('사용 가능한 아이디 입니다.');
           } else {
-            alert('이미 존재하는 아이디 입니다.');
           }
         })
         .catch((err) => {

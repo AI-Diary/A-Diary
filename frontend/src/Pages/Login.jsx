@@ -62,9 +62,9 @@ function Login() {
   };
 
   // 메인 페이지 이동
-  // const NavigateToMain = () => {
-  //   navigate('/Main');
-  // };
+  const NavigateToMain = () => {
+    navigate('/Main');
+  };
 
   const onChangeId = (e) => {
     setId(e.target.value);
@@ -87,10 +87,10 @@ function Login() {
         .post(`http://127.0.0.1:5000/login`, data)
         .then((res) => {
           // 성공시
-          // NavigateToMain();
           console.log('data : ', data);
           console.log('성공했습니다!');
           console.log(res);
+          NavigateToMain();
         })
         .catch((err) => {
           // 실패시
