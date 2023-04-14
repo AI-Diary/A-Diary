@@ -9,9 +9,9 @@ app = Flask(__name__)
 CORS(app)
 
 app.config['MYSQL_DATABASE_USER'] = 'root'
-app.config['MYSQL_DATABASE_PASSWORD'] = 'passwd'
+app.config['MYSQL_DATABASE_PASSWORD'] = 'password'
 app.config['MYSQL_DATABASE_DB'] = 'adiary'
-app.config['MYSQL_DATABASE_HOST'] = 'localhost'
+app.config['MYSQL_DATABASE_HOST'] = 'a-diary.cqtwhnyeqcos.ap-southeast-2.rds.amazonaws.com'
 app.secret_key = "ABCDEFG"
 mysql.init_app(app)
 
@@ -33,14 +33,14 @@ def signin():
         #pw_hash = hashlib.sha256(pw.encode('utf-8')).hexdigest()
         print('username : ',username, ' id : ',id, ' pw : ', pw, ' email : ', email)
 
-        # 아이디 중복 확인
+        # # 아이디 중복 확인
         conn = mysql.connect()
         cursor = conn.cursor()
         cursor.execute("SELECT * FROM user WHERE id = %s", (id))
-        result = cursor.fetchone()
+        result = cursor.fetchall()
 
-        if result > 0:
-            return "중복된 아이디"
+        if result:
+            return "fail"
         
         # 사용자 정보 추가
         cursor.execute("INSERT INTO user(username, id, pw, email) VALUES (%s, %s, %s, %s)", (username, id, pw, email))
