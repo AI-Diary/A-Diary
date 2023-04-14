@@ -66,9 +66,9 @@ def id_check():
         # cursor.close()
 
         if result > 0:
-            return jsonify(message='이미 사용 중인 아이디입니다.'), 409
+            return jsonify(message='이미 사용 중인 아이디입니다.')
         else:
-            return jsonify(message='사용 가능한 아이디입니다.'), 200
+            return jsonify(message='사용 가능한 아이디입니다.')
 
 
 # 로그인 기능
