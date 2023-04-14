@@ -63,10 +63,14 @@ def id_check():
         conn = mysql.connect()
         cursor = conn.cursor()
         cursor.execute("SELECT * FROM user WHERE id = %s", (id))
-        result = cursor.fetchall()
+        result = cursor.fetchone()
+        cursor.close()
 
         if result:
-            return "fail"
+            return jsonify(message='이미 사용 중인 아이디입니다.'), 409
+        else:
+            return jsonify(message='사용 가능한 아이디입니다.'), 200
+
 
 # 로그인 기능
 @app.route('/login', methods = ['POST'])
