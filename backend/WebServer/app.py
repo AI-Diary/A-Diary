@@ -36,11 +36,11 @@ def signin():
         # # 아이디 중복 확인
         conn = mysql.connect()
         cursor = conn.cursor()
-        cursor.execute("SELECT * FROM user WHERE id = %s", (id))
-        result = cursor.fetchall()
+        # cursor.execute("SELECT * FROM user WHERE id = %s", (id))
+        # result = cursor.fetchall()
 
-        if result:
-            return "fail"
+        # if result:
+        #     return "fail"
         
         # 사용자 정보 추가
         cursor.execute("INSERT INTO user(username, id, pw, email) VALUES (%s, %s, %s, %s)", (username, id, pw, email))
@@ -51,6 +51,22 @@ def signin():
     
     # 페이지 return 수정해야함
     return "success"
+
+# 아이디 중복 확인
+@app.route('/idcheck', methods = ['POST'])
+def id_check():
+    if request.method == 'POST':
+        params=request.get_json()
+        error = None
+        id = params['id']
+        
+        conn = mysql.connect()
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM user WHERE id = %s", (id))
+        result = cursor.fetchall()
+
+        if result:
+            return "fail"
 
 # 로그인 기능
 @app.route('/login', methods = ['POST'])
