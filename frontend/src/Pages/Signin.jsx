@@ -88,10 +88,20 @@ function Signin() {
       alert('영문 숫자 조합 8~16자로 설정해 주십시오.');
     } else {
       // console.log(id);
-      // axios.post(`http:`)
-
-      setCheckId(true);
-      alert('사용 가능한 아이디 입니다.');
+      axios
+        .post(`http://127.0.0.1:5000/idcheck`, {
+          id: id,
+        })
+        .then((res) => {
+          console.log(res);
+          if (res.data.message === '사용 가능한 아이디입니다.') {
+            setCheckId(true);
+            alert(res.data.message);
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
   };
 
