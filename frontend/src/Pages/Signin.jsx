@@ -69,6 +69,7 @@ function Signin() {
   };
   const onChangeId = (e) => {
     setId(e.target.value);
+    setCheckId(false);
   };
   const onChangePw1 = (e) => {
     setPw1(e.target.value);
@@ -88,7 +89,22 @@ function Signin() {
       alert('영문 숫자 조합 8~16자로 설정해 주십시오.');
     } else {
       // console.log(id);
-      // axios.post(`http:`)
+      axios
+        .post(`http://127.0.0.1:5000/signin`, {
+          id: id,
+        })
+        .then((res) => {
+          // 안에서도 된다 안된다로 또 나눠야됨.
+          if (res.data === 'success') {
+            setCheckId(true);
+            alert('사용 가능한 아이디 입니다.');
+          } else {
+            alert('이미 존재하는 아이디 입니다.');
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
 
       setCheckId(true);
       alert('사용 가능한 아이디 입니다.');
