@@ -90,23 +90,22 @@ function Signin() {
     } else {
       // console.log(id);
       axios
-        .post(`http://127.0.0.1:5000/signin`, {
+        .post(`http://127.0.0.1:5000/idcheck`, {
           id: id,
         })
         .then((res) => {
-          // 안에서도 된다 안된다로 또 나눠야됨.
-          if (res.data === 'fail') {
+          if (res.data.message === '사용 가능한 아이디입니다.') {
+            console.log(res);
             setCheckId(true);
-            alert('사용 가능한 아이디 입니다.');
-          } else {
+            alert(res.data.message);
+          } else if (res.data.message === '사용 가능한 아이디입니다.') {
+            console.log(res);
+            alert(res.data.message);
           }
         })
         .catch((err) => {
           console.log(err);
         });
-
-      setCheckId(true);
-      alert('사용 가능한 아이디 입니다.');
     }
   };
 
