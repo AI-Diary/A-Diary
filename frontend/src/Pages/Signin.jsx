@@ -98,7 +98,7 @@ function Signin() {
             console.log(res);
             setCheckId(true);
             alert(res.data.message);
-          } else if (res.data.message === '사용 가능한 아이디입니다.') {
+          } else if (res.data.message === '이미 사용 중인 아이디입니다.') {
             console.log(res);
             alert(res.data.message);
           }
