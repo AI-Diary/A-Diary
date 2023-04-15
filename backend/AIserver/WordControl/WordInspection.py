@@ -5,14 +5,15 @@ parentPath = Path(__file__).parent
 
 class WordInspectoin(object):
     
-    def __init__(self,list1):
+    def __init__(self):
          self.file='/categories.txt'
          self.file_matching='/label_matching.jsonl'
-         self.__list_word=list1
+         
     
-    def Word_Inspection(self):
+    def Word_Inspection(self,list1):
         list2=[]
         list3=[]
+        self.__list_word=list1
         with open(str(parentPath)+self.file,'r') as f:
             lines=f.readlines()
             for line in lines:
@@ -21,11 +22,16 @@ class WordInspectoin(object):
                 # print ((line))
             # print(len(list2))
             
-        for i in list2:
-            for j in self.__list_word:
-                if(i==j):
-                    list3.append(i)        
-            
+        # for i in list2:
+        for j in self.__list_word:
+            if j in list2:
+                # if(i==j):
+                list3.append(j)
+            else:
+                word=self.Trans_Word_change(j)
+                if(word!=False):
+                    list3.append(word)                
+
         return list3  
     
     def Trans_Word_change(self,keyword):
@@ -36,16 +42,16 @@ class WordInspectoin(object):
                     keyword = category_mapping[keyword]
                     print("대체 키워드", keyword)
                     return keyword
-                else : #keyword가 아예 존재하지 않을 때
-                    return str("단어가 없습니다")
+                else:
+                    return False
             else:
-               return keyword
-            
+                return False
+                        
 if __name__=='__main__':
-    list1 =['cat','b']
-    word=WordInspectoin(list1)
+    list1 =['cat','b','yacht']
+    word=WordInspectoin()
     
-    print(word.Word_Inspection())
-    print(word.Trans_Word_change("yacht"))
+    print(word.Word_Inspection(list1))
+    # print(word.Trans_Word_change("yacht"))
     
     

@@ -18,8 +18,8 @@ class Word(object):
         return (list1)
     
     def Word_inspection(self,list1):
-        Wordinspenct=WordInspectoin(list1)    
-        word_list=Wordinspenct.Word_Inspection()
+        Wordinspenct=WordInspectoin()    
+        word_list=Wordinspenct.Word_Inspection(list1)
         # 영어
         return word_list
     
@@ -31,7 +31,7 @@ class Word(object):
             papa=Papago(i)   
              
             list2.append(papa.papa())
-        
+        list2=[i.lower() for i in list2]
         return list2
              
                 
