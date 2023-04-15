@@ -169,6 +169,12 @@ const WrapSaveDraw = styled.div`
   margin: 1rem auto;
 `;
 
+const Pictures = styled.div`
+  position: absolute;
+  background-image: url(${(props) => props.backgroundImage});
+  background-size: 3rem;
+`;
+
 function WriteModal({ setVisibleModal }) {
   const infos = [
     {
@@ -208,8 +214,13 @@ function WriteModal({ setVisibleModal }) {
       place: None,
     },
   ];
+
+  const [divList, setDivList] = useState([]);
+
+  let number = 0;
   const canvasRef = useRef(null);
   const contextRef = useRef(null);
+  const divRef = useRef(null);
 
   // 펜 두께 초기 설정
   const [penWidth, setPenWidth] = useState(1);
@@ -296,6 +307,24 @@ function WriteModal({ setVisibleModal }) {
     };
   };
 
+  const onClickGetPictures = () => {
+    // setDivList([...divList, <div id={number}></div>]);
+
+    const canva = canvasRef.current;
+    const div = document.createElement('div');
+
+    div.style.position = 'absolute';
+    div.style.width = '3rem';
+    div.style.height = '3rem';
+    // div.style.backgroundImage = { Cookie };
+    div.style.backgroundImage =
+      "url('https://mblogthumb-phinf.pstatic.net/20150704_174/jbok2356_1435999984664cSc2a_JPEG/%C4%ED%C5%B0%B8%DE%C0%CE.jpg?type=w2')";
+    div.style.backgroundSize = '3rem';
+    div.key = number;
+    number = number + 1;
+    canva.parentNode.appendChild(div);
+  };
+
   return (
     <div>
       <Wrap>
@@ -336,7 +365,9 @@ function WriteModal({ setVisibleModal }) {
           <WrapKeyword>
             <KeywordLabel>키워드</KeywordLabel>
             <Keyword>
-              <GetPictures>쿠키</GetPictures>
+              <GetPictures id='Cookie' onClick={onClickGetPictures}>
+                쿠키
+              </GetPictures>
               <GetPictures>브라우니</GetPictures>
               <GetPictures>바게트</GetPictures>
               <GetPictures>수박</GetPictures>
@@ -351,7 +382,11 @@ function WriteModal({ setVisibleModal }) {
             onMouseUp={finishDrawing}
             onMouseMove={drawing}
             onMouseLeave={finishDrawing}
-          ></canvas>
+          >
+            {/* {divList.map((divElement, index) => {
+              <Pictures backgroundImage={Cookie} key={index} />;
+            })} */}
+          </canvas>
         </WrapCanvas>
 
         <WrapDrawTools>
