@@ -21,8 +21,11 @@ class WordInspectoin(object):
                 list2.append(line)
                 # print ((line))
             # print(len(list2))
-            
+        for i in range(len(self.__list_word)):
+            self.__list_word[i]=self.__list_word[i].replace("the ","").strip(".")
+            self.__list_word[i]=self.__list_word[i].replace("a ","").strip(".")
         # for i in list2:
+        # print(list4)
         for j in self.__list_word:
             if j in list2:
                 # if(i==j):
@@ -48,9 +51,10 @@ class WordInspectoin(object):
                 return False
                         
 if __name__=='__main__':
-    list1 =['cat','b','yacht']
+    list1 =['the cat','b','yacht']
     word=WordInspectoin()
-    
+    # list1[0]=list1[0].replace("the ","")
+    # print(list1[0])
     print(word.Word_Inspection(list1))
     # print(word.Trans_Word_change("yacht"))
     

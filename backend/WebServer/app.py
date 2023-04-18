@@ -87,23 +87,26 @@ def login():
 
         if rows_count > 0:
             user_info = cursor.fetchone()
+            session['login']= user_info
             print("user info:", user_info)
-
-            is_pw_correct = user_info[2]
-            print("password check:", is_pw_correct)
             
             # 페이지 return 수정해야함
             return jsonify(user_info)
         else:
-            print("user doesn't exist")
+            #print("user doesn't exist")
             
             # 페이지 return 수정해야함
-            return "fail"
+            return jsonify(message='아이디 또는 비밀번호를 확인해주세요.') 
+
+@app.route('/write')
+def write():
+    if 'login' in session:
+        return redirect(url_for('write'))
 
 # 로그아웃 기능
 @app.route('/logout')
 def logout():
-    session.clear()
+    session.pop('login', None)
     return redirect(url_for('main'))
 
 
