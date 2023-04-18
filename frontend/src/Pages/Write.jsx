@@ -439,7 +439,7 @@ function Write() {
                 fontSize='1.3rem'
                 onChange={onChangeTitle}
                 maxLength='24'
-                placeholder='24자내의 제목을 작성해주세요!'
+                placeholder='24자내의 제목을 작성해주세요'
               />
             </WrapTitleContents>
           </WrapTitle>

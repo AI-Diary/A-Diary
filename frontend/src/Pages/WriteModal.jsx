@@ -365,7 +365,7 @@ function WriteModal({ setVisibleModal, onChange }) {
         element.style.height = '4rem';
         element.style.backgroundImage = `src(data:image/jpeg;base ${imgurl}`;
         element.style.backgroundSize = '4rem';
-        element.style.backgroundColor = 'white';
+        element.style.backgroundColor = 'transparent';
 
         rootElement.appendChild(element);
       })
@@ -406,7 +406,7 @@ function WriteModal({ setVisibleModal, onChange }) {
           position: 'absolute',
           width: 72,
           height: 72,
-          background: 'white',
+          backgroundColor: 'transparent',
           // backgroundImage:
           //   "url('https://mblogthumb-phinf.pstatic.net/20150704_174/jbok2356_1435999984664cSc2a_JPEG/%C4%ED%C5%B0%B8%DE%C0%CE.jpg?type=w2')",
           backgroundImage: `url(${Cookie})`,
