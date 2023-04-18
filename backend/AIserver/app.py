@@ -16,11 +16,10 @@ def get_keyword():
     text=params['text']
     # text="나는 너무 행복해 말이 너무 많아 너는 그렇게 생각하니 나는 아무것도 하고 싶지 않아 그냥 쿠키가 너무나도 먹고싶어 쿠키는 맛있어 그냥 바나나를 먹을까"
     
-    
+    # print(text)
     kp=Kobert_predict()
     # 감정분석
     emotion=kp.predict(text)[-1]
-    # render_template('Write.jsx',emotion=emotion[-1])
     
     word=Word(text)
     # 한글 쪼개는거
@@ -28,8 +27,9 @@ def get_keyword():
     
     #영어 변환
     En_word=word.Word_Translation(Ko_word)
+    # print(En_word)
     re_En_word=word.Word_inspection(En_word)
-
+    # print(re_En_word)
     # print("Ko_word : ",Ko_word)
     # print("re_En_word : ",En_word)
     # print("sa",re_En_word)
