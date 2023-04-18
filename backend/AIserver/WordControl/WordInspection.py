@@ -13,7 +13,6 @@ class WordInspectoin(object):
     def Word_Inspection(self,list1):
         list2=[]
         list3=[]
-        list4=[]
         self.__list_word=list1
         with open(str(parentPath)+self.file,'r') as f:
             lines=f.readlines()
