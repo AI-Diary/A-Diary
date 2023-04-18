@@ -94,10 +94,10 @@ def login():
             print("passwd check:", is_pw_correct)
 
             # 페이지 return 수정해야함
-            return jsonify(user_info)
+            return "success"
         else:
             # 페이지 return 수정해야함
-            return jsonify(message='아이디 또는 비밀번호를 확인해주세요.') 
+            return "fail" 
 
 @app.route('/write')
 def write():
