@@ -4,6 +4,7 @@ import html2canvas from 'html2canvas';
 import * as htmlToImage from 'html-to-image';
 import { useSpring, animated } from 'react-spring';
 import { useDrag } from '@use-gesture/react';
+import axios from 'axios';
 import styled from 'styled-components';
 import Button from '../Components/Button';
 import Input from '../Components/Input';
@@ -349,6 +350,30 @@ function WriteModal({ setVisibleModal, onChange }) {
     };
   };
 
+  const onClickTest = () => {
+    axios
+      .post(`http://127.0.0.1:5001/drawpic`, { keyword: 'watermelon' })
+      .then((res) => {
+        const imgurl = res.data.img;
+        console.log(res.data.img);
+        // console.log(atob(imgurl));
+        // setKeyword(...res);
+
+        const rootElement = document.getElementById('imageId');
+        const element = document.createElement('img');
+        element.style.width = '4rem';
+        element.style.height = '4rem';
+        element.style.backgroundImage = `src(data:image/jpeg;base ${imgurl}`;
+        element.style.backgroundSize = '4rem';
+        element.style.backgroundColor = 'white';
+
+        rootElement.appendChild(element);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   const onClickSavePicture = async () => {
     const dataUrl = await htmlToImage.toPng(domEl.current);
 
@@ -356,8 +381,8 @@ function WriteModal({ setVisibleModal, onChange }) {
     // link.download = 'html-to-image.png';
     // link.href = dataUrl;
     // console.log(typeof dataUrl);
-    const encodedData = dataUrl;
-    document.getElementById('imageId').setAttribute('src', encodedData);
+    // const encodedData = dataUrl;
+    document.getElementById('imageId').setAttribute('src', dataUrl);
 
     // link.click();
     alert('그림을 저장하시겠습니까?');
@@ -365,14 +390,15 @@ function WriteModal({ setVisibleModal, onChange }) {
     // setJpgUrl(
     //   'https://cdn.pixabay.com/photo/2019/08/01/12/36/illustration-4377408_960_720.png'
     // );
-    // onChange(dataUrl);
-    // setVisibleModal(false);
+    onChange(dataUrl);
+    setVisibleModal(false);
   };
 
   const onClickGetPictures = () => {
     const newDiv = (
       <animated.div
         id={divs.length}
+        key={divs.length}
         {...bind()}
         style={{
           x,
@@ -380,7 +406,7 @@ function WriteModal({ setVisibleModal, onChange }) {
           position: 'absolute',
           width: 72,
           height: 72,
-          background: 'transparent',
+          background: 'white',
           // backgroundImage:
           //   "url('https://mblogthumb-phinf.pstatic.net/20150704_174/jbok2356_1435999984664cSc2a_JPEG/%C4%ED%C5%B0%B8%DE%C0%CE.jpg?type=w2')",
           backgroundImage: `url(${Cookie})`,
@@ -437,7 +463,7 @@ function WriteModal({ setVisibleModal, onChange }) {
               </GetPictures>
               <GetPictures>브라우니</GetPictures>
               <GetPictures>바게트</GetPictures>
-              <GetPictures>수박</GetPictures>
+              <GetPictures onClick={onClickTest}>수박</GetPictures>
             </Keyword>
           </WrapKeyword>
         </WrapKeywordBackground>
@@ -599,7 +625,7 @@ function WriteModal({ setVisibleModal, onChange }) {
             onClick={onClickSavePicture}
           />
         </WrapSaveDraw>
-        <img
+        <div
           id='imageId'
           src=''
           alt='captured'
@@ -607,7 +633,7 @@ function WriteModal({ setVisibleModal, onChange }) {
             width: '52rem',
             height: '32.7rem',
             backgroundSize: '52rem 32.7rem',
-            backgroundColor: 'red',
+            backgroundColor: 'transparent',
             border: '1.8px solid grey',
             marginLeft: '8rem',
             backgroundPosition: 'left',

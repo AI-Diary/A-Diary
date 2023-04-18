@@ -92,7 +92,7 @@ function Login() {
             alert('로그인에 실패했습니다.');
             console.log('로그인에 실패했습니다.');
           } else {
-            alert('로그인에 실패했습니다.');
+            alert('로그인에 성공했습니다.');
             console.log(res);
             NavigateToMain();
           }
