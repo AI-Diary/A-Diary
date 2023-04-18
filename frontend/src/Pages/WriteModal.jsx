@@ -1,4 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
+// import ReactDOM from 'react-dom/client';
+import { useSpring, animated } from 'react-spring';
+import { useDrag } from '@use-gesture/react';
 import styled from 'styled-components';
 import Button from '../Components/Button';
 import Input from '../Components/Input';
@@ -8,6 +11,16 @@ import Draw from '../Images/draw_default.png';
 import DrawGrey from '../Images/draw_grey.png';
 import Close from '../Images/closedefault.png';
 import CloseGrey from '../Images/closegrey.png';
+import LivingRoom1 from '../Images/LivingRoom1.png';
+import LivingRoom2 from '../Images/LivingRoom2.png';
+import Room1 from '../Images/Room1.png';
+import Room2 from '../Images/Room2.png';
+import Room3 from '../Images/Room3.png';
+import Kitchen1 from '../Images/Kitchen1.png';
+import Kitchen2 from '../Images/Kitchen2.png';
+import Yarn1 from '../Images/Yarn1.png';
+import None from '../Images/None.png';
+import Cookie from '../Images/cookie.png';
 
 const Wrap = styled.div`
   position: absolute;
@@ -50,6 +63,11 @@ const Keyword = styled.div`
   overflow-x: auto;
 `;
 
+const Backgrounds = styled.div`
+  margin-right: 0.8rem;
+  justify-content: center;
+`;
+
 const GetPictures = styled.div`
   margin-right: 0.8rem;
   justify-content: center;
@@ -62,9 +80,10 @@ const Cancel = styled.div`
   height: 4rem;
   /* font-size: 2rem; */
   background-color: transparent;
+  background-size: 4rem;
   float: right;
-  top: 10.1rem;
-  right: calc((100vw - 61rem) / 2);
+  top: 10.5rem;
+  right: calc((100% - 61rem) / 2);
 
   background-image: url(${Close});
   &:hover {
@@ -73,8 +92,9 @@ const Cancel = styled.div`
 `;
 
 const WrapCanvas = styled.div`
-  width: fit-content;
-  height: fit-content;
+  position: relative;
+  width: 52rem;
+  height: 32.7rem;
   border: 1.8px solid grey;
   margin: 0.5rem auto 0rem auto;
   background-color: white;
@@ -154,7 +174,74 @@ const WrapSaveDraw = styled.div`
   margin: 1rem auto;
 `;
 
+const Picture = styled.div`
+  position: absolute;
+  /* background-image: url(${(props) => props.backgroundImage}); */
+  width: 3rem;
+  height: 3rem;
+  background-image: url('https://mblogthumb-phinf.pstatic.net/20150704_174/jbok2356_1435999984664cSc2a_JPEG/%C4%ED%C5%B0%B8%DE%C0%CE.jpg?type=w2');
+  background-size: 3rem;
+  /* margin-top: -4rem; */
+  top: 0px;
+  left: 0px;
+  z-index: 99;
+`;
+
+const DraggableDiv = () => {
+  const [{ x, y }, api] = useSpring(() => ({ x: 0, y: 0 }));
+  const bind = useDrag(
+    ({ down, offset: [ox, oy] }) => api.start({ x: ox, y: oy, immediate: down })
+    // {
+    //   bound: { left: -100, right: 100, top: -50, bottom: 50 },
+    // }
+  );
+
+  return <Picture {...bind()} style={{ x, y }} />;
+};
+
 function WriteModal({ setVisibleModal }) {
+  const infos = [
+    {
+      id: 1,
+      place: LivingRoom1,
+    },
+    {
+      id: 2,
+      place: LivingRoom2,
+    },
+    {
+      id: 3,
+      place: Room1,
+    },
+    {
+      id: 4,
+      place: Room2,
+    },
+    {
+      id: 5,
+      place: Room3,
+    },
+    {
+      id: 6,
+      place: Kitchen1,
+    },
+    {
+      id: 7,
+      place: Kitchen2,
+    },
+    {
+      id: 8,
+      place: Yarn1,
+    },
+    {
+      id: 9,
+      place: None,
+    },
+  ];
+
+  const [divs, setDivs] = useState([]);
+
+  let number = 0;
   const canvasRef = useRef(null);
   const contextRef = useRef(null);
 
@@ -170,10 +257,12 @@ function WriteModal({ setVisibleModal }) {
   const [ctx, setCtx] = useState();
   const [isDrawing, setIsDrawing] = useState(false);
 
+  const [{ x, y }, api] = useSpring(() => ({ x: 0, y: 0 }));
+
   useEffect(() => {
     const canvas = canvasRef.current;
-    canvas.width = 832; // 640
-    canvas.height = 522.6; // 402
+    canvas.width = 832; // 640 52rem
+    canvas.height = 522.6; // 402 32.7rem
 
     const context = canvas.getContext('2d');
     context.strokeStyle = penColor;
@@ -210,20 +299,76 @@ function WriteModal({ setVisibleModal }) {
       }
     }
   };
+
   const onChangePenWidth = (e) => {
     setPenWidth(e.target.value);
     console.log(penWidth);
   };
+
   const onClickTools = (e) => {
     setMouseState(e.target.value);
   };
+
   const onClickColor = (e) => {
     setPenColor(e.target.value);
     console.log(penColor);
   };
+
   const onClickCancel = (e) => {
     setVisibleModal(false);
   };
+
+  const onClickBackgrounds = (e) => {
+    // console.log(infos);
+    let background = '';
+    for (let i = 0; i < 9; i++) {
+      if (infos[i].place.includes(e.target.id)) {
+        // console.log(infos[i].place);
+        background = infos[i].place;
+      }
+    }
+
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    const backgroundImage = new Image();
+    backgroundImage.src = background;
+    backgroundImage.onload = () => {
+      ctx.drawImage(backgroundImage, 0, 0, 832, 552.6);
+    };
+  };
+
+  const bind = useDrag(({ down, offset: [ox, oy] }) =>
+    api.start({ x: ox, y: oy, immediate: down })
+  );
+
+  const onClickGetPictures = () => {
+    const newDiv = (
+      // <DraggableDiv
+      //   key={divs.length}
+      //   onDrag={({ mx, my }) => {
+      //     console.log(`Div ${divs.length} dragged! mx : ${mx}, my : ${my}`);
+      //   }}
+      // />
+      <animated.div
+        id={divs.length}
+        {...bind()}
+        style={{
+          x,
+          y,
+          position: 'absolute',
+          width: 48,
+          height: 48,
+          background: 'transparent',
+          // backgroundImage:
+          //   "url('https://mblogthumb-phinf.pstatic.net/20150704_174/jbok2356_1435999984664cSc2a_JPEG/%C4%ED%C5%B0%B8%DE%C0%CE.jpg?type=w2')",
+          backgroundImage: `url(${Cookie})`,
+          backgroundSize: 48,
+        }}
+      />
+    );
+    setDivs((prevDivs) => [...prevDivs, newDiv]);
+  };
+
   return (
     <div>
       <Wrap>
@@ -232,35 +377,70 @@ function WriteModal({ setVisibleModal }) {
           <WrapKeyword>
             <KeywordLabel>배경</KeywordLabel>
             <Keyword>
-              집 -<GetPictures>거실1</GetPictures>
-              <GetPictures>거실2</GetPictures>
-              <GetPictures>방1</GetPictures>
-              <GetPictures>방2</GetPictures>
-              <GetPictures>방3</GetPictures>
-              <GetPictures>부엌1</GetPictures>
-              <GetPictures>부엌2</GetPictures>
-              <GetPictures>부엌3</GetPictures>
-              <GetPictures>마당</GetPictures>
+              <Backgrounds id='LivingRoom1' onClick={onClickBackgrounds}>
+                거실1
+              </Backgrounds>
+              <Backgrounds id='LivingRoom2' onClick={onClickBackgrounds}>
+                거실2
+              </Backgrounds>
+              <Backgrounds id='Room1' onClick={onClickBackgrounds}>
+                방1
+              </Backgrounds>
+              <Backgrounds id='Room2' onClick={onClickBackgrounds}>
+                방2
+              </Backgrounds>
+              <Backgrounds id='Room3' onClick={onClickBackgrounds}>
+                방3
+              </Backgrounds>
+              <Backgrounds id='Kitchen1' onClick={onClickBackgrounds}>
+                부엌1
+              </Backgrounds>
+              <Backgrounds id='Kitchen2' onClick={onClickBackgrounds}>
+                부엌2
+              </Backgrounds>
+              <Backgrounds id='Yarn1' onClick={onClickBackgrounds}>
+                마당
+              </Backgrounds>
+              <Backgrounds id='None' onClick={onClickBackgrounds}>
+                없음
+              </Backgrounds>
             </Keyword>
           </WrapKeyword>
           <WrapKeyword>
             <KeywordLabel>키워드</KeywordLabel>
             <Keyword>
-              <GetPictures>쿠키</GetPictures>
+              <GetPictures id='Cookie' onClick={onClickGetPictures}>
+                쿠키
+              </GetPictures>
               <GetPictures>브라우니</GetPictures>
               <GetPictures>바게트</GetPictures>
               <GetPictures>수박</GetPictures>
             </Keyword>
           </WrapKeyword>
         </WrapKeywordBackground>
-        <WrapCanvas>
+        <WrapCanvas id='wrapCanvas'>
+          {divs.map((div) => div)}
+          {/* <Picture
+            {...bindDrawPos()}
+            style={{
+              position: 'absolute',
+              top: drawPos.y,
+              left: drawPos.x,
+            }}
+          /> */}
           <canvas
+            id='canvas'
             ref={canvasRef}
             onMouseDown={startDrawing}
             onMouseUp={finishDrawing}
             onMouseMove={drawing}
             onMouseLeave={finishDrawing}
-          ></canvas>
+          >
+            {/* {divList.map((divElement, index) => {
+              <Pictures backgroundImage={Cookie} key={index} />;
+            })} */}
+            {/* {divs.map((div) => div)} */}
+          </canvas>
         </WrapCanvas>
 
         <WrapDrawTools>
