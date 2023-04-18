@@ -1,4 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
+// import ReactDOM from 'react-dom/client';
+import { useSpring, animated } from 'react-spring';
+import { useDrag } from '@use-gesture/react';
 import styled from 'styled-components';
 import Button from '../Components/Button';
 import Input from '../Components/Input';
@@ -77,9 +80,10 @@ const Cancel = styled.div`
   height: 4rem;
   /* font-size: 2rem; */
   background-color: transparent;
+  background-size: 4rem;
   float: right;
-  top: 10.1rem;
-  right: calc((100vw - 61rem) / 2);
+  top: 10.5rem;
+  right: calc((100% - 61rem) / 2);
 
   background-image: url(${Close});
   &:hover {
@@ -88,8 +92,9 @@ const Cancel = styled.div`
 `;
 
 const WrapCanvas = styled.div`
-  width: fit-content;
-  height: fit-content;
+  position: relative;
+  width: 52rem;
+  height: 32.7rem;
   border: 1.8px solid grey;
   margin: 0.5rem auto 0rem auto;
   background-color: white;
@@ -169,11 +174,30 @@ const WrapSaveDraw = styled.div`
   margin: 1rem auto;
 `;
 
-const Pictures = styled.div`
+const Picture = styled.div`
   position: absolute;
-  background-image: url(${(props) => props.backgroundImage});
+  /* background-image: url(${(props) => props.backgroundImage}); */
+  width: 3rem;
+  height: 3rem;
+  background-image: url('https://mblogthumb-phinf.pstatic.net/20150704_174/jbok2356_1435999984664cSc2a_JPEG/%C4%ED%C5%B0%B8%DE%C0%CE.jpg?type=w2');
   background-size: 3rem;
+  /* margin-top: -4rem; */
+  top: 0px;
+  left: 0px;
+  z-index: 99;
 `;
+
+const DraggableDiv = () => {
+  const [{ x, y }, api] = useSpring(() => ({ x: 0, y: 0 }));
+  const bind = useDrag(
+    ({ down, offset: [ox, oy] }) => api.start({ x: ox, y: oy, immediate: down })
+    // {
+    //   bound: { left: -100, right: 100, top: -50, bottom: 50 },
+    // }
+  );
+
+  return <Picture {...bind()} style={{ x, y }} />;
+};
 
 function WriteModal({ setVisibleModal }) {
   const infos = [
@@ -215,12 +239,11 @@ function WriteModal({ setVisibleModal }) {
     },
   ];
 
-  const [divList, setDivList] = useState([]);
+  const [divs, setDivs] = useState([]);
 
   let number = 0;
   const canvasRef = useRef(null);
   const contextRef = useRef(null);
-  const divRef = useRef(null);
 
   // 펜 두께 초기 설정
   const [penWidth, setPenWidth] = useState(1);
@@ -234,10 +257,12 @@ function WriteModal({ setVisibleModal }) {
   const [ctx, setCtx] = useState();
   const [isDrawing, setIsDrawing] = useState(false);
 
+  const [{ x, y }, api] = useSpring(() => ({ x: 0, y: 0 }));
+
   useEffect(() => {
     const canvas = canvasRef.current;
-    canvas.width = 832; // 640
-    canvas.height = 522.6; // 402
+    canvas.width = 832; // 640 52rem
+    canvas.height = 522.6; // 402 32.7rem
 
     const context = canvas.getContext('2d');
     context.strokeStyle = penColor;
@@ -274,26 +299,31 @@ function WriteModal({ setVisibleModal }) {
       }
     }
   };
+
   const onChangePenWidth = (e) => {
     setPenWidth(e.target.value);
     console.log(penWidth);
   };
+
   const onClickTools = (e) => {
     setMouseState(e.target.value);
   };
+
   const onClickColor = (e) => {
     setPenColor(e.target.value);
     console.log(penColor);
   };
+
   const onClickCancel = (e) => {
     setVisibleModal(false);
   };
+
   const onClickBackgrounds = (e) => {
-    console.log(infos);
+    // console.log(infos);
     let background = '';
     for (let i = 0; i < 9; i++) {
       if (infos[i].place.includes(e.target.id)) {
-        console.log(infos[i].place);
+        // console.log(infos[i].place);
         background = infos[i].place;
       }
     }
@@ -307,22 +337,36 @@ function WriteModal({ setVisibleModal }) {
     };
   };
 
+  const bind = useDrag(({ down, offset: [ox, oy] }) =>
+    api.start({ x: ox, y: oy, immediate: down })
+  );
+
   const onClickGetPictures = () => {
-    // setDivList([...divList, <div id={number}></div>]);
-
-    const canva = canvasRef.current;
-    const div = document.createElement('div');
-
-    div.style.position = 'absolute';
-    div.style.width = '3rem';
-    div.style.height = '3rem';
-    // div.style.backgroundImage = { Cookie };
-    div.style.backgroundImage =
-      "url('https://mblogthumb-phinf.pstatic.net/20150704_174/jbok2356_1435999984664cSc2a_JPEG/%C4%ED%C5%B0%B8%DE%C0%CE.jpg?type=w2')";
-    div.style.backgroundSize = '3rem';
-    div.key = number;
-    number = number + 1;
-    canva.parentNode.appendChild(div);
+    const newDiv = (
+      // <DraggableDiv
+      //   key={divs.length}
+      //   onDrag={({ mx, my }) => {
+      //     console.log(`Div ${divs.length} dragged! mx : ${mx}, my : ${my}`);
+      //   }}
+      // />
+      <animated.div
+        id={divs.length}
+        {...bind()}
+        style={{
+          x,
+          y,
+          position: 'absolute',
+          width: 48,
+          height: 48,
+          background: 'transparent',
+          // backgroundImage:
+          //   "url('https://mblogthumb-phinf.pstatic.net/20150704_174/jbok2356_1435999984664cSc2a_JPEG/%C4%ED%C5%B0%B8%DE%C0%CE.jpg?type=w2')",
+          backgroundImage: `url(${Cookie})`,
+          backgroundSize: 48,
+        }}
+      />
+    );
+    setDivs((prevDivs) => [...prevDivs, newDiv]);
   };
 
   return (
@@ -374,7 +418,16 @@ function WriteModal({ setVisibleModal }) {
             </Keyword>
           </WrapKeyword>
         </WrapKeywordBackground>
-        <WrapCanvas>
+        <WrapCanvas id='wrapCanvas'>
+          {divs.map((div) => div)}
+          {/* <Picture
+            {...bindDrawPos()}
+            style={{
+              position: 'absolute',
+              top: drawPos.y,
+              left: drawPos.x,
+            }}
+          /> */}
           <canvas
             id='canvas'
             ref={canvasRef}
@@ -386,6 +439,7 @@ function WriteModal({ setVisibleModal }) {
             {/* {divList.map((divElement, index) => {
               <Pictures backgroundImage={Cookie} key={index} />;
             })} */}
+            {/* {divs.map((div) => div)} */}
           </canvas>
         </WrapCanvas>
 
