@@ -88,9 +88,15 @@ function Login() {
         .then((res) => {
           // 성공시
           console.log('data : ', data);
-          console.log('성공했습니다!');
-          console.log(res);
-          NavigateToMain();
+          if (res.data === 'fail') {
+            alert('로그인에 실패했습니다.');
+            console.log('로그인에 실패했습니다.');
+          } else {
+            alert('로그인에 실패했습니다.');
+            console.log(res);
+            console.log();
+            NavigateToMain();
+          }
         })
         .catch((err) => {
           // 실패시
