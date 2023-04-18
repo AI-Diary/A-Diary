@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 // import ReactDOM from 'react-dom/client';
+import html2canvas from 'html2canvas';
+import * as htmlToImage from 'html-to-image';
 import { useSpring, animated } from 'react-spring';
 import { useDrag } from '@use-gesture/react';
 import styled from 'styled-components';
@@ -100,6 +102,11 @@ const WrapCanvas = styled.div`
   background-color: white;
 `;
 
+const WrapPng = styled.div`
+  width: fit-content;
+  height: fit-content;
+`;
+
 const RadioLabel = styled.label`
   border: none;
 
@@ -174,32 +181,32 @@ const WrapSaveDraw = styled.div`
   margin: 1rem auto;
 `;
 
-const Picture = styled.div`
-  position: absolute;
-  /* background-image: url(${(props) => props.backgroundImage}); */
-  width: 3rem;
-  height: 3rem;
-  background-image: url('https://mblogthumb-phinf.pstatic.net/20150704_174/jbok2356_1435999984664cSc2a_JPEG/%C4%ED%C5%B0%B8%DE%C0%CE.jpg?type=w2');
-  background-size: 3rem;
-  /* margin-top: -4rem; */
-  top: 0px;
-  left: 0px;
-  z-index: 99;
-`;
+// const Picture = styled.div`
+//   position: absolute;
+//   background-image: url(${(props) => props.backgroundImage});
+//   width: 3rem;
+//   height: 3rem;
+//   background-image: url('https://mblogthumb-phinf.pstatic.net/20150704_174/jbok2356_1435999984664cSc2a_JPEG/%C4%ED%C5%B0%B8%DE%C0%CE.jpg?type=w2');
+//   background-size: 3rem;
+//   margin-top: -4rem;
+//   top: 0px;
+//   left: 0px;
+//   z-index: 99;
+// `;
 
-const DraggableDiv = () => {
-  const [{ x, y }, api] = useSpring(() => ({ x: 0, y: 0 }));
-  const bind = useDrag(
-    ({ down, offset: [ox, oy] }) => api.start({ x: ox, y: oy, immediate: down })
-    // {
-    //   bound: { left: -100, right: 100, top: -50, bottom: 50 },
-    // }
-  );
+// const DraggableDiv = () => {
+//   const [{ x, y }, api] = useSpring(() => ({ x: 0, y: 0 }));
+//   const bind = useDrag(
+//     ({ down, offset: [ox, oy] }) => api.start({ x: ox, y: oy, immediate: down })
+//     {
+//       bound: { left: -100, right: 100, top: -50, bottom: 50 },
+//     }
+//   );
 
-  return <Picture {...bind()} style={{ x, y }} />;
-};
+//   return <Picture {...bind()} style={{ x, y }} />;
+// };
 
-function WriteModal({ setVisibleModal }) {
+function WriteModal({ setVisibleModal, onChange }) {
   const infos = [
     {
       id: 1,
@@ -244,6 +251,7 @@ function WriteModal({ setVisibleModal }) {
   let number = 0;
   const canvasRef = useRef(null);
   const contextRef = useRef(null);
+  const domEl = useRef(null);
 
   // 펜 두께 초기 설정
   const [penWidth, setPenWidth] = useState(1);
@@ -258,6 +266,10 @@ function WriteModal({ setVisibleModal }) {
   const [isDrawing, setIsDrawing] = useState(false);
 
   const [{ x, y }, api] = useSpring(() => ({ x: 0, y: 0 }));
+
+  const bind = useDrag(({ down, offset: [ox, oy] }) =>
+    api.start({ x: ox, y: oy, immediate: down })
+  );
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -337,18 +349,28 @@ function WriteModal({ setVisibleModal }) {
     };
   };
 
-  const bind = useDrag(({ down, offset: [ox, oy] }) =>
-    api.start({ x: ox, y: oy, immediate: down })
-  );
+  const onClickSavePicture = async () => {
+    const dataUrl = await htmlToImage.toPng(domEl.current);
+
+    // const link = document.createElement('a');
+    // link.download = 'html-to-image.png';
+    // link.href = dataUrl;
+    // console.log(typeof dataUrl);
+    const encodedData = dataUrl;
+    document.getElementById('imageId').setAttribute('src', encodedData);
+
+    // link.click();
+    alert('그림을 저장하시겠습니까?');
+    // console.log(dataUrl);
+    // setJpgUrl(
+    //   'https://cdn.pixabay.com/photo/2019/08/01/12/36/illustration-4377408_960_720.png'
+    // );
+    // onChange(dataUrl);
+    // setVisibleModal(false);
+  };
 
   const onClickGetPictures = () => {
     const newDiv = (
-      // <DraggableDiv
-      //   key={divs.length}
-      //   onDrag={({ mx, my }) => {
-      //     console.log(`Div ${divs.length} dragged! mx : ${mx}, my : ${my}`);
-      //   }}
-      // />
       <animated.div
         id={divs.length}
         {...bind()}
@@ -356,13 +378,13 @@ function WriteModal({ setVisibleModal }) {
           x,
           y,
           position: 'absolute',
-          width: 48,
-          height: 48,
+          width: 72,
+          height: 72,
           background: 'transparent',
           // backgroundImage:
           //   "url('https://mblogthumb-phinf.pstatic.net/20150704_174/jbok2356_1435999984664cSc2a_JPEG/%C4%ED%C5%B0%B8%DE%C0%CE.jpg?type=w2')",
           backgroundImage: `url(${Cookie})`,
-          backgroundSize: 48,
+          backgroundSize: 72,
         }}
       />
     );
@@ -373,6 +395,7 @@ function WriteModal({ setVisibleModal }) {
     <div>
       <Wrap>
         <Cancel onClick={onClickCancel} />
+
         <WrapKeywordBackground>
           <WrapKeyword>
             <KeywordLabel>배경</KeywordLabel>
@@ -418,29 +441,19 @@ function WriteModal({ setVisibleModal }) {
             </Keyword>
           </WrapKeyword>
         </WrapKeywordBackground>
-        <WrapCanvas id='wrapCanvas'>
-          {divs.map((div) => div)}
-          {/* <Picture
-            {...bindDrawPos()}
-            style={{
-              position: 'absolute',
-              top: drawPos.y,
-              left: drawPos.x,
-            }}
-          /> */}
-          <canvas
-            id='canvas'
-            ref={canvasRef}
-            onMouseDown={startDrawing}
-            onMouseUp={finishDrawing}
-            onMouseMove={drawing}
-            onMouseLeave={finishDrawing}
-          >
-            {/* {divList.map((divElement, index) => {
-              <Pictures backgroundImage={Cookie} key={index} />;
-            })} */}
-            {/* {divs.map((div) => div)} */}
-          </canvas>
+
+        <WrapCanvas>
+          <WrapPng id='wrapCanvas' ref={domEl}>
+            {divs.map((div) => div)}
+            <canvas
+              id='canvas'
+              ref={canvasRef}
+              onMouseDown={startDrawing}
+              onMouseUp={finishDrawing}
+              onMouseMove={drawing}
+              onMouseLeave={finishDrawing}
+            ></canvas>
+          </WrapPng>
         </WrapCanvas>
 
         <WrapDrawTools>
@@ -583,8 +596,23 @@ function WriteModal({ setVisibleModal }) {
             backgroundColor='white'
             hoverBackgroundColor='rgba(157, 108, 255)'
             hoverColor='white'
+            onClick={onClickSavePicture}
           />
         </WrapSaveDraw>
+        <img
+          id='imageId'
+          src=''
+          alt='captured'
+          style={{
+            width: '52rem',
+            height: '32.7rem',
+            backgroundSize: '52rem 32.7rem',
+            backgroundColor: 'red',
+            border: '1.8px solid grey',
+            marginLeft: '8rem',
+            backgroundPosition: 'left',
+          }}
+        />
       </Wrap>
     </div>
   );

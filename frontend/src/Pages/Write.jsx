@@ -144,15 +144,18 @@ const Title = styled.div`
 `;
 
 const DrawDiary = styled.div`
+  position: relative;
   width: 40rem;
   height: 25rem;
   background-color: white;
   margin-bottom: -1.8px;
   /* border-radius: 1.5rem 1.5rem 0rem 0rem; */
   border: 1.8px solid grey;
+  background-size: 40rem 25rem;
 `;
 
 const WrapPlus = styled.div`
+  position: relative;
   width: 16rem;
   height: 16rem;
   margin: 3rem auto 0rem auto;
@@ -200,7 +203,7 @@ const WrapShare = styled.div`
   height: fit-content;
   margin: 3.5rem 0rem 0rem 0.7rem;
   display: flex;
-  z-index: 1;
+  z-index: 5;
 `;
 const ShareButton = styled.div`
   /* border: 2px solid black; */
@@ -261,11 +264,17 @@ function Write() {
   // 일기글 저장
   const [write, setWrite] = useState('');
 
+  // 키워드 받아온 거 저장
+  const [keyword, setKeyword] = useState([]);
+
   // SNS 공유 창 보이기
   const [visibleShare, setVisibleShare] = useState(false);
 
   // WriteModal 보이기
   const [visibleModal, setVisibleModal] = useState(false);
+
+  // WriteModal에서 받아온 Uri 저장
+  const [jpgUrl, setJpgUrl] = useState('');
 
   const week = ['일', '월', '화', '수', '목', '금', '토'];
   let date = '';
@@ -310,12 +319,21 @@ function Write() {
       .post(`http://127.0.0.1:5001/keyword`, { text: write })
       .then((res) => {
         console.log(res);
+        setKeyword(...res);
       })
       .catch((err) => {
         console.log(err);
       });
   };
 
+  const onChangeUrl = (url) => {
+    // setJpgUrl(url);
+    console.log(url);
+    document.getElementById('imageId').style.backgroundImage = `url(${url})`;
+    // document.getElementById('imageId').style.zIndex = 7;
+    // document.getElementById('plus').style.zIndex = -1;
+    // document.getElementById('imageId').setAttribute('src', url);
+  };
   if (state === null) {
     // 오늘의 일기 작성 버튼 눌렀을 때
     const today = new Date();
@@ -337,7 +355,12 @@ function Write() {
   return (
     <div>
       <Wrap>
-        {visibleModal && <WriteModal setVisibleModal={setVisibleModal} />}
+        {visibleModal && (
+          <WriteModal
+            setVisibleModal={setVisibleModal}
+            onChange={onChangeUrl}
+          />
+        )}
         <Menu minWidth='60rem' />
 
         <WrapDiary>
@@ -417,8 +440,9 @@ function Write() {
               />
             </WrapTitleContents>
           </WrapTitle>
-          <DrawDiary>
+          <DrawDiary id='imageId'>
             <WrapPlus
+              id='plus'
               onClick={() => {
                 window.scrollTo({ top: 0, behavior: 'smooth' });
                 setVisibleModal(true);
@@ -453,7 +477,6 @@ function Write() {
           </DrawDiary>
 
           <WriteDiary onChange={onChangeText} />
-          {/* <Button width='3rem' height='2.5rem' name='지우개' /> */}
 
           <WrapKeywordButton>
             <Button
