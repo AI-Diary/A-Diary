@@ -93,7 +93,7 @@ def login():
             print("password check:", is_pw_correct)
             
             # 페이지 return 수정해야함
-            return "OK"
+            return jsonify(user_info)
         else:
             print("user doesn't exist")
             
