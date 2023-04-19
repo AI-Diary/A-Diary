@@ -99,24 +99,26 @@ def login():
             # 페이지 return 수정해야함
             return "fail" 
 
-@app.route('/write')
+@app.route('/main')
 def write():
     if 'login' in session:
-        return redirect(url_for('write'))
+        return redirect(url_for('main'))
 
-@app.route('/diary', methods=['POST'])
+@app.route('/write', methods=['POST'])
 def save_diary():
     params = request.get_json()
+    date = params['date']
     weather = params['weather']
     title = params['title']
     diary = params['diary']
-    img = params['img']
+    img = params['jpgUrl']
+    mood = params['emotion']
     
     print('weather: ',weather, 'title: ', title, 'diary: ', diary, 'img: ',img)
 
     conn = mysql.connect()
     cursor = conn.cursor()
-    cursor.execute("INSERT INTO user_diary(weather, title, diary, img) VALUES (%s, %s, %s, %s)", (weather, title, diary, img))
+    cursor.execute("INSERT INTO user_diary(title, mood, weather, diary, date, img) VALUES (%s, %s, %s, %s, %s, %s)", (title, mood, weather, diary, date, img))
     conn.commit()
         
     cursor.close()
