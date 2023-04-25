@@ -236,7 +236,6 @@ function WriteModal({ setVisibleModal, onChange, keyword }) {
 
   const [divs, setDivs] = useState([]);
 
-  let number = 0;
   const canvasRef = useRef(null);
   const contextRef = useRef(null);
   const domEl = useRef(null);
@@ -451,7 +450,7 @@ function WriteModal({ setVisibleModal, onChange, keyword }) {
             <Keyword>
               {keywords.map((keyword, index) => (
                 <GetPictures
-                  key={index}
+                  key={keyword.id}
                   id={keyword.English}
                   onClick={(e) => {
                     onClickGetPictures(keyword.English, e);
