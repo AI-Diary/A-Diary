@@ -28,6 +28,8 @@ def get_keyword():
     #영어 변환
     En_word=word.Word_Translation(Ko_word)
     # print(En_word)
+    
+    #단어검열
     re_En_word=word.Word_inspection(En_word)
     # print(re_En_word)
     # print("Ko_word : ",Ko_word)
@@ -35,8 +37,10 @@ def get_keyword():
     # print("sa",re_En_word)
 
     j=1
+    #Kobert 추출값
     data={'emotion':emotion}
     data['word']=[]
+    #json으로 보낼 데이터 정리 
     for i in range(len(En_word)):
         if En_word[i] in re_En_word:
             

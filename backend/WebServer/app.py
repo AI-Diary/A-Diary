@@ -90,18 +90,39 @@ def login():
             session['login']= user_info
             print("user info:", user_info)
             
-            # 페이지 return 수정해야함
-            return jsonify(user_info)
-        else:
-            #print("user doesn't exist")
-            
-            # 페이지 return 수정해야함
-            return jsonify(message='아이디 또는 비밀번호를 확인해주세요.') 
+            is_pw_correct = user_info[3]
+            print("passwd check:", is_pw_correct)
 
-@app.route('/write')
+            # 페이지 return 수정해야함
+            return "success"
+        else:
+            # 페이지 return 수정해야함
+            return "fail" 
+
+@app.route('/main')
 def write():
     if 'login' in session:
-        return redirect(url_for('write'))
+        return redirect(url_for('main'))
+
+@app.route('/write', methods=['POST'])
+def save_diary():
+    params = request.get_json()
+    date = params['date']
+    weather = params['weather']
+    title = params['title']
+    diary = params['diary']
+    img = params['jpgUrl']
+    mood = params['emotion']
+    
+    print('weather: ',weather, 'title: ', title, 'diary: ', diary, 'img: ',img)
+
+    conn = mysql.connect()
+    cursor = conn.cursor()
+    cursor.execute("INSERT INTO user_diary(title, mood, weather, diary, date, img) VALUES (%s, %s, %s, %s, %s, %s)", (title, mood, weather, diary, date, img))
+    conn.commit()
+        
+    cursor.close()
+    conn.close()
 
 # 로그아웃 기능
 @app.route('/logout')

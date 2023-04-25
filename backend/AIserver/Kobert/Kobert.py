@@ -8,7 +8,7 @@ import gluonnlp as nlp
 import numpy as np
 from tqdm import tqdm, tqdm_notebook
 from pathlib import Path
-from .Kobert_model import BERTClassifier,BERTDataset
+from Kobert_model import BERTClassifier,BERTDataset
 
 #kobert
 from kobert.utils import get_tokenizer
@@ -95,12 +95,12 @@ class Kobert_predict:
                 elif np.argmax(logits) == 5: emotion = '상처'
 
                 probability.append(emotion)
-                # print(probability)
+                print(probability)
         return probability
 
 if __name__=='__main__':
     
-    text="나는 너무 행복해"
+    text="오늘 친구랑 싸웠어 "
     kp=Kobert_predict()
     
     kp.predict(text)
