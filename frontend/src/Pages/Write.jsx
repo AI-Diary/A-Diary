@@ -1,6 +1,6 @@
 // import React, { useState, useEffect, useRef } from 'react';
 import React, { useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import axios from 'axios';
 import Menu from '../Components/Menu';
@@ -272,6 +272,7 @@ const Emotion = styled.div`
 function Write() {
   // Main에서 가져온 정보
   const { state } = useLocation();
+  const navigate = useNavigate();
 
   // 날씨 저장
   const [weather, setWeather] = useState('');
@@ -347,6 +348,24 @@ function Write() {
       'emotion',
       emotion
     );
+    axios
+      .post(`http://127.0.0.1:5000/write`, {
+        date: date + '-' + dayOfWeek,
+        weather: weather,
+        title: title,
+        diary: write,
+        jpgUrl: jpgUrl,
+        emotion: emotion,
+      })
+      .then((res) => {
+        console.log(res);
+        alert('일기 저장에 성공했습니다 :)');
+        navigate(`/Main`);
+      })
+      .catch((err) => {
+        console.log(err);
+        alert('일기 저장에 실패했습니다 :(');
+      });
   };
 
   // 키워드 추출 눌렀을 때
@@ -355,19 +374,21 @@ function Write() {
       .post(`http://127.0.0.1:5001/keyword`, { text: write })
       .then((res) => {
         console.log(res);
+        alert('키워드 추출에 성공했습니다 :)');
         setKeyword(res.data.word);
         setEmotion(res.data.emotion);
         document.getElementById('emotion').innerText = res.data.emotion;
       })
       .catch((err) => {
         console.log(err);
+        alert('키워드 추출에 실패했습니다 :(');
       });
   };
 
   // WriteModal 닫혔을 때
   const onChangeUrl = (url) => {
     setJpgUrl(url);
-    console.log('jpgUrl : ', jpgUrl);
+    // console.log('jpgUrl : ', jpgUrl);
     document.getElementById('diary').style.backgroundImage = `url(${url})`;
   };
 

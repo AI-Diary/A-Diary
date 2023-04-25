@@ -236,7 +236,6 @@ function WriteModal({ setVisibleModal, onChange, keyword }) {
 
   const [divs, setDivs] = useState([]);
 
-  let number = 0;
   const canvasRef = useRef(null);
   const contextRef = useRef(null);
   const domEl = useRef(null);
@@ -256,8 +255,10 @@ function WriteModal({ setVisibleModal, onChange, keyword }) {
 
   const [{ x, y }, api] = useSpring(() => ({ x: 0, y: 0 }));
 
-  const bind = useDrag(({ down, offset: [ox, oy] }) =>
-    api.start({ x: ox, y: oy, immediate: down })
+  const bind = useDrag(
+    ({ down, offset: [ox, oy] }) =>
+      api.start({ x: ox, y: oy, immediate: down }),
+    { bounds: { left: 0, right: 760, top: 0, bottom: 450 } }
   );
 
   useEffect(() => {
@@ -451,7 +452,7 @@ function WriteModal({ setVisibleModal, onChange, keyword }) {
             <Keyword>
               {keywords.map((keyword, index) => (
                 <GetPictures
-                  key={index}
+                  key={keyword.id}
                   id={keyword.English}
                   onClick={(e) => {
                     onClickGetPictures(keyword.English, e);
