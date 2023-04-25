@@ -255,8 +255,10 @@ function WriteModal({ setVisibleModal, onChange, keyword }) {
 
   const [{ x, y }, api] = useSpring(() => ({ x: 0, y: 0 }));
 
-  const bind = useDrag(({ down, offset: [ox, oy] }) =>
-    api.start({ x: ox, y: oy, immediate: down })
+  const bind = useDrag(
+    ({ down, offset: [ox, oy] }) =>
+      api.start({ x: ox, y: oy, immediate: down }),
+    { bounds: { left: 0, right: 760, top: 0, bottom: 450 } }
   );
 
   useEffect(() => {

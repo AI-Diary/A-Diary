@@ -93,6 +93,7 @@ function Login() {
             console.log('로그인에 실패했습니다.');
           } else {
             alert('로그인에 성공했습니다.');
+            //res에 user정보도 받아서 Main에 보내는 거로 수정
             console.log(res);
             NavigateToMain();
           }
