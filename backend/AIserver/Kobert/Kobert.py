@@ -8,7 +8,7 @@ import gluonnlp as nlp
 import numpy as np
 from tqdm import tqdm, tqdm_notebook
 from pathlib import Path
-from Kobert_model import BERTClassifier,BERTDataset
+from .Kobert_model import BERTClassifier,BERTDataset
 
 #kobert
 from kobert.utils import get_tokenizer
