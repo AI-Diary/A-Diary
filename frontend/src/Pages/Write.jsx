@@ -350,6 +350,7 @@ function Write() {
     );
     axios
       .post(`http://127.0.0.1:5000/write`, {
+        userid: 1,
         date: date + '-' + dayOfWeek,
         weather: weather,
         title: title,
