@@ -29,6 +29,7 @@ const WrapCalendar = styled.div`
   width: fit-content;
   height: fit-content;
   margin: 3rem auto 0rem auto;
+  box-shadow: 0.4rem 0.4rem 1rem rgba(120, 120, 120, 0.3);
 `;
 const CustomCalendar = styled.div`
   width: 50rem;
