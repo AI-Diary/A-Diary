@@ -1,7 +1,8 @@
 from flask import Flask, render_template, request, session, redirect, url_for, jsonify
 from flask_cors import CORS
 from flaskext.mysql import MySQL
-from datetime import datetime
+import base64
+# from datetime import datetime
 
 mysql = MySQL()
 app = Flask(__name__)
@@ -103,6 +104,7 @@ def save_diary():
     if request.method == 'POST':
         userid = params['userid']
         date = params['date']
+        day = params['day']
         weather = params['weather']
         title = params['title']
         diary = params['diary']
@@ -113,7 +115,7 @@ def save_diary():
 
         conn = mysql.connect()
         cursor = conn.cursor()
-        cursor.execute("INSERT INTO user_diary(userid, title, mood, weather, diary, date, img) VALUES (%s, %s, %s, %s, %s, %s, %s)", (userid, title, mood, weather, diary, date, img))
+        cursor.execute("INSERT INTO user_diary(userid, title, mood, weather, diary, date, img, day) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)", (userid, title, mood, weather, diary, date, img, day))
         conn.commit()
             
         cursor.close()
@@ -128,8 +130,9 @@ def my_page():
         cursor = conn.cursor()
         id = session['login'][0]
 
-        cursor.execute("SELECT * FROM user_diary WHERE userid = %s", (id))
+        cursor.execute("SELECT * FROM user_diary WHERE userid = %s ORDER BY diarynum DESC", (id))
         rows = cursor.fetchall()
+        print(rows)
 
         result = []
         for row in rows:
@@ -140,10 +143,11 @@ def my_page():
             diary = row[5]
             date_str = row[6]
             createat_str = row[7]
-            img = row[8]
+            img = base64.b64encode(row[8]).decode('utf-8')
+            day = row[9]
 
-            date = datetime.strptime(date_str, "%Y-%m-%d").date()
-            createat = datetime.strptime(createat_str, "%Y-%m-%d %H:%M:%S")
+            # date = datetime.strptime(date_str, "%Y-%m-%d").date()
+            # createat = datetime.strptime(createat_str, "%Y-%m-%d %H:%M:%S")
 
             result.append({
                 "diarynum": diarynum,
@@ -151,8 +155,9 @@ def my_page():
                 "mood": mood,
                 "weather": weather,
                 "diary": diary,
-                "date": date,
-                "createat": createat,
+                "date": date_str,
+                "day":day,
+                "createat": createat_str,
                 "img": img
             })
 
