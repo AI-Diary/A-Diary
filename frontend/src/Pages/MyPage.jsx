@@ -1,5 +1,7 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
+import axios from 'axios';
+import ShowDiary from './ShowDiary.jsx';
 import styled from 'styled-components';
 import Menu from '../Components/Menu';
 import Button from '../Components/Button';
@@ -69,6 +71,7 @@ const DiaryImage = styled.img`
   width: 20rem;
   height: 13rem;
   background-color: white;
+  background-image: url(${(props) => props.backgroundImage});
   border-radius: 1rem;
 `;
 const Date = styled.div`
@@ -81,10 +84,43 @@ const Title = styled.div`
   font-family: 'NanumGothic';
 `;
 function MyPage() {
+  const [diarys, getDiarys] = useState([]);
+  const [show, setShow] = useState(false);
+  const { state } = useLocation();
+  console.log(state);
+
+  useEffect(() => {
+    axios
+      .post(`http://127.0.0.1:5000/mypage`, { userid: 1 })
+      .then((res) => {
+        console.log(res.data);
+        getDiarys(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
+  const onClickDiary = () => {
+    setShow(true);
+  };
   const navigate = new useNavigate();
   const NavigateToStatistics = () => {
     navigate(`/Statistics`);
   };
+  console.log('diary확인', diarys);
+  let i = 0;
+  for (i = 0; i < 1; i += 1) {
+    console.log(i + ' : ' + diarys);
+  }
+
+  // let reader = new FileReader();
+
+  // reader.readAsDataURL(blob);
+  // reader.onloadend = () => {
+  //   var base64data = reader.result;
+  //   console.log(base64data);
+  // };
   return (
     <div>
       <Wrap>
@@ -109,59 +145,33 @@ function MyPage() {
             float='right'
           />
           <List>
-            <WrapDiary>
-              <DiaryImage />
-              <Date>2022.02.22</Date>
-              <Title>오늘은 롯데월드에 갔다</Title>
-            </WrapDiary>
+            {diarys.map((diary) => {
+              {
+                /* let reader = new FileReader(); */
+              }
+              {
+                /* var img; */
+              }
+              console.log(typeof diary.img);
+              console.log(diary.img);
 
-            <WrapDiary>
-              <DiaryImage />
-              <Date>2022.02.23</Date>
-              <Title>좀 있으면 개강한대</Title>
-            </WrapDiary>
+              {
+                /* reader.readAsDataURL(diary.img);
+              reader.onloadend = () => {
+                var base64data = reader.result;
+                console.log(base64data);
+              }; */
+              }
 
-            <WrapDiary>
-              <DiaryImage />
-              <Date>2022.02.24</Date>
-              <Title>너무 슬프다</Title>
-            </WrapDiary>
-
-            <WrapDiary>
-              <DiaryImage />
-              <Date>2022.02.25</Date>
-              <Title>우헤헤</Title>
-            </WrapDiary>
-
-            <WrapDiary>
-              <DiaryImage />
-              <Date>2022.02.26</Date>
-              <Title>긱사가기 귀찮아아</Title>
-            </WrapDiary>
-
-            <WrapDiary>
-              <DiaryImage />
-              <Date>2022.02.27</Date>
-              <Title>이게 진짜 일리 없어</Title>
-            </WrapDiary>
-
-            <WrapDiary>
-              <DiaryImage />
-              <Date>2022.02.28</Date>
-              <Title>눈물도 나지 않는게</Title>
-            </WrapDiary>
-
-            <WrapDiary>
-              <DiaryImage />
-              <Date>2022.03.01</Date>
-              <Title>오늘은 노는 날~</Title>
-            </WrapDiary>
-
-            <WrapDiary>
-              <DiaryImage />
-              <Date>2022.03.02</Date>
-              <Title>오늘은 개강날ㅠㅠ</Title>
-            </WrapDiary>
+              return (
+                <WrapDiary onClick={onClickDiary}>
+                  <DiaryImage backgroundIamge={diary.img} />
+                  {/* <div>{diary.img}</div> */}
+                  <Date>{diary.date}</Date>
+                  <Title>{diary.title}</Title>
+                </WrapDiary>
+              );
+            })}
           </List>
         </WrapList>
       </Wrap>

@@ -58,7 +58,7 @@ function Login() {
   // 회원가입 페이지 이동
   const navigate = useNavigate();
   const NavigateToSignin = () => {
-    navigate(`/Signin`);
+    navigate('/Signin');
   };
 
   // 메인 페이지 이동
@@ -94,7 +94,7 @@ function Login() {
           } else {
             alert('로그인에 성공했습니다.');
             //res에 user정보도 받아서 Main에 보내는 거로 수정
-            console.log(res);
+            console.log('userid : ', res.data);
             NavigateToMain();
           }
         })
