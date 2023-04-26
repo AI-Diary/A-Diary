@@ -37,6 +37,7 @@ const WrapButtons = styled.div`
 
 function Menu({ minWidth }) {
   const navigate = useNavigate();
+  // console.log(props.userId);
 
   // 마이페이지 페이지 이동
   const NavigateToStatistics = () => {

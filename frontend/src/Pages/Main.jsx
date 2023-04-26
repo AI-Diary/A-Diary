@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import Calendar from 'react-calendar';
 import moment from 'moment';
 // import 'react-calendar/dist/Calendar.css';
@@ -145,10 +145,14 @@ function Main() {
 
   const [value, onChange] = useState(new Date());
   const navigate = useNavigate();
+  // const { state } = useLocation();
+  // const userid = state.userid;
+
+  // console.log(userid);
 
   // 선택한 날짜로 글쓰기 페이지 이동
   const NavigateToWrite = (date) => {
-    navigate(`/Write`, { state: { date } });
+    navigate(`/Write`);
   };
 
   return (

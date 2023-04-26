@@ -274,6 +274,8 @@ function Write() {
   const { state } = useLocation();
   const navigate = useNavigate();
 
+  // console.log(state.userid);
+
   // 날씨 저장
   const [weather, setWeather] = useState('');
 
@@ -351,12 +353,13 @@ function Write() {
     axios
       .post(`http://127.0.0.1:5000/write`, {
         userid: 1,
-        date: date + '-' + dayOfWeek,
+        date: date,
         weather: weather,
         title: title,
         diary: write,
         jpgUrl: jpgUrl,
         emotion: emotion,
+        day: dayOfWeek,
       })
       .then((res) => {
         console.log(res);
