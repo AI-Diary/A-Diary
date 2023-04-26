@@ -80,11 +80,12 @@ def login():
 
         if rows_count > 0:
             user_info = cursor.fetchone()
-            session['login']= user_info
-            print("user info:", user_info)
+            print(user_info)
+            # session['login']= user_info
+            # print("user info:", user_info)
             
-            is_pw_correct = user_info[3]
-            print("passwd check:", is_pw_correct)
+            # is_pw_correct = user_info[3]
+            # print("passwd check:", is_pw_correct)
 
             
             return "success"
@@ -102,7 +103,7 @@ def save_diary():
     params = request.get_json()
     error = None
     if request.method == 'POST':
-        userid = params['userid']
+        userid = 1
         date = params['date']
         day = params['day']
         weather = params['weather']
@@ -111,11 +112,11 @@ def save_diary():
         img = params['jpgUrl']
         mood = params['emotion']
         
-        print('userid:', userid, 'weather: ',weather, 'title: ', title, 'diary: ', diary, 'img: ',img)
+        print('userid:', userid, 'weather: ',weather, 'title: ', title, 'diary: ', diary, 'day:', day)
 
         conn = mysql.connect()
         cursor = conn.cursor()
-        cursor.execute("INSERT INTO user_diary(userid, title, mood, weather, diary, date, img, day) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)", (userid, title, mood, weather, diary, date, img, day))
+        cursor.execute("INSERT INTO user_diary(userid, title, mood, weather, diary, date, img, day) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)", (userid, title, mood, weather, diary, date[0]+'-'+date[1]+'-'+date[2], img, day))
         conn.commit()
             
         cursor.close()
@@ -128,9 +129,9 @@ def my_page():
     if request.method == 'POST':
         conn = mysql.connect()
         cursor = conn.cursor()
-        id = session['login'][0]
+        #id = session['login'][0]
 
-        cursor.execute("SELECT * FROM user_diary WHERE userid = %s ORDER BY diarynum DESC", (id))
+        cursor.execute("SELECT * FROM user_diary WHERE userid = %s ORDER BY diarynum DESC", (1))
         rows = cursor.fetchall()
         print(rows)
 
