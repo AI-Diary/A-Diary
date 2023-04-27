@@ -335,24 +335,24 @@ function Write() {
 
   // 일기 저장 눌렀을 때
   const onClickSave = () => {
-    console.log(
-      'date : ',
-      date,
-      dayOfWeek,
-      'weather : ',
-      weather,
-      'title : ',
-      title,
-      'write : ',
-      write,
-      'jpgurl',
-      jpgUrl,
-      'emotion',
-      emotion
-    );
+    // console.log(
+    //   'date : ',
+    //   date,
+    //   dayOfWeek,
+    //   'weather : ',
+    //   weather,
+    //   'title : ',
+    //   title,
+    //   'write : ',
+    //   write,
+    //   'jpgurl',
+    //   jpgUrl,
+    //   'emotion',
+    //   emotion
+    // );
     axios
       .post(`http://127.0.0.1:5000/write`, {
-        userid: 1,
+        userid: localStorage.userid,
         date: date,
         weather: weather,
         title: title,
@@ -438,7 +438,7 @@ function Write() {
                   <Weather
                     type='radio'
                     name='weather'
-                    value='sun'
+                    value='Sunny'
                     onClick={onClickWeather}
                   />
                   <LabelImage />
@@ -448,7 +448,7 @@ function Write() {
                   <Weather
                     type='radio'
                     name='weather'
-                    value='rain'
+                    value='Rain'
                     onClick={onClickWeather}
                   />
                   <LabelImage />
@@ -461,7 +461,7 @@ function Write() {
                   <Weather
                     type='radio'
                     name='weather'
-                    value='cloudy'
+                    value='Cloudy'
                     onClick={onClickWeather}
                   />
                   <LabelImage />
@@ -471,7 +471,7 @@ function Write() {
                   <Weather
                     type='radio'
                     name='weather'
-                    value='wind'
+                    value='Wind'
                     onClick={onClickWeather}
                   />
                   <LabelImage />
@@ -481,7 +481,7 @@ function Write() {
                   <Weather
                     type='radio'
                     name='weather'
-                    value='snow'
+                    value='Snow'
                     onClick={onClickWeather}
                   />
                   <LabelImage />

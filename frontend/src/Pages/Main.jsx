@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import Calendar from 'react-calendar';
+import axios from 'axios';
 import moment from 'moment';
 // import 'react-calendar/dist/Calendar.css';
 import styled from 'styled-components';
@@ -144,6 +145,9 @@ function Main() {
   // console.log('--------------- Main ---------------');
 
   const [value, onChange] = useState(new Date());
+  const [diarys, getDiarys] = useState([]);
+  // const [dates, getDates] = useState([]);
+  const dates = [];
   const navigate = useNavigate();
   // const { state } = useLocation();
   // const userid = state.userid;
@@ -152,9 +156,28 @@ function Main() {
 
   // 선택한 날짜로 글쓰기 페이지 이동
   const NavigateToWrite = (date) => {
-    navigate(`/Write`);
+    navigate(`/Write`, { state: { date: date } });
   };
 
+  useEffect(() => {
+    // if (localStorage.userid === '0') {
+    //   alert('로그인이 필요한 서비스입니다.');
+    //   navigate('/Login');
+    // }
+    axios
+      .post(`http://127.0.0.1:5000/main_page`, { userid: localStorage.userid })
+      .then((res) => {
+        console.log(res.data);
+        getDiarys(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+  diarys.map((diary) => {
+    dates.push(diary.date);
+  });
+  console.log(dates);
   return (
     <div>
       <Wrap>
@@ -169,7 +192,21 @@ function Main() {
               formatDay={(locale, date) => moment(date).format('DD')}
               onClickDay={(value, e) => {
                 const momentDate = moment(value).format().slice(0, 10);
+                console.log('clickday : ', momentDate);
                 NavigateToWrite(momentDate);
+              }}
+              tileContent={({ date, view }) => {
+                let html = [];
+                if (
+                  dates.find((x) => x === moment(date).format('YYYY-MM-DD'))
+                ) {
+                  html.push(<div>✏️</div>);
+                }
+                return (
+                  <>
+                    <div style={{ marginTop: '-2rem' }}>{html}</div>
+                  </>
+                );
               }}
             />
           </CustomCalendar>
