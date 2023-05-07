@@ -84,7 +84,7 @@ class Kobert_predict:
                 probability = []
                 logits = np.round(self.new_softmax(logits), 3).tolist()
                 for logit in logits:
-                    print(logit)
+                    # print(logit)
                     probability.append(np.round(logit, 3))
 
                 if np.argmax(logits) == 0:  emotion = "기쁨"
@@ -100,7 +100,7 @@ class Kobert_predict:
 
 if __name__=='__main__':
     
-    text="나는 너무 행복해"
+    text="오늘 친구랑 싸웠어 "
     kp=Kobert_predict()
     
     kp.predict(text)

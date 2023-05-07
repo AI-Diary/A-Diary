@@ -69,6 +69,7 @@ function Signin() {
   };
   const onChangeId = (e) => {
     setId(e.target.value);
+    setCheckId(false);
   };
   const onChangePw1 = (e) => {
     setPw1(e.target.value);
@@ -84,11 +85,27 @@ function Signin() {
   const onClickCheckId = () => {
     // || 추가 예정 뒤에 axios로 받아서 검사 후 true로 바꾸기
     if (!resPass.test(id)) {
-      console.log('조건 미달');
-      alert('조건 미달');
+      // console.log('조건 미달');
+      alert('영문 숫자 조합 8~16자로 설정해 주십시오.');
     } else {
-      console.log(id);
-      setCheckId(true);
+      // console.log(id);
+      axios
+        .post(`http://127.0.0.1:5000/idcheck`, {
+          id: id,
+        })
+        .then((res) => {
+          if (res.data.message === '사용 가능한 아이디입니다.') {
+            console.log(res);
+            setCheckId(true);
+            alert(res.data.message);
+          } else if (res.data.message === '이미 사용 중인 아이디입니다.') {
+            console.log(res);
+            alert(res.data.message);
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
   };
 

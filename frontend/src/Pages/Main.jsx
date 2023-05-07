@@ -1,15 +1,12 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import Calendar from 'react-calendar';
+import axios from 'axios';
 import moment from 'moment';
 // import 'react-calendar/dist/Calendar.css';
 import styled from 'styled-components';
 import Menu from '../Components/Menu';
-<<<<<<< Updated upstream
-import Button from '../Components/Button';
-=======
 // import Button from '../Components/Button';
->>>>>>> Stashed changes
 
 // import Input from '../Components/Input';
 
@@ -33,6 +30,7 @@ const WrapCalendar = styled.div`
   width: fit-content;
   height: fit-content;
   margin: 3rem auto 0rem auto;
+  box-shadow: 0.4rem 0.4rem 1rem rgba(120, 120, 120, 0.3);
 `;
 const CustomCalendar = styled.div`
   width: 50rem;
@@ -147,17 +145,39 @@ function Main() {
   // console.log('--------------- Main ---------------');
 
   const [value, onChange] = useState(new Date());
+  const [diarys, getDiarys] = useState([]);
+  // const [dates, getDates] = useState([]);
+  const dates = [];
   const navigate = useNavigate();
+  // const { state } = useLocation();
+  // const userid = state.userid;
+
+  // console.log(userid);
 
   // 선택한 날짜로 글쓰기 페이지 이동
   const NavigateToWrite = (date) => {
-<<<<<<< Updated upstream
-    const show = false;
-=======
->>>>>>> Stashed changes
-    navigate(`/Write`, { state: { date } });
+    navigate(`/Write`, { state: { date: date } });
   };
 
+  useEffect(() => {
+    // if (localStorage.userid === '0') {
+    //   alert('로그인이 필요한 서비스입니다.');
+    //   navigate('/Login');
+    // }
+    axios
+      .post(`http://127.0.0.1:5000/main_page`, { userid: localStorage.userid })
+      .then((res) => {
+        console.log(res.data);
+        getDiarys(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+  diarys.map((diary) => {
+    dates.push(diary.date);
+  });
+  console.log(dates);
   return (
     <div>
       <Wrap>
@@ -170,13 +190,23 @@ function Main() {
               value={value}
               calendarType='US'
               formatDay={(locale, date) => moment(date).format('DD')}
-<<<<<<< Updated upstream
-              // onClickDay={NavigateToWrite}
-=======
->>>>>>> Stashed changes
               onClickDay={(value, e) => {
                 const momentDate = moment(value).format().slice(0, 10);
+                console.log('clickday : ', momentDate);
                 NavigateToWrite(momentDate);
+              }}
+              tileContent={({ date, view }) => {
+                let html = [];
+                if (
+                  dates.find((x) => x === moment(date).format('YYYY-MM-DD'))
+                ) {
+                  html.push(<div>✏️</div>);
+                }
+                return (
+                  <>
+                    <div style={{ marginTop: '-2rem' }}>{html}</div>
+                  </>
+                );
               }}
             />
           </CustomCalendar>

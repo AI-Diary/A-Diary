@@ -58,7 +58,7 @@ function Login() {
   // 회원가입 페이지 이동
   const navigate = useNavigate();
   const NavigateToSignin = () => {
-    navigate(`/Signin`);
+    navigate('/Signin');
   };
 
   // 메인 페이지 이동
@@ -101,10 +101,17 @@ function Login() {
         .post(`http://127.0.0.1:5000/login`, data)
         .then((res) => {
           // 성공시
-          // NavigateToMain();
           console.log('data : ', data);
-          console.log('성공했습니다!');
-          console.log(res);
+          if (res.data === 'fail') {
+            alert('로그인에 실패했습니다.');
+            console.log('로그인에 실패했습니다.');
+          } else {
+            alert('로그인에 성공했습니다.');
+            //res에 user정보도 받아서 Main에 보내는 거로 수정
+            console.log('userid : ', res.data);
+            localStorage.setItem('userid', res.data);
+            NavigateToMain();
+          }
         })
         .catch((err) => {
           // 실패시

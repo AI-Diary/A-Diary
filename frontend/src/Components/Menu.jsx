@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import Button from '../Components/Button';
@@ -38,6 +38,14 @@ const WrapButtons = styled.div`
 function Menu({ minWidth }) {
   const navigate = useNavigate();
 
+  // console.log(props.userId);
+  useEffect(() => {
+    if (localStorage.userid === '0') {
+      alert('로그인이 필요한 서비스입니다.');
+      navigate('/Login');
+    }
+  }, []);
+
   // 마이페이지 페이지 이동
   const NavigateToStatistics = () => {
     navigate(`/MyPage`);
@@ -48,6 +56,7 @@ function Menu({ minWidth }) {
   };
   // 웰컴 페이지 이동
   const NavigateToDefault = () => {
+    localStorage.userid = 0;
     navigate('/');
   };
 
@@ -79,7 +88,6 @@ function Menu({ minWidth }) {
             height='5rem'
             name='마이 페이지'
             color='rgba(69, 149, 255)'
-            // margin='0rem 1rem 0rem 0rem'
             border='2px solid transparent'
             backgroundColor='transparent'
             hoverBackgroundColor='rgba(69, 149, 255)'
@@ -91,7 +99,6 @@ function Menu({ minWidth }) {
           <Button
             width='8rem'
             height='5rem'
-            // margin='0rem 0rem 1rem 0rem'
             name='로그아웃'
             color='grey'
             border='2px solid transparent'

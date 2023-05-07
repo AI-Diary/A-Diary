@@ -1,6 +1,6 @@
-<<<<<<< Updated upstream
-import React, { useState, useEffect, useRef } from 'react';
-import { useLocation } from 'react-router-dom';
+// import React, { useState, useEffect, useRef } from 'react';
+import React, { useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import axios from 'axios';
 =======
@@ -33,6 +33,7 @@ import ShareGrey from '../Images/share_grey.png';
 import InstargramGrey from '../Images/instagram_grey.png';
 import TwitterGrey from '../Images/twitter_grey.png';
 import KakaotalkGrey from '../Images/kakaotalk_grey.png';
+import Plus from '../Images/drawplus_256.png';
 import WriteModal from './WriteModal';
 
 const Wrap = styled.div`
@@ -150,12 +151,37 @@ const Title = styled.div`
 `;
 
 const DrawDiary = styled.div`
+  position: relative;
   width: 40rem;
   height: 25rem;
   background-color: white;
   margin-bottom: -1.8px;
   /* border-radius: 1.5rem 1.5rem 0rem 0rem; */
   border: 1.8px solid grey;
+  background-size: 40rem 25rem;
+`;
+
+const Diary = styled.div`
+  position: absolute;
+  width: 40rem;
+  height: 25rem;
+  background-color: transparent;
+  background-size: 40rem 25rem;
+`;
+
+const WrapPlus = styled.div`
+  position: relative;
+  width: 16rem;
+  height: 16rem;
+  margin: 3rem auto 0rem auto;
+  border-radius: 10rem;
+  background-image: url(${Plus});
+  background-repeat: no-repeat;
+  background-size: 16rem;
+  transition: all 0.1s linear;
+  &:hover {
+    transform: scale(1.2);
+  }
 `;
 
 const WriteDiary = styled.textarea`
@@ -190,9 +216,9 @@ const WrapShare = styled.div`
   position: absolute;
   width: fit-content;
   height: fit-content;
-  margin: 22.3rem 0rem 0rem 0.7rem;
+  margin: 3.5rem 0rem 0rem 0.7rem;
   display: flex;
-  z-index: 1;
+  z-index: 5;
 `;
 const ShareButton = styled.div`
   /* border: 2px solid black; */
@@ -202,9 +228,6 @@ const ShareButton = styled.div`
 
   background-image: url(${Share});
   &:hover {
-    background-image: url(${ShareGrey});
-  }
-  &:after {
     background-image: url(${ShareGrey});
   }
 `;
@@ -242,9 +265,23 @@ const WrapKeywordButton = styled.div`
 
   /* border: 2px solid black; */
 `;
+
+const Emotion = styled.div`
+  position: absolute;
+  width: 2.5rem;
+  height: 1.3rem;
+  font-size: 1.3rem;
+  /* border: 1px solid red; */
+  margin-top: 0.8rem;
+  margin-left: 31rem;
+`;
+
 function Write() {
   // Main에서 가져온 정보
   const { state } = useLocation();
+  const navigate = useNavigate();
+
+  // console.log(state.userid);
 
   // 날씨 저장
   const [weather, setWeather] = useState('');
@@ -255,11 +292,20 @@ function Write() {
   // 일기글 저장
   const [write, setWrite] = useState('');
 
+  // 감정 저장
+  const [emotion, setEmotion] = useState('');
+
+  // 키워드 받아온 거 저장
+  const [keyword, setKeyword] = useState([]);
+
   // SNS 공유 창 보이기
   const [visibleShare, setVisibleShare] = useState(false);
 
   // WriteModal 보이기
   const [visibleModal, setVisibleModal] = useState(false);
+
+  // WriteModal에서 받아온 Uri 저장
+  const [jpgUrl, setJpgUrl] = useState('');
 
   const week = ['일', '월', '화', '수', '목', '금', '토'];
   let date = '';
@@ -283,11 +329,6 @@ function Write() {
     setWrite(e.target.value);
   };
 
-  // 서버로 값 보내기
-  const onClickSave = () => {
-    console.log('weather : ', weather, 'title : ', title, 'write : ', write);
-  };
-
   // SNS 연동
   const onClickInsta = () => {
     console.log('insta');
@@ -298,15 +339,60 @@ function Write() {
   const onClickKakao = () => {
     console.log('kakao');
   };
-<<<<<<< Updated upstream
+
+  // 일기 저장 눌렀을 때
+  const onClickSave = () => {
+    // console.log(
+    //   'date : ',
+    //   date,
+    //   dayOfWeek,
+    //   'weather : ',
+    //   weather,
+    //   'title : ',
+    //   title,
+    //   'write : ',
+    //   write,
+    //   'jpgurl',
+    //   jpgUrl,
+    //   'emotion',
+    //   emotion
+    // );
+    axios
+      .post(`http://127.0.0.1:5000/write`, {
+        userid: localStorage.userid,
+        date: date,
+        weather: weather,
+        title: title,
+        diary: write,
+        jpgUrl: jpgUrl,
+        emotion: emotion,
+        day: dayOfWeek,
+      })
+      .then((res) => {
+        console.log(res);
+        alert('일기 저장에 성공했습니다 :)');
+        navigate(`/Main`);
+      })
+      .catch((err) => {
+        console.log(err);
+        alert('일기 저장에 실패했습니다 :(');
+      });
+  };
+
+  // 키워드 추출 눌렀을 때
   const onClickKeyword = () => {
     axios
       .post(`http://127.0.0.1:5001/keyword`, { text: write })
       .then((res) => {
         console.log(res);
+        alert('키워드 추출에 성공했습니다 :)');
+        setKeyword(res.data.word);
+        setEmotion(res.data.emotion);
+        document.getElementById('emotion').innerText = res.data.emotion;
       })
       .catch((err) => {
         console.log(err);
+        alert('키워드 추출에 실패했습니다 :(');
       });
   };
 =======
@@ -321,6 +407,13 @@ function Write() {
   //     });
   // };
 >>>>>>> Stashed changes
+
+  // WriteModal 닫혔을 때
+  const onChangeUrl = (url) => {
+    setJpgUrl(url);
+    // console.log('jpgUrl : ', jpgUrl);
+    document.getElementById('diary').style.backgroundImage = `url(${url})`;
+  };
 
   if (state === null) {
     // 오늘의 일기 작성 버튼 눌렀을 때
@@ -343,7 +436,13 @@ function Write() {
   return (
     <div>
       <Wrap>
-        {visibleModal ? <WriteModal /> : onClickSave}
+        {visibleModal && (
+          <WriteModal
+            setVisibleModal={setVisibleModal}
+            onChange={onChangeUrl}
+            keyword={keyword}
+          />
+        )}
         <Menu minWidth='60rem' />
 
         <WrapDiary>
@@ -358,7 +457,7 @@ function Write() {
                   <Weather
                     type='radio'
                     name='weather'
-                    value='sun'
+                    value='Sunny'
                     onClick={onClickWeather}
                   />
                   <LabelImage />
@@ -368,7 +467,7 @@ function Write() {
                   <Weather
                     type='radio'
                     name='weather'
-                    value='rain'
+                    value='Rain'
                     onClick={onClickWeather}
                   />
                   <LabelImage />
@@ -381,7 +480,7 @@ function Write() {
                   <Weather
                     type='radio'
                     name='weather'
-                    value='cloudy'
+                    value='Cloudy'
                     onClick={onClickWeather}
                   />
                   <LabelImage />
@@ -391,7 +490,7 @@ function Write() {
                   <Weather
                     type='radio'
                     name='weather'
-                    value='wind'
+                    value='Wind'
                     onClick={onClickWeather}
                   />
                   <LabelImage />
@@ -401,7 +500,7 @@ function Write() {
                   <Weather
                     type='radio'
                     name='weather'
-                    value='snow'
+                    value='Snow'
                     onClick={onClickWeather}
                   />
                   <LabelImage />
@@ -417,13 +516,22 @@ function Write() {
                 height='3rem'
                 border='none'
                 fontSize='1.3rem'
-                onChangee={onChangeTitle}
+                onChange={onChangeTitle}
                 maxLength='24'
-                placeholder='24자내의 제목을 작성해주세요!'
+                placeholder='24자내의 제목을 작성해주세요'
               />
+              <Emotion id='emotion' />
             </WrapTitleContents>
           </WrapTitle>
           <DrawDiary>
+            <Diary id='diary'></Diary>
+            <WrapPlus
+              id='plus'
+              onClick={() => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                setVisibleModal(true);
+              }}
+            />
             <WrapShare>
               <ShareButton
                 onClick={() => {
@@ -453,7 +561,6 @@ function Write() {
           </DrawDiary>
 
           <WriteDiary onChange={onChangeText} />
-          {/* <Button width='3rem' height='2.5rem' name='지우개' /> */}
 
           <WrapKeywordButton>
             <Button
@@ -468,17 +575,6 @@ function Write() {
               hoverColor='white'
 <<<<<<< Updated upstream
               onClick={onClickKeyword}
-              // onClick={() => {
-              //   window.scrollTo({ top: 0, behavior: 'smooth' });
-              //   setVisibleModal(true);
-              // }}
-=======
-              // onClick={onClickKeyword}
-              onClick={() => {
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-                setVisibleModal(true);
-              }}
->>>>>>> Stashed changes
             />
             <Button
               width='7rem'
