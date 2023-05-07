@@ -392,11 +392,11 @@ function WriteModal({ setVisibleModal, onChange, keyword }) {
               x,
               y,
               position: 'absolute',
-              width: 72,
-              height: 72,
+              width: 100,
+              height: 100,
               backgroundColor: 'transparent',
               backgroundImage: `url('data:image/jpeg;base64,${data}')`,
-              backgroundSize: 72,
+              backgroundSize: 100,
             }}
           />
         );
