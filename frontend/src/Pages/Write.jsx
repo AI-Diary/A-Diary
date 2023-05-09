@@ -3,13 +3,6 @@ import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import axios from 'axios';
-=======
-// import React, { useState, useEffect, useRef } from 'react';
-import React, { useState } from 'react';
-import { useLocation } from 'react-router-dom';
-import styled from 'styled-components';
-// import axios from 'axios';
->>>>>>> Stashed changes
 import Menu from '../Components/Menu';
 import Button from '../Components/Button';
 import Input from '../Components/Input';
@@ -402,18 +395,6 @@ function Write() {
         alert('키워드 추출에 실패했습니다 :(');
       });
   };
-=======
-  // const onClickKeyword = () => {
-  //   axios
-  //     .post(`http://127.0.0.1:5001/keyword`, { text: write })
-  //     .then((res) => {
-  //       console.log(res);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // };
->>>>>>> Stashed changes
 
   // WriteModal 닫혔을 때
   const onChangeUrl = (url) => {
@@ -580,7 +561,6 @@ function Write() {
               backgroundColor='white'
               hoverBackgroundColor='rgba(138, 80, 255, 0.6)'
               hoverColor='white'
-<<<<<<< Updated upstream
               onClick={onClickKeyword}
             />
             <Button
