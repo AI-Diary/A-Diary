@@ -182,17 +182,34 @@ const WrapSaveDraw = styled.div`
   margin: 1rem auto;
 `;
 
-// const DraggableDiv = () => {
-//   const [{ x, y }, api] = useSpring(() => ({ x: 0, y: 0 }));
-//   const bind = useDrag(
-//     ({ down, offset: [ox, oy] }) => api.start({ x: ox, y: oy, immediate: down })
-//     {
-//       bound: { left: -100, right: 100, top: -50, bottom: 50 },
-//     }
-//   );
+const DraggableDiv = ({ data }) => {
+  const [{ x, y }, api] = useSpring(() => ({ x: 0, y: 0 }));
+  const bind = useDrag(
+    ({ down, offset: [ox, oy] }) =>
+      api.start({ x: ox, y: oy, immediate: down }),
+    {
+      bound: { left: 0, right: 760, top: 0, bottom: 450 },
+    }
+  );
 
-//   return <Picture {...bind()} style={{ x, y }} />;
-// };
+  return (
+    <animated.div
+      {...bind()}
+      style={{
+        x,
+        y,
+        position: 'absolute',
+        width: 100,
+        height: 100,
+        // background: 'red',
+        // border: '2px solid blue',
+        backgroundImage: `url('data:image/jpeg;base64,${data}')`,
+        backgroundSize: 100,
+        touchAction: 'none',
+      }}
+    />
+  );
+};
 
 function WriteModal({ setVisibleModal, onChange, keyword }) {
   const infos = [
@@ -233,8 +250,8 @@ function WriteModal({ setVisibleModal, onChange, keyword }) {
       place: None,
     },
   ];
-
-  const [divs, setDivs] = useState([]);
+  // 키워드 컴포넌트 저장
+  const [components, setComponents] = useState([{}]);
 
   const canvasRef = useRef(null);
   const contextRef = useRef(null);
@@ -341,30 +358,6 @@ function WriteModal({ setVisibleModal, onChange, keyword }) {
     };
   };
 
-  const onClickTest = () => {
-    axios
-      .post(`http://127.0.0.1:5001/drawpic`, { keyword: 'watermelon' })
-      .then((res) => {
-        const imgurl = res.data.img;
-        console.log(res.data.img);
-        // console.log(atob(imgurl));
-        // setKeyword(...res);
-
-        const rootElement = document.getElementById('imageId');
-        const element = document.createElement('img');
-        element.style.width = '4rem';
-        element.style.height = '4rem';
-        element.style.backgroundImage = `src(data:image/jpeg;base ${imgurl}`;
-        element.style.backgroundSize = '4rem';
-        element.style.backgroundColor = 'transparent';
-
-        rootElement.appendChild(element);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
   const onClickSavePicture = async () => {
     const dataUrl = await htmlToImage.toPng(domEl.current);
 
@@ -381,26 +374,13 @@ function WriteModal({ setVisibleModal, onChange, keyword }) {
       .then((res) => {
         // console.log(res.data.img);
         data = res.data.img;
-        // setKeyword(res.data.word);
-        console.log('data : ', data);
-        const newDiv = (
-          <animated.div
-            id={divs.length}
-            key={divs.length}
-            {...bind()}
-            style={{
-              x,
-              y,
-              position: 'absolute',
-              width: 100,
-              height: 100,
-              backgroundColor: 'transparent',
-              backgroundImage: `url('data:image/jpeg;base64,${data}')`,
-              backgroundSize: 100,
-            }}
-          />
-        );
-        setDivs((prevDivs) => [...prevDivs, newDiv]);
+        const newComponentId = components.length + 1;
+        const newComponents = [
+          ...components,
+          { id: newComponentId, img: data },
+        ];
+        setComponents(newComponents);
+        console.log(components);
       })
       .catch((err) => {
         console.log(err);
@@ -471,7 +451,9 @@ function WriteModal({ setVisibleModal, onChange, keyword }) {
 
         <WrapCanvas>
           <WrapPng id='wrapCanvas' ref={domEl}>
-            {divs.map((div) => div)}
+            {components.map((component) => (
+              <DraggableDiv key={component.id} data={component.img} />
+            ))}
             <canvas
               id='canvas'
               ref={canvasRef}
