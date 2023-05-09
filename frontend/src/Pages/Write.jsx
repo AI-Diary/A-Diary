@@ -325,12 +325,19 @@ function Write() {
   // SNS 연동
   const onClickInsta = () => {
     console.log('insta');
+    const insta = 'https://www.instagram.com/';
+    window.open(insta);
   };
   const onClickTwitter = () => {
     console.log('twitter');
+    const twitter =
+      'https://twitter.com/i/flow/login?input_flow_data=%7B%22requested_variant%22%3A%22eyJsYW5nIjoia28ifQ%3D%3D%22%7D';
+    window.open(twitter);
   };
   const onClickKakao = () => {
     console.log('kakao');
+    const kakao = 'https://developers.kakao.com/product/message';
+    window.open(kakao);
   };
 
   // 일기 저장 눌렀을 때
