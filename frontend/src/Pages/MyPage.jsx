@@ -171,6 +171,10 @@ function MyPage() {
                 console.log(base64data);
               }; */
               }
+              const getDate = diary.date.split('-');
+
+              const date =
+                getDate[0] + '년 ' + getDate[1] + '월 ' + getDate[2] + '일';
 
               return (
                 <WrapDiary
@@ -194,7 +198,7 @@ function MyPage() {
                 >
                   <DiaryImage backgroundIamge={diary.img} />
                   {/* <div>{diary.img}</div> */}
-                  <Date>{diary.date}</Date>
+                  <Date>{date}</Date>
                   <Title>{diary.title}</Title>
                 </WrapDiary>
               );

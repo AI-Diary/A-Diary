@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import styled from 'styled-components';
+import Button from '../Components/Button';
 import Menu from '../Components/Menu';
 import Sunny from '../Images/sunny_grey.png';
 import Cloudy from '../Images/cloudy_grey.png';
@@ -224,6 +226,12 @@ const WriteDiary = styled.textarea`
   }
 `;
 
+const WrapDelete = styled.div`
+  width: fit-content;
+  height: fit-content;
+  margin: 2rem auto 0rem auto;
+`;
+
 function ShowDiary() {
   const { state } = useLocation();
   const info = state.info.split('`');
@@ -234,6 +242,13 @@ function ShowDiary() {
   const day = date[2];
 
   let weather, background;
+
+  const onClickDelete = () => {
+    const check = window.confirm('일기를 삭제하시겠습니까?');
+    if (check) {
+      console.log('삭제');
+    }
+  };
 
   if (info[6] === 'Sunny') {
     weather = '맑음';
@@ -320,6 +335,21 @@ function ShowDiary() {
             <Diary backgrundImage={info[3]} />
           </DrawDiary>
           <WriteDiary readOnly>{info[2]}</WriteDiary>
+          <WrapDelete>
+            <Button
+              width='7rem'
+              height='2.7rem'
+              name='일기 삭제'
+              color='rgba(138, 80, 255, 0.6)'
+              marginTop='2rem'
+              border='2px solid rgba(138, 80, 255, 0.6)'
+              borderRadius='10rem'
+              backgroundColor='white'
+              hoverBackgroundColor='rgba(138, 80, 255, 0.6)'
+              hoverColor='white'
+              onClick={onClickDelete}
+            />
+          </WrapDelete>
         </WrapDiary>
       </Wrap>
     </div>

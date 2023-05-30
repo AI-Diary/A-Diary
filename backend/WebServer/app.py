@@ -1,17 +1,17 @@
 from flask import Flask, render_template, request, session, redirect, url_for, jsonify
 from flask_cors import CORS
 from flaskext.mysql import MySQL
+from datetime import datetime
 import base64
-# from datetime import datetime
 
 mysql = MySQL()
 app = Flask(__name__)
 CORS(app)
 
 app.config['MYSQL_DATABASE_USER'] = 'root'
-app.config['MYSQL_DATABASE_PASSWORD'] = 'passwd'
-app.config['MYSQL_DATABASE_DB'] = 'a-diary'
-app.config['MYSQL_DATABASE_HOST'] = 'localhost'
+app.config['MYSQL_DATABASE_PASSWORD'] = ''
+app.config['MYSQL_DATABASE_DB'] = 'A-Diary'
+app.config['MYSQL_DATABASE_HOST'] = '127.0.0.1'
 app.secret_key = "ABCDEFG"
 mysql.init_app(app)
 
@@ -75,20 +75,23 @@ def login():
         conn = mysql.connect()
         cursor = conn.cursor()
 
-        sql = "SELECT * FROM user WHERE id = %s and pw = %s"
+        # sql = "SELECT * FROM user WHERE id = %s and pw = %s"
+        # rows_count = cursor.execute(sql, (id, pw))
+
+        sql = "SELECT userid FROM user WHERE id = %s and pw = %s"
         rows_count = cursor.execute(sql, (id, pw))
 
         if rows_count > 0:
             user_info = cursor.fetchone()
             print(user_info)
             # session['login']= user_info
-            # print("user info:", user_info)
+            # print("user info:", user_info[0])
             
             # is_pw_correct = user_info[3]
             # print("passwd check:", is_pw_correct)
 
-            
-            return "success"
+            info = user_info[0]
+            return jsonify(info)
         else:
             
             return "fail" 
@@ -112,7 +115,7 @@ def save_diary():
         img = params['jpgUrl']
         mood = params['emotion']
         
-        print('userid:', userid, 'weather: ',weather, 'title: ', title, 'diary: ', diary, 'day:', day)
+        print('userid:', userid, 'weather: ',weather, 'title: ', title, 'diary: ', diary, 'date: ', date, 'day: ',day, 'mood:', mood, 'img: ',img)
 
         conn = mysql.connect()
         cursor = conn.cursor()
@@ -127,13 +130,22 @@ def save_diary():
 @app.route('/mypage', methods = ['POST'])
 def my_page():
     if request.method == 'POST':
+        params = request.get_json()
+        userid = params['userid']
         conn = mysql.connect()
         cursor = conn.cursor()
-        #id = session['login'][0]
+        # id = session['login'][0]
+        
+        cursor.execute("SELECT CONVERT(img USING euckr) FROM user_diary WHERE userid=%s", (userid))
+        images = cursor.fetchall()
+        # for image in images:
+            # print(image)
 
-        cursor.execute("SELECT * FROM user_diary WHERE userid = %s ORDER BY diarynum DESC", (1))
+        # print(images)
+
+        cursor.execute("SELECT * FROM user_diary WHERE userid = %s ORDER BY diarynum DESC" , (userid))
         rows = cursor.fetchall()
-        print(rows)
+        # print(rows)
 
         result = []
         for row in rows:
@@ -144,11 +156,15 @@ def my_page():
             diary = row[5]
             date_str = row[6]
             createat_str = row[7]
-            img = base64.b64encode(row[8]).decode('utf-8')
+            img = 'https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMzAzMzFfMjg4%2FMDAxNjgwMjQyNDk3NjQ1.1kiGUNgdBc0LoEMQTxGhH2KDBFu65OPtZMuBABKYmJ0g.gTfZNOC5_loP_dfvvqHXrCpKo5X6CK8ORdR1Pg9xE2Qg.JPEG.commab%2F4%25BF%25F9_%25B9%25D9%25C5%25C1%25C8%25AD%25B8%25E9.jpg&type=a340'
+            # img = base64.b64encode(row[8]).decode('utf-8')
+            # img = base64.b64encode(img).decode('utf-8') 
             day = row[9]
 
             # date = datetime.strptime(date_str, "%Y-%m-%d").date()
             # createat = datetime.strptime(createat_str, "%Y-%m-%d %H:%M:%S")
+
+            # print("img : ", img)
 
             result.append({
                 "diarynum": diarynum,
@@ -157,13 +173,39 @@ def my_page():
                 "weather": weather,
                 "diary": diary,
                 "date": date_str,
-                "day":day,
                 "createat": createat_str,
-                "img": img
+                "img": img,
+                "day": day,
             })
+    
 
-        print('mypage', result)
+        # print('mypage', result)
+    # for i in range(len(result)):
+    #     print('result : ',result[i])
+    #     result['img']=images
+    return jsonify(result)
 
+@app.route('/main_page', methods = ['POST'])
+def main_page():
+
+    result=[]
+
+    params = request.get_json()
+    userid = params['userid']
+    conn = mysql.connect()
+    cursor = conn.cursor()
+    print(userid)
+
+    cursor.execute("SELECT date FROM user_diary WHERE userid = %s ORDER BY diarynum DESC" , (userid))
+    rows = cursor.fetchall()
+
+    print(rows)
+    
+    for row in rows:
+        result.append({
+            'date':row[0]
+        })
+    
     return jsonify(result)
 
 # 로그아웃 기능
