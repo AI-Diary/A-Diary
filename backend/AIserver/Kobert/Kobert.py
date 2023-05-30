@@ -93,6 +93,7 @@ class Kobert_predict:
                 elif np.argmax(logits) == 3: emotion = '슬픔'
                 elif np.argmax(logits) == 4: emotion = '분노'
                 elif np.argmax(logits) == 5: emotion = '상처'
+                elif np.argmax(logits) == 6: emotion = '중립'
 
                 probability.append(emotion)
                 print(probability)
@@ -100,7 +101,7 @@ class Kobert_predict:
 
 if __name__=='__main__':
     
-    text="오늘 친구랑 싸웠어 "
+    text="만약에 불나거나 사고나서 밑으로 떨어지면? "
     kp=Kobert_predict()
     
     kp.predict(text)

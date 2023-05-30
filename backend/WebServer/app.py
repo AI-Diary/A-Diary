@@ -1,7 +1,8 @@
 from flask import Flask, render_template, request, session, redirect, url_for, jsonify
 from flask_cors import CORS
 from flaskext.mysql import MySQL
-from datetime import datetime
+import base64
+# from datetime import datetime
 
 mysql = MySQL()
 app = Flask(__name__)
@@ -79,11 +80,12 @@ def login():
 
         if rows_count > 0:
             user_info = cursor.fetchone()
-            session['login']= user_info
-            print("user info:", user_info)
+            print(user_info)
+            # session['login']= user_info
+            # print("user info:", user_info)
             
-            is_pw_correct = user_info[3]
-            print("passwd check:", is_pw_correct)
+            # is_pw_correct = user_info[3]
+            # print("passwd check:", is_pw_correct)
 
             
             return "success"
@@ -101,19 +103,20 @@ def save_diary():
     params = request.get_json()
     error = None
     if request.method == 'POST':
-        userid = params['userid']
+        userid = 1
         date = params['date']
+        day = params['day']
         weather = params['weather']
         title = params['title']
         diary = params['diary']
         img = params['jpgUrl']
         mood = params['emotion']
         
-        print('userid:', userid, 'weather: ',weather, 'title: ', title, 'diary: ', diary, 'img: ',img)
+        print('userid:', userid, 'weather: ',weather, 'title: ', title, 'diary: ', diary, 'day:', day)
 
         conn = mysql.connect()
         cursor = conn.cursor()
-        cursor.execute("INSERT INTO user_diary(userid, title, mood, weather, diary, date, img) VALUES (%s, %s, %s, %s, %s, %s, %s)", (userid, title, mood, weather, diary, date, img))
+        cursor.execute("INSERT INTO user_diary(userid, title, mood, weather, diary, date, img, day) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)", (userid, title, mood, weather, diary, date[0]+'-'+date[1]+'-'+date[2], img, day))
         conn.commit()
             
         cursor.close()
@@ -126,10 +129,11 @@ def my_page():
     if request.method == 'POST':
         conn = mysql.connect()
         cursor = conn.cursor()
-        id = session['login'][0]
+        #id = session['login'][0]
 
-        cursor.execute("SELECT * FROM user_diary WHERE userid = %s", (id))
+        cursor.execute("SELECT * FROM user_diary WHERE userid = %s ORDER BY diarynum DESC", (1))
         rows = cursor.fetchall()
+        print(rows)
 
         result = []
         for row in rows:
@@ -140,10 +144,11 @@ def my_page():
             diary = row[5]
             date_str = row[6]
             createat_str = row[7]
-            img = row[8]
+            img = base64.b64encode(row[8]).decode('utf-8')
+            day = row[9]
 
-            date = datetime.strptime(date_str, "%Y-%m-%d").date()
-            createat = datetime.strptime(createat_str, "%Y-%m-%d %H:%M:%S")
+            # date = datetime.strptime(date_str, "%Y-%m-%d").date()
+            # createat = datetime.strptime(createat_str, "%Y-%m-%d %H:%M:%S")
 
             result.append({
                 "diarynum": diarynum,
@@ -151,8 +156,9 @@ def my_page():
                 "mood": mood,
                 "weather": weather,
                 "diary": diary,
-                "date": date,
-                "createat": createat,
+                "date": date_str,
+                "day":day,
+                "createat": createat_str,
                 "img": img
             })
 
