@@ -52,7 +52,8 @@ const CustomCalendar = styled.div`
     background-color: transparent;
     border: none;
     margin: 1rem 1rem 3rem 1rem;
-    font-size: 1.5rem;
+    font-size: 1.8rem;
+    font-family: 'LogoFont';
     cursor: pointer;
   }
 
@@ -64,6 +65,7 @@ const CustomCalendar = styled.div`
     // 일 월 화 수 목 금 토 꾸미기
     text-decoration: none;
     font-size: 1.1rem;
+    font-family: 'LogoFont';
     /* background-color: white; */
     /* border: 1px solid black; */
   }
@@ -75,6 +77,7 @@ const CustomCalendar = styled.div`
     border-radius: 1rem;
     color: white;
     font-size: 30px;
+    font-family: 'LogoFont';
     padding: 5px 0;
 
     &:hover {
@@ -169,7 +172,7 @@ function Main() {
     axios
       .post(`http://127.0.0.1:5000/main_page`, { userid: localStorage.userid })
       .then((res) => {
-        console.log(res.data);
+        //console.log(res.data);
         getDiarys(res.data);
       })
       .catch((err) => {
@@ -177,12 +180,12 @@ function Main() {
       });
   }, []);
 
-  diarys.map((diary) => {
-    dates.push(diary.date);
-    moods.push(diary.mood);
-  });
+  // diarys.map((diary) => {
+  //   dates.push(diary.date);
+  //   moods.push(diary.mood);
+  // });
 
-  console.log('dates : ', dates);
+  // console.log('dates : ', dates);
   return (
     <div>
       <Wrap>
