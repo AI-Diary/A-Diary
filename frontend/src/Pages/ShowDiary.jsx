@@ -194,7 +194,7 @@ const Diary = styled.div`
   width: 40rem;
   height: 25rem;
   background-color: transparent;
-  background-image: url(${(props) => props.backgroundImage})
+  background-image: url(${(props) => props.backgroundImage});
   background-size: 40rem 25rem;
 `;
 

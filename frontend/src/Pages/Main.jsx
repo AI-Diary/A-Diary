@@ -148,6 +148,8 @@ function Main() {
   const [diarys, getDiarys] = useState([]);
   // const [dates, getDates] = useState([]);
   const dates = [];
+  const moods = [];
+  let count = 0;
   const navigate = useNavigate();
   // const { state } = useLocation();
   // const userid = state.userid;
@@ -174,10 +176,13 @@ function Main() {
         console.log(err);
       });
   }, []);
+
   diarys.map((diary) => {
     dates.push(diary.date);
+    moods.push(diary.mood);
   });
-  console.log(dates);
+
+  console.log('dates : ', dates);
   return (
     <div>
       <Wrap>
@@ -195,16 +200,53 @@ function Main() {
                 console.log('clickday : ', momentDate);
                 NavigateToWrite(momentDate);
               }}
+              // tileContent={({ date, view }) => {
+              //   let html = [];
+              //   if (
+              //     dates.find((x) => x === moment(date).format('YYYY-MM-DD'))
+              //   ) {
+              //     html.push(<div>✏️</div>);
+              //   }
+              //   return (
+              //     <>
+              //       <div style={{ marginTop: '-2rem' }}>{html}</div>
+              //     </>
+              //   );
+              // }}
               tileContent={({ date, view }) => {
                 let html = [];
-                if (
-                  dates.find((x) => x === moment(date).format('YYYY-MM-DD'))
-                ) {
-                  html.push(<div>✏️</div>);
-                }
+
+                diarys.map((diary) => {
+                  if (diary.date === moment(date).format('YYYY-MM-DD')) {
+                    if (diary.mood === '기쁨') {
+                      html.push(<div>😀</div>);
+                    } else if (diary.mood === '슬픔') {
+                      html.push(<div>😢</div>);
+                    } else if (diary.mood === '당황') {
+                      html.push(<div>😨</div>);
+                    } else if (diary.mood === '불안') {
+                      html.push(<div>😬</div>);
+                    } else if (diary.mood === '분노') {
+                      html.push(<div>😠</div>);
+                    } else if (diary.mood === '상처') {
+                      html.push(<div>😞</div>);
+                    } else if (diary.mood === '중립') {
+                      html.push(<div>🫠</div>);
+                    }
+                  }
+                });
+
                 return (
                   <>
-                    <div style={{ marginTop: '-2rem' }}>{html}</div>
+                    <div
+                      style={{
+                        marginTop: '-0.6rem',
+                        marginLeft: '2rem',
+                        fontSize: '2.5rem',
+                      }}
+                    >
+                      {html}
+                    </div>
                   </>
                 );
               }}
