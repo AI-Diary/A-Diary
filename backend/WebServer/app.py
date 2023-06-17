@@ -84,23 +84,26 @@ def login():
         if rows_count > 0:
             user_info = cursor.fetchone()
             print(user_info)
-            # session['login']= user_info
-            # print("user info:", user_info[0])
+            session['login']= user_info
+            return redirect(url_for('index'))
             
             # is_pw_correct = user_info[3]
             # print("passwd check:", is_pw_correct)
 
-            info = user_info[0]
-            return jsonify(info)
+            
+            #return "success"
         else:
             
             return "fail" 
 
-@app.route('/main')
-def write():
-    if 'login' in session:
-        return redirect(url_for('main'))
+# 세션 따로 저장
+# @app.route('/main')
+# def index():
+#     if 'login' in session:
+#         print("세션 저장:", session[login])
+#     return "success"
 
+# 일기 저장
 @app.route('/write', methods=['POST'])
 def save_diary():
     params = request.get_json()
@@ -115,11 +118,13 @@ def save_diary():
         img = params['jpgUrl']
         mood = params['emotion']
         
-        print('userid:', userid, 'weather: ',weather, 'title: ', title, 'diary: ', diary, 'date: ', date, 'day: ',day, 'mood:', mood, 'img: ',img)
+        print('userid:', userid, 'weather: ',weather, 'title: ', title, 'diary: ', diary)
 
         conn = mysql.connect()
         cursor = conn.cursor()
-        cursor.execute("INSERT INTO user_diary(userid, title, mood, weather, diary, date, img, day) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)", (userid, title, mood, weather, diary, date[0]+'-'+date[1]+'-'+date[2], img, day))
+        cursor.execute("INSERT INTO user_diary(userid, title, mood, weather, diary, date, img, day) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)", 
+                       (userid, title, mood, weather, diary, date[0]+'-'+date[1]+'-'+date[2], img, day))
+
         conn.commit()
             
         cursor.close()
@@ -127,6 +132,7 @@ def save_diary():
 
     return "success"
 
+# 저장된 일기 확인
 @app.route('/mypage', methods = ['POST'])
 def my_page():
     if request.method == 'POST':
@@ -141,9 +147,10 @@ def my_page():
         # for image in images:
             # print(image)
 
-        # print(images)
+        cursor.execute("SELECT CONVERT(img USING euckr) FROM user_diary WHERE userid=%s", (userid))
+        images = cursor.fetchall()
 
-        cursor.execute("SELECT * FROM user_diary WHERE userid = %s ORDER BY diarynum DESC" , (userid))
+        cursor.execute("SELECT * FROM user_diary WHERE userid = %s ORDER BY diarynum DESC", (userid))
         rows = cursor.fetchall()
         # print(rows)
 
@@ -157,8 +164,6 @@ def my_page():
             date_str = row[6]
             createat_str = row[7]
             img = 'https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMzAzMzFfMjg4%2FMDAxNjgwMjQyNDk3NjQ1.1kiGUNgdBc0LoEMQTxGhH2KDBFu65OPtZMuBABKYmJ0g.gTfZNOC5_loP_dfvvqHXrCpKo5X6CK8ORdR1Pg9xE2Qg.JPEG.commab%2F4%25BF%25F9_%25B9%25D9%25C5%25C1%25C8%25AD%25B8%25E9.jpg&type=a340'
-            # img = base64.b64encode(row[8]).decode('utf-8')
-            # img = base64.b64encode(img).decode('utf-8') 
             day = row[9]
 
             # date = datetime.strptime(date_str, "%Y-%m-%d").date()
@@ -208,6 +213,81 @@ def main_page():
         })
     
     return jsonify(result)
+
+# 메인페이지 일기 작성 확인
+@app.route('/main_page', methods = ['POST'])
+def main_page():
+
+    result=[]
+
+    params = request.get_json()
+    userid = params['userid']
+    conn = mysql.connect()
+    cursor = conn.cursor()
+    print(userid)
+
+    cursor.execute("SELECT date FROM user_diary WHERE userid = %s ORDER BY diarynum DESC" , (userid))
+    rows = cursor.fetchall()
+
+    print(rows)
+    
+    for row in rows:
+        result.append({
+            'date':row[0]
+            'mood':row[1]
+        })
+    
+    return jsonify(result)
+
+# 일기 삭제
+@app.route('/delete', method=['POST'])
+def delete(diarynumber):
+    params = request.get_json()
+    error=None
+    if request.method == 'POST':
+        diarynumber=params["diarynum"]
+        
+        print("diarynum: ", diarynumber)
+
+        conn = mysql.connect()
+        cursor = conn.cursor()
+        cursor.execute("DELETE FROM user_diary WHERE diarynum = %s",(diarynumber))
+        conn.commit()
+            
+        cursor.close()
+        conn.close()
+
+    return "success"
+
+
+# @app.route('/cal', method=['POST'])
+# def mood():
+#     params = request.get_json()
+#     userid = params["userid"]
+
+#     if request.method == 'POST':
+#         conn = mysql.connect()
+#         cursor = conn.cursor()
+#         cursor.execute("SELECT (mood, date) FROM user_diary WHERE userid = %s", (userid))
+
+#         rows = cursor.fetchall()
+#         print(rows)
+
+#         result = []
+#         for row in rows:
+#             mood = row[1]
+#             date = row[2]
+        
+        
+
+        
+
+
+
+
+
+# @app.route('/cal_day', method=['POST'])
+# def day(): 요일, 감정 - 30일
 
 # 로그아웃 기능
 @app.route('/logout')
