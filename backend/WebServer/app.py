@@ -9,7 +9,7 @@ app = Flask(__name__)
 CORS(app)
 
 app.config['MYSQL_DATABASE_USER'] = 'root'
-app.config['MYSQL_DATABASE_PASSWORD'] = ''
+app.config['MYSQL_DATABASE_PASSWORD'] = 'password'
 app.config['MYSQL_DATABASE_DB'] = 'A-Diary'
 app.config['MYSQL_DATABASE_HOST'] = '127.0.0.1'
 app.secret_key = "ABCDEFG"
@@ -106,7 +106,7 @@ def save_diary():
     params = request.get_json()
     error = None
     if request.method == 'POST':
-        userid = 1
+        userid = params['userid']
         date = params['date']
         day = params['day']
         weather = params['weather']
@@ -196,14 +196,15 @@ def main_page():
     cursor = conn.cursor()
     print(userid)
 
-    cursor.execute("SELECT date FROM user_diary WHERE userid = %s ORDER BY diarynum DESC" , (userid))
+    cursor.execute("SELECT date, mood FROM user_diary WHERE userid = %s ORDER BY diarynum DESC" , (userid))
     rows = cursor.fetchall()
 
     print(rows)
     
     for row in rows:
         result.append({
-            'date':row[0]
+            'date':row[0],
+            'mood':row[1],
         })
     
     return jsonify(result)
