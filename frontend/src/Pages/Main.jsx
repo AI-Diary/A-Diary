@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import Calendar from 'react-calendar';
+import axios from 'axios';
 import moment from 'moment';
 // import 'react-calendar/dist/Calendar.css';
 import styled from 'styled-components';
@@ -51,7 +52,8 @@ const CustomCalendar = styled.div`
     background-color: transparent;
     border: none;
     margin: 1rem 1rem 3rem 1rem;
-    font-size: 1.5rem;
+    font-size: 1.8rem;
+    font-family: 'LogoFont';
     cursor: pointer;
   }
 
@@ -63,6 +65,7 @@ const CustomCalendar = styled.div`
     // 일 월 화 수 목 금 토 꾸미기
     text-decoration: none;
     font-size: 1.1rem;
+    font-family: 'LogoFont';
     /* background-color: white; */
     /* border: 1px solid black; */
   }
@@ -74,6 +77,7 @@ const CustomCalendar = styled.div`
     border-radius: 1rem;
     color: white;
     font-size: 30px;
+    font-family: 'LogoFont';
     padding: 5px 0;
 
     &:hover {
@@ -144,6 +148,11 @@ function Main() {
   // console.log('--------------- Main ---------------');
 
   const [value, onChange] = useState(new Date());
+  const [diarys, getDiarys] = useState([]);
+  // const [dates, getDates] = useState([]);
+  const dates = [];
+  const moods = [];
+  let count = 0;
   const navigate = useNavigate();
   // const { state } = useLocation();
   // const userid = state.userid;
@@ -152,9 +161,31 @@ function Main() {
 
   // 선택한 날짜로 글쓰기 페이지 이동
   const NavigateToWrite = (date) => {
-    navigate(`/Write`);
+    navigate(`/Write`, { state: { date: date } });
   };
 
+  useEffect(() => {
+    // if (localStorage.userid === '0') {
+    //   alert('로그인이 필요한 서비스입니다.');
+    //   navigate('/Login');
+    // }
+    axios
+      .post(`http://127.0.0.1:5000/main_page`, { userid: localStorage.userid })
+      .then((res) => {
+        //console.log(res.data);
+        getDiarys(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
+  // diarys.map((diary) => {
+  //   dates.push(diary.date);
+  //   moods.push(diary.mood);
+  // });
+
+  // console.log('dates : ', dates);
   return (
     <div>
       <Wrap>
@@ -169,7 +200,58 @@ function Main() {
               formatDay={(locale, date) => moment(date).format('DD')}
               onClickDay={(value, e) => {
                 const momentDate = moment(value).format().slice(0, 10);
+                console.log('clickday : ', momentDate);
                 NavigateToWrite(momentDate);
+              }}
+              // tileContent={({ date, view }) => {
+              //   let html = [];
+              //   if (
+              //     dates.find((x) => x === moment(date).format('YYYY-MM-DD'))
+              //   ) {
+              //     html.push(<div>✏️</div>);
+              //   }
+              //   return (
+              //     <>
+              //       <div style={{ marginTop: '-2rem' }}>{html}</div>
+              //     </>
+              //   );
+              // }}
+              tileContent={({ date, view }) => {
+                let html = [];
+
+                diarys.map((diary) => {
+                  if (diary.date === moment(date).format('YYYY-MM-DD')) {
+                    if (diary.mood === '기쁨') {
+                      html.push(<div>😀</div>);
+                    } else if (diary.mood === '슬픔') {
+                      html.push(<div>😢</div>);
+                    } else if (diary.mood === '당황') {
+                      html.push(<div>😨</div>);
+                    } else if (diary.mood === '불안') {
+                      html.push(<div>😬</div>);
+                    } else if (diary.mood === '분노') {
+                      html.push(<div>😠</div>);
+                    } else if (diary.mood === '상처') {
+                      html.push(<div>😞</div>);
+                    } else if (diary.mood === '중립') {
+                      html.push(<div>🫠</div>);
+                    }
+                  }
+                });
+
+                return (
+                  <>
+                    <div
+                      style={{
+                        marginTop: '-0.6rem',
+                        marginLeft: '2rem',
+                        fontSize: '2.5rem',
+                      }}
+                    >
+                      {html}
+                    </div>
+                  </>
+                );
               }}
             />
           </CustomCalendar>

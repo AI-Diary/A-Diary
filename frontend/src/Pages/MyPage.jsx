@@ -83,15 +83,18 @@ const Date = styled.div`
 const Title = styled.div`
   font-family: 'NanumGothic';
 `;
+
 function MyPage() {
   const [diarys, getDiarys] = useState([]);
   const [show, setShow] = useState(false);
-  const { state } = useLocation();
-  console.log(state);
+  const navigate = useNavigate();
+  // const { state } = useLocation();
+  // console.log(state);
 
   useEffect(() => {
+    console.log('localStorage : ', localStorage.userid);
     axios
-      .post(`http://127.0.0.1:5000/mypage`, { userid: 1 })
+      .post(`http://127.0.0.1:5000/mypage`, { userid: localStorage.userid })
       .then((res) => {
         console.log(res.data);
         getDiarys(res.data);
@@ -101,18 +104,20 @@ function MyPage() {
       });
   }, []);
 
-  const onClickDiary = () => {
-    setShow(true);
+  const onClickDiary = (e) => {
+    // console.log(e.currentTarget.id);
+    // setShow(true);
+    navigate(`/ShowDiary`, { state: { info: e.currentTarget.id } });
   };
-  const navigate = new useNavigate();
+
   const NavigateToStatistics = () => {
     navigate(`/Statistics`);
   };
-  console.log('diary확인', diarys);
-  let i = 0;
-  for (i = 0; i < 1; i += 1) {
-    console.log(i + ' : ' + diarys);
-  }
+  // console.log('diary확인', diarys);
+  // let i = 0;
+  // for (i = 0; i < 1; i += 1) {
+  //   console.log(i + ' : ' + diarys);
+  // }
 
   // let reader = new FileReader();
 
@@ -145,15 +150,19 @@ function MyPage() {
             float='right'
           />
           <List>
-            {diarys.map((diary) => {
+            {diarys.map((diary, index) => {
               {
                 /* let reader = new FileReader(); */
               }
               {
                 /* var img; */
               }
-              console.log(typeof diary.img);
-              console.log(diary.img);
+              {
+                /* console.log(typeof diary.img); */
+              }
+              {
+                /* console.log(diary.img); */
+              }
 
               {
                 /* reader.readAsDataURL(diary.img);
@@ -162,12 +171,34 @@ function MyPage() {
                 console.log(base64data);
               }; */
               }
+              const getDate = diary.date.split('-');
+
+              const date =
+                getDate[0] + '년 ' + getDate[1] + '월 ' + getDate[2] + '일';
 
               return (
-                <WrapDiary onClick={onClickDiary}>
+                <WrapDiary
+                  onClick={onClickDiary}
+                  key={index}
+                  id={
+                    diary.date +
+                    '`' +
+                    diary.day +
+                    '`' +
+                    diary.diary +
+                    '`' +
+                    diary.img +
+                    '`' +
+                    diary.mood +
+                    '`' +
+                    diary.title +
+                    '`' +
+                    diary.weather
+                  }
+                >
                   <DiaryImage backgroundIamge={diary.img} />
                   {/* <div>{diary.img}</div> */}
-                  <Date>{diary.date}</Date>
+                  <Date>{date}</Date>
                   <Title>{diary.title}</Title>
                 </WrapDiary>
               );

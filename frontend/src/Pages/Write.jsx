@@ -325,68 +325,74 @@ function Write() {
   // SNS 연동
   const onClickInsta = () => {
     console.log('insta');
+    const insta = 'https://www.instagram.com/';
+    window.open(insta);
   };
   const onClickTwitter = () => {
     console.log('twitter');
+    const twitter =
+      'https://twitter.com/i/flow/login?input_flow_data=%7B%22requested_variant%22%3A%22eyJsYW5nIjoia28ifQ%3D%3D%22%7D';
+    window.open(twitter);
   };
   const onClickKakao = () => {
     console.log('kakao');
+    const kakao = 'https://developers.kakao.com/product/message';
+    window.open(kakao);
   };
 
   // 일기 저장 눌렀을 때
   const onClickSave = () => {
-    console.log(
-      'date : ',
-      date,
-      dayOfWeek,
-      'weather : ',
-      weather,
-      'title : ',
-      title,
-      'write : ',
-      write,
-      'jpgurl',
-      jpgUrl,
-      'emotion',
-      emotion
-    );
-    axios
-      .post(`http://127.0.0.1:5000/write`, {
-        userid: 1,
-        date: date,
-        weather: weather,
-        title: title,
-        diary: write,
-        jpgUrl: jpgUrl,
-        emotion: emotion,
-        day: dayOfWeek,
-      })
-      .then((res) => {
-        console.log(res);
-        alert('일기 저장에 성공했습니다 :)');
-        navigate(`/Main`);
-      })
-      .catch((err) => {
-        console.log(err);
-        alert('일기 저장에 실패했습니다 :(');
-      });
+    // console.log('date : ',date,dayOfWeek,'weather : ',weather,'title : ',title,'write : ',write,'jpgurl',jpgUrl,'emotion',emotion);
+    if (weather.length === 0) {
+      alert('날씨를 선택해주세요 🫠');
+    } else if (title.length === 0) {
+      alert('제목을 작성해주세요 🫠');
+    } else if (emotion.length === 0) {
+      alert('키워드 추출을 눌러주세요 🫠');
+    } else {
+      axios
+        .post(`http://127.0.0.1:5000/write`, {
+          userid: localStorage.userid,
+          date: date,
+          weather: weather,
+          title: title,
+          diary: write,
+          jpgUrl: jpgUrl,
+          emotion: emotion,
+          day: dayOfWeek,
+        })
+        .then((res) => {
+          console.log(res);
+          alert('일기 저장에 성공했습니다 :)');
+          navigate(`/Main`);
+        })
+        .catch((err) => {
+          console.log(err);
+          alert('일기 저장에 실패했습니다 :(');
+        });
+    }
   };
 
   // 키워드 추출 눌렀을 때
   const onClickKeyword = () => {
-    axios
-      .post(`http://127.0.0.1:5001/keyword`, { text: write })
-      .then((res) => {
-        console.log(res);
-        alert('키워드 추출에 성공했습니다 :)');
-        setKeyword(res.data.word);
-        setEmotion(res.data.emotion);
-        document.getElementById('emotion').innerText = res.data.emotion;
-      })
-      .catch((err) => {
-        console.log(err);
-        alert('키워드 추출에 실패했습니다 :(');
-      });
+    if (write.length === 0) {
+      alert('일기를 적어주세요 🫠');
+    } else {
+      axios
+        .post(`http://127.0.0.1:5001/keyword`, { text: write })
+        .then((res) => {
+          console.log(res);
+
+          alert('키워드 추출에 성공했습니다 :)');
+          setKeyword(res.data.word);
+          setEmotion(res.data.emotion);
+          document.getElementById('emotion').innerText = res.data.emotion;
+        })
+        .catch((err) => {
+          console.log(err);
+          alert('키워드 추출에 실패했습니다 :(');
+        });
+    }
   };
 
   // WriteModal 닫혔을 때
@@ -438,7 +444,7 @@ function Write() {
                   <Weather
                     type='radio'
                     name='weather'
-                    value='sun'
+                    value='Sunny'
                     onClick={onClickWeather}
                   />
                   <LabelImage />
@@ -448,7 +454,7 @@ function Write() {
                   <Weather
                     type='radio'
                     name='weather'
-                    value='rain'
+                    value='Rain'
                     onClick={onClickWeather}
                   />
                   <LabelImage />
@@ -461,7 +467,7 @@ function Write() {
                   <Weather
                     type='radio'
                     name='weather'
-                    value='cloudy'
+                    value='Cloudy'
                     onClick={onClickWeather}
                   />
                   <LabelImage />
@@ -471,7 +477,7 @@ function Write() {
                   <Weather
                     type='radio'
                     name='weather'
-                    value='wind'
+                    value='Wind'
                     onClick={onClickWeather}
                   />
                   <LabelImage />
@@ -481,7 +487,7 @@ function Write() {
                   <Weather
                     type='radio'
                     name='weather'
-                    value='snow'
+                    value='Snow'
                     onClick={onClickWeather}
                   />
                   <LabelImage />

@@ -1,17 +1,17 @@
 from flask import Flask, render_template, request, session, redirect, url_for, jsonify
 from flask_cors import CORS
 from flaskext.mysql import MySQL
+from datetime import datetime
 import base64
-# from datetime import datetime
 
 mysql = MySQL()
 app = Flask(__name__)
 CORS(app)
 
 app.config['MYSQL_DATABASE_USER'] = 'root'
-app.config['MYSQL_DATABASE_PASSWORD'] = 'passwd'
-app.config['MYSQL_DATABASE_DB'] = 'a-diary'
-app.config['MYSQL_DATABASE_HOST'] = 'localhost'
+app.config['MYSQL_DATABASE_PASSWORD'] = 'password'
+app.config['MYSQL_DATABASE_DB'] = 'A-Diary'
+app.config['MYSQL_DATABASE_HOST'] = '127.0.0.1'
 app.secret_key = "ABCDEFG"
 mysql.init_app(app)
 
@@ -75,7 +75,10 @@ def login():
         conn = mysql.connect()
         cursor = conn.cursor()
 
-        sql = "SELECT * FROM user WHERE id = %s and pw = %s"
+        # sql = "SELECT * FROM user WHERE id = %s and pw = %s"
+        # rows_count = cursor.execute(sql, (id, pw))
+
+        sql = "SELECT userid FROM user WHERE id = %s and pw = %s"
         rows_count = cursor.execute(sql, (id, pw))
 
         if rows_count > 0:
@@ -137,14 +140,19 @@ def my_page():
         userid = params['userid']
         conn = mysql.connect()
         cursor = conn.cursor()
-        #id = session['login'][0]
+        # id = session['login'][0]
+        
+        cursor.execute("SELECT CONVERT(img USING euckr) FROM user_diary WHERE userid=%s", (userid))
+        images = cursor.fetchall()
+        # for image in images:
+            # print(image)
 
         cursor.execute("SELECT CONVERT(img USING euckr) FROM user_diary WHERE userid=%s", (userid))
         images = cursor.fetchall()
 
         cursor.execute("SELECT * FROM user_diary WHERE userid = %s ORDER BY diarynum DESC", (userid))
         rows = cursor.fetchall()
-        print(rows)
+        # print(rows)
 
         result = []
         for row in rows:
@@ -161,6 +169,8 @@ def my_page():
             # date = datetime.strptime(date_str, "%Y-%m-%d").date()
             # createat = datetime.strptime(createat_str, "%Y-%m-%d %H:%M:%S")
 
+            # print("img : ", img)
+
             result.append({
                 "diarynum": diarynum,
                 "title": title,
@@ -168,13 +178,40 @@ def my_page():
                 "weather": weather,
                 "diary": diary,
                 "date": date_str,
-                "day":day,
                 "createat": createat_str,
-                "img": img
+                "img": img,
+                "day": day,
             })
+    
 
-        print('mypage', result)
+        # print('mypage', result)
+    # for i in range(len(result)):
+    #     print('result : ',result[i])
+    #     result['img']=images
+    return jsonify(result)
 
+@app.route('/main_page', methods = ['POST'])
+def main_page():
+
+    result=[]
+
+    params = request.get_json()
+    userid = params['userid']
+    conn = mysql.connect()
+    cursor = conn.cursor()
+    print(userid)
+
+    cursor.execute("SELECT date, mood FROM user_diary WHERE userid = %s ORDER BY diarynum DESC" , (userid))
+    rows = cursor.fetchall()
+
+    print(rows)
+    
+    for row in rows:
+        result.append({
+            'date':row[0],
+            'mood':row[1],
+        })
+    
     return jsonify(result)
 
 # 메인페이지 일기 작성 확인

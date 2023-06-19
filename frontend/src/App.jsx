@@ -6,6 +6,7 @@ import Main from './Pages/Main';
 import Write from './Pages/Write';
 import WriteModal from './Pages/WriteModal';
 import MyPage from './Pages/MyPage';
+import ShowDiary from './Pages/ShowDiary';
 import Statistics from './Pages/Statistics';
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
           <Route path='/Write' element={<Write />} />
           <Route path='/WriteModal' element={<WriteModal />} />
           <Route path='/MyPage' element={<MyPage />} />
+          <Route path='/ShowDiary' element={<ShowDiary />} />
           <Route path='/Statistics' element={<Statistics />} />
         </Routes>
       </Router>

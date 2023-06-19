@@ -30,6 +30,7 @@ const EMOTIONS = [
   { emotion: '불안', value: 9 },
   { emotion: '분노', value: 7 },
   { emotion: '상처', value: 2 },
+  { emotion: '중립', value: 8 },
 ];
 
 const DATES = [
