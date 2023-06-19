@@ -76,24 +76,25 @@ def login():
         cursor = conn.cursor()
 
         sql = "SELECT userid FROM user WHERE id = %s and pw = %s"
-        rows_count = cursor.execute(sql, (id, pw))
+        user_info = cursor.execute(sql, (id, pw))
+        print(user_info)
 
-        if rows_count > 0:
-            user_info = cursor.fetchone()
-            print(user_info)
-            session['login']= user_info
-            return redirect(url_for('index'))
-            
-        else:
-            
-            return "fail" 
+        return jsonify(user_info)
 
-# 세션 따로 저장
-@app.route('/main')
-def index():
-    if 'login' in session:
-        print("세션 저장:", session[login])
-    return "success"
+#         if rows_count > 0:
+#             user_info = cursor.fetchone()
+#             print(user_info)
+#             session['login']= user_info
+#             print(session['login'])
+#             return redirect(url_for('index'))
+
+# # 세션 따로 저장
+# @app.route('/main')
+# def index():
+#     if 'login' in session:
+#         return jsonify(session['login'])
+#     else:
+#         return redirect(url_for('login'))
 
 # 일기 저장
 @app.route('/write', methods = ['POST'])
