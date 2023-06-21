@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import styled from 'styled-components';
 import Menu from '../Components/Menu';
 import Button from '../Components/Button';
@@ -21,27 +22,9 @@ import {
   // Legend,
   // 모든 차트를 사용할 때 필요
   ResponsiveContainer,
+  AreaChart,
+  Area,
 } from 'recharts';
-
-const EMOTIONS = [
-  { emotion: '기쁨', value: 10 },
-  { emotion: '슬픔', value: 8 },
-  { emotion: '당황', value: 4 },
-  { emotion: '불안', value: 9 },
-  { emotion: '분노', value: 7 },
-  { emotion: '상처', value: 2 },
-  { emotion: '중립', value: 8 },
-];
-
-const DATES = [
-  { date: 'Mon', count: 9 },
-  { date: 'Tue', count: 5 },
-  { date: 'Wed', count: 4 },
-  { date: 'Thu', count: 3 },
-  { date: 'Fri', count: 6 },
-  { date: 'Sat', count: 1 },
-  { date: 'Sun', count: 11 },
-];
 
 // 지우면 안됨!
 
@@ -124,10 +107,58 @@ const WrapChart = styled.div`
 `;
 
 function Statics() {
+  let EMOTIONS = [
+    { emotion: '기쁨', value: 0 },
+    { emotion: '슬픔', value: 0 },
+    { emotion: '당황', value: 0 },
+    { emotion: '불안', value: 0 },
+    { emotion: '분노', value: 0 },
+    { emotion: '상처', value: 0 },
+    { emotion: '중립', value: 0 },
+  ];
+
+  let DATES = [
+    { date: 'Mon', count: 0 },
+    { date: 'Tue', count: 0 },
+    { date: 'Wed', count: 0 },
+    { date: 'Thu', count: 0 },
+    { date: 'Fri', count: 0 },
+    { date: 'Sat', count: 0 },
+    { date: 'Sun', count: 0 },
+  ];
   const navigate = new useNavigate();
   const NavigateToStatistics = () => {
     navigate(`/MyPage`);
   };
+  const [emotions, setEmotions] = useState([0, 0, 0, 0, 0, 0, 0]);
+  const [days, setDays] = useState([0, 0, 0, 0, 0, 0, 0]);
+
+  useEffect(() => {
+    //e.preventDefault();
+    axios
+      .post(`http://127.0.0.1:5000/cal`, { userid: localStorage.userid })
+      .then((res) => {
+        console.log(res.data[0].date);
+        console.log(res.data[0].mood);
+        setDays(res.data[0].date);
+        setEmotions(res.data[0].mood);
+        //window.location.replace(`/Statistics`);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
+  // console.log('days : ', days);
+  // console.log('emotions : ', emotions);
+  //console.log('emotions : ', emotions[1]);
+
+  for (let i = 0; i < 7; i++) {
+    EMOTIONS[i].value = emotions[i];
+    DATES[i].count = days[i];
+  }
+  console.log('DATES : ', DATES);
+
   return (
     <div>
       <Wrap>
@@ -180,7 +211,7 @@ function Statics() {
           <Title>요일 통계</Title>
           <WrapChart>
             <ResponsiveContainer width='100%' height='100%'>
-              <BarChart
+              <AreaChart
                 width={500}
                 height={300}
                 data={DATES}
@@ -195,8 +226,12 @@ function Statics() {
                 <XAxis dataKey='date' />
                 <YAxis />
                 <Tooltip />
-                <Bar dataKey='count' stroke='#8884d8e3' fill='#8884d8a0' />
-              </BarChart>
+                <Area
+                  dataKey='count'
+                  stroke='rgb(136, 132, 216)'
+                  fill='rgb(136, 132, 216, 0.63)'
+                />
+              </AreaChart>
             </ResponsiveContainer>
           </WrapChart>
         </WrapContent>
