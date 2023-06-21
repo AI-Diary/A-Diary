@@ -71,7 +71,9 @@ const DiaryImage = styled.img`
   width: 20rem;
   height: 13rem;
   background-color: white;
+  background-size: 20rem 13rem;
   background-image: url(${(props) => props.backgroundImage});
+  /* background-image: url('https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMzAzMzFfMjg4%2FMDAxNjgwMjQyNDk3NjQ1.1kiGUNgdBc0LoEMQTxGhH2KDBFu65OPtZMuBABKYmJ0g.gTfZNOC5_loP_dfvvqHXrCpKo5X6CK8ORdR1Pg9xE2Qg.JPEG.commab%2F4%25BF%25F9_%25B9%25D9%25C5%25C1%25C8%25AD%25B8%25E9.jpg&type=a340'); */
   border-radius: 1rem;
 `;
 const Date = styled.div`
@@ -92,7 +94,7 @@ function MyPage() {
   // console.log(state);
 
   useEffect(() => {
-    console.log('localStorage : ', localStorage.userid);
+    // console.log('localStorage : ', localStorage.userid);
     axios
       .post(`http://127.0.0.1:5000/mypage`, { userid: localStorage.userid })
       .then((res) => {
@@ -113,6 +115,10 @@ function MyPage() {
   const NavigateToStatistics = () => {
     navigate(`/Statistics`);
   };
+
+  diarys.map((diary) => {
+    console.log(diary.img);
+  });
   // console.log('diary확인', diarys);
   // let i = 0;
   // for (i = 0; i < 1; i += 1) {

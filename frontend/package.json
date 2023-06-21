@@ -8,6 +8,7 @@
     "@testing-library/user-event": "^13.5.0",
     "@use-gesture/react": "^10.2.26",
     "add": "^2.0.6",
+    "aws-sdk": "^2.1401.0",
     "axios": "^1.2.6",
     "html-to-image": "^1.11.11",
     "html2canvas": "^1.4.1",
