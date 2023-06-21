@@ -1,17 +1,17 @@
 from flask import Flask, render_template, request, session, redirect, url_for, jsonify
 from flask_cors import CORS
 from flaskext.mysql import MySQL
-from datetime import datetime
 import base64
+# from datetime import datetime
 
 mysql = MySQL()
 app = Flask(__name__)
 CORS(app)
 
 app.config['MYSQL_DATABASE_USER'] = 'root'
-app.config['MYSQL_DATABASE_PASSWORD'] = 'passwd'
-app.config['MYSQL_DATABASE_DB'] = 'a-diary'
-app.config['MYSQL_DATABASE_HOST'] = '127.0.0.1'
+app.config['MYSQL_DATABASE_PASSWORD'] = 'password'
+app.config['MYSQL_DATABASE_DB'] = 'A-diary'
+app.config['MYSQL_DATABASE_HOST'] = 'localhost'
 app.secret_key = "ABCDEFG"
 mysql.init_app(app)
 
@@ -75,9 +75,11 @@ def login():
         conn = mysql.connect()
         cursor = conn.cursor()
 
+        # sql = "SELECT * FROM user WHERE id = %s and pw = %s"
+        # rows_count = cursor.execute(sql, (id, pw))
+
         sql = "SELECT userid FROM user WHERE id = %s and pw = %s"
-        user_info = cursor.execute(sql, (id, pw))
-        print(user_info)
+        rows_count = cursor.execute(sql, (id, pw))
 
         return jsonify(user_info)
 
@@ -133,19 +135,14 @@ def my_page():
         userid = params['userid']
         conn = mysql.connect()
         cursor = conn.cursor()
-        # id = session['login'][0]
-        
-        cursor.execute("SELECT CONVERT(img USING euckr) FROM user_diary WHERE userid=%s", (userid))
-        images = cursor.fetchall()
-        # for image in images:
-            # print(image)
+        #id = session['login'][0]
 
         cursor.execute("SELECT CONVERT(img USING euckr) FROM user_diary WHERE userid=%s", (userid))
         images = cursor.fetchall()
 
         cursor.execute("SELECT * FROM user_diary WHERE userid = %s ORDER BY diarynum DESC", (userid))
         rows = cursor.fetchall()
-        # print(rows)
+        print(rows)
 
         result = []
         for row in rows:
@@ -159,6 +156,11 @@ def my_page():
             img = 'https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMzAzMzFfMjg4%2FMDAxNjgwMjQyNDk3NjQ1.1kiGUNgdBc0LoEMQTxGhH2KDBFu65OPtZMuBABKYmJ0g.gTfZNOC5_loP_dfvvqHXrCpKo5X6CK8ORdR1Pg9xE2Qg.JPEG.commab%2F4%25BF%25F9_%25B9%25D9%25C5%25C1%25C8%25AD%25B8%25E9.jpg&type=a340'
             day = row[9]
 
+            # date = datetime.strptime(date_str, "%Y-%m-%d").date()
+            # createat = datetime.strptime(createat_str, "%Y-%m-%d %H:%M:%S")
+
+            # print("img : ", img)
+
             result.append({
                 "diarynum": diarynum,
                 "title": title,
@@ -166,14 +168,18 @@ def my_page():
                 "weather": weather,
                 "diary": diary,
                 "date": date_str,
+                "day":day,
                 "createat": createat_str,
-                "img": img,
-                "day": day,
+                "img": img
             })
     
+
+        # print('mypage', result)
+    # for i in range(len(result)):
+    #     print('result : ',result[i])
+    #     result['img']=images
     return jsonify(result)
 
-# 달력에 일기, 감정 표시
 @app.route('/main_page', methods = ['POST'])
 def main_page():
 
@@ -206,17 +212,17 @@ def delete(diarynumber):
     if request.method == 'POST':
         diarynumber=params["diarynum"]
         
-        print("diarynum: ", diarynumber)
+#         print("diarynum: ", diarynumber)
 
-        conn = mysql.connect()
-        cursor = conn.cursor()
-        cursor.execute("DELETE FROM user_diary WHERE diarynum = %s",(diarynumber))
-        conn.commit()
+#         conn = mysql.connect()
+#         cursor = conn.cursor()
+#         cursor.execute("DELETE FROM user_diary WHERE diarynum = %s",(diarynumber))
+#         conn.commit()
             
-        cursor.close()
-        conn.close()
+#         cursor.close()
+#         conn.close()
 
-    return "success"
+#     return "success"
 
 # 일기, 감정 통계
 @app.route('/cal', methods = ['POST'])
