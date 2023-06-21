@@ -193,7 +193,9 @@ function MyPage() {
                     '`' +
                     diary.title +
                     '`' +
-                    diary.weather
+                    diary.weather +
+                    '`' +
+                    diary.diarynum
                   }
                 >
                   <DiaryImage backgroundIamge={diary.img} />
