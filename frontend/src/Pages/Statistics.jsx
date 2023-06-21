@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import styled from 'styled-components';
 import Menu from '../Components/Menu';
 import Button from '../Components/Button';
@@ -128,6 +129,11 @@ function Statics() {
   const NavigateToStatistics = () => {
     navigate(`/MyPage`);
   };
+
+  useEffect(() => {
+    axios.post();
+  });
+
   return (
     <div>
       <Wrap>

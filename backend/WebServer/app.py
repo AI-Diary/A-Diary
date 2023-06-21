@@ -72,6 +72,8 @@ def login():
         id = params['id']
         pw = params['pw']
 
+        print("id : ",id, 'pw : ',pw)
+
         conn = mysql.connect()
         cursor = conn.cursor()
 
@@ -79,24 +81,17 @@ def login():
         # rows_count = cursor.execute(sql, (id, pw))
 
         sql = "SELECT userid FROM user WHERE id = %s and pw = %s"
-        rows_count = cursor.execute(sql, (id, pw))
+        rows_count = cursor.execute("SELECT userid FROM user WHERE id = %s and pw = %s", (id, pw))
 
-        return jsonify(user_info)
+        if rows_count > 0:
+            userid = cursor.fetchone()
+            print(userid)
 
-#         if rows_count > 0:
-#             user_info = cursor.fetchone()
-#             print(user_info)
-#             session['login']= user_info
-#             print(session['login'])
-#             return redirect(url_for('index'))
+            return jsonify(userid)
+        else:
+            return "fail"
 
-# # 세션 따로 저장
-# @app.route('/main')
-# def index():
-#     if 'login' in session:
-#         return jsonify(session['login'])
-#     else:
-#         return redirect(url_for('login'))
+
 
 # 일기 저장
 @app.route('/write', methods = ['POST'])
