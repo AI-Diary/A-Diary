@@ -173,7 +173,7 @@ def my_page():
                 "diary": diary,
                 "date": date_str,
                 "createat": createat_str,
-                "img": img,
+                # "img": img,
                 "day": day,
             })
     

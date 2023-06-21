@@ -8,6 +8,7 @@ import Button from '../Components/Button';
 import Input from '../Components/Input';
 import moment from 'moment';
 import AWS from 'aws-sdk';
+import { Buffer } from 'buffer';
 import WordSpeech from '../Images/speech.png';
 import Sunny from '../Images/sunny_default.png';
 import Cloudy from '../Images/cloudy_default.png';
@@ -355,21 +356,31 @@ function Write() {
         accessKeyId: process.env.REACT_APP_ACCESS_KEY_ID,
         secretAccessKey: process.env.REACT_APP_SECRET_ACCEESS_KEY,
         region: process.env.REACT_APP_REGION,
-        // accessKeyId: 'AKIA2BJG3GD7YDGEDZF7',
-        // secretAccessKey: '/p1ohz2P/Eu81JpxTmMqT+Y49GOP2erSzjyPPsU1',
-        // region: 'ap-northeast-2',
       });
 
       const s3 = new AWS.S3();
 
+      const base64Image = jpgUrl.replace(/^data:image\/\w+;base64,/, '');
       const params = {
         Bucket: 'a-diary/a-diary',
         Key: localStorage.userid + date + '.png',
-        Body: jpgUrl,
+        Body: Buffer.from(String(base64Image), 'base64'),
         ACL: 'public-read',
         ContentEncoding: 'base64',
         ContentType: 'image/png',
       };
+
+      // const params = {
+      //   Bucket: 'a-diary/a-diary',
+      //   Key: localStorage.userid + date + '.png',
+      //   Body: Buffer.from(
+      //     jpgUrl.replace(/^data:image\/\w+;base64,/, ''),
+      //     'base64'
+      //   ),
+      //   ACL: 'public-read',
+      //   ContentEncoding: 'base64',
+      //   ContentType: 'image/png',
+      // };
 
       s3.upload(params, (err, data) => {
         if (err) console.log('S3 업로드 중 에러 발생 : ', err);
@@ -426,15 +437,19 @@ function Write() {
   // WriteModal 닫혔을 때
   const onChangeUrl = (url) => {
     // console.log('url 자르기 전 : ', url.slice(0, 22));
-    const remodelJpgUrl = url.slice(22);
+    // const remodelJpgUrl = url.slice(22);
 
     // console.log('url 자른 후 : ', jpgUrl.slice(0, 20));
+
     // const base64Data = Buffer.from(
     //   url.replace(/^data:image\/\w+;base64,/, ''),
     //   'base64'
     // );
+    // console.log(base64Data);
     // setJpgUrl(base64Data);
-    setJpgUrl(remodelJpgUrl);
+    setJpgUrl(url);
+
+    // setJpgUrl(remodelJpgUrl);
     // setJpgUrl(url.slice(0, 22));
 
     // console.log('jpgUrl : ', jpgUrl.slice(22, 30));

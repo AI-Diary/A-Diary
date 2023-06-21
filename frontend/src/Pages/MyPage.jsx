@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import AWS from 'aws-sdk';
+import { Buffer } from 'buffer';
 import axios from 'axios';
-import ShowDiary from './ShowDiary.jsx';
+// import ShowDiary from './ShowDiary.jsx';
 import styled from 'styled-components';
 import Menu from '../Components/Menu';
 import Button from '../Components/Button';
@@ -67,13 +69,13 @@ const WrapDiary = styled.div`
   background-color: rgba(256, 256, 256, 0.7);
   box-shadow: 0.4rem 0.4rem 1rem rgba(120, 120, 120, 0.3);
 `;
-const DiaryImage = styled.img`
+const DiaryImage = styled.div`
   width: 20rem;
   height: 13rem;
   background-color: white;
   background-size: 20rem 13rem;
-  background-image: url(${(props) => props.backgroundImage});
-  /* background-image: url('https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMzAzMzFfMjg4%2FMDAxNjgwMjQyNDk3NjQ1.1kiGUNgdBc0LoEMQTxGhH2KDBFu65OPtZMuBABKYmJ0g.gTfZNOC5_loP_dfvvqHXrCpKo5X6CK8ORdR1Pg9xE2Qg.JPEG.commab%2F4%25BF%25F9_%25B9%25D9%25C5%25C1%25C8%25AD%25B8%25E9.jpg&type=a340'); */
+  background-image: ${({ Image }) => `url(${Image})`};
+  /* background-image: url('https://a-diary.s3.ap-northeast-2.amazonaws.com/a-diary/32023%2C06%2C15.png'); */
   border-radius: 1rem;
 `;
 const Date = styled.div`
@@ -89,6 +91,7 @@ const Title = styled.div`
 function MyPage() {
   const [diarys, getDiarys] = useState([]);
   const [show, setShow] = useState(false);
+  const [keys, setKeys] = useState([]);
   const navigate = useNavigate();
   // const { state } = useLocation();
   // console.log(state);
@@ -117,21 +120,22 @@ function MyPage() {
   };
 
   diarys.map((diary) => {
-    console.log(diary.img);
+    const DATE = diary.date.split('-');
+    const link =
+      'https://a-diary.s3.ap-northeast-2.amazonaws.com/a-diary/' +
+      localStorage.userid +
+      DATE[0] +
+      '%2C' +
+      DATE[1] +
+      '%2C' +
+      DATE[2] +
+      '.png';
+    console.log(link);
+    diary['img'] = link;
   });
-  // console.log('diary확인', diarys);
-  // let i = 0;
-  // for (i = 0; i < 1; i += 1) {
-  //   console.log(i + ' : ' + diarys);
-  // }
 
-  // let reader = new FileReader();
+  console.log(diarys);
 
-  // reader.readAsDataURL(blob);
-  // reader.onloadend = () => {
-  //   var base64data = reader.result;
-  //   console.log(base64data);
-  // };
   return (
     <div>
       <Wrap>
@@ -157,26 +161,6 @@ function MyPage() {
           />
           <List>
             {diarys.map((diary, index) => {
-              {
-                /* let reader = new FileReader(); */
-              }
-              {
-                /* var img; */
-              }
-              {
-                /* console.log(typeof diary.img); */
-              }
-              {
-                /* console.log(diary.img); */
-              }
-
-              {
-                /* reader.readAsDataURL(diary.img);
-              reader.onloadend = () => {
-                var base64data = reader.result;
-                console.log(base64data);
-              }; */
-              }
               const getDate = diary.date.split('-');
 
               const date =
@@ -204,7 +188,7 @@ function MyPage() {
                     diary.diarynum
                   }
                 >
-                  <DiaryImage backgroundIamge={diary.img} />
+                  <DiaryImage Image={diary.img} />
                   {/* <div>{diary.img}</div> */}
                   <Date>{date}</Date>
                   <Title>{diary.title}</Title>

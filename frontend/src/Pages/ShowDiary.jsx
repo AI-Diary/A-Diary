@@ -194,7 +194,7 @@ const Diary = styled.div`
   width: 40rem;
   height: 25rem;
   background-color: transparent;
-  background-image: url(${(props) => props.backgroundImage});
+  background-image: ${({ Image }) => `url(${Image})`};
   background-size: 40rem 25rem;
 `;
 
@@ -346,7 +346,7 @@ function ShowDiary() {
             </WrapTitleContents>
           </WrapTitle>
           <DrawDiary>
-            <Diary backgrundImage={info[3]} />
+            <Diary Image={info[3]} />
           </DrawDiary>
           <WriteDiary readOnly>{info[2]}</WriteDiary>
           <WrapDelete>
