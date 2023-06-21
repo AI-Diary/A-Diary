@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 // import ReactDOM from 'react-dom/client';
-import html2canvas from 'html2canvas';
+// import html2canvas from 'html2canvas';
 import * as htmlToImage from 'html-to-image';
 import { useSpring, animated } from 'react-spring';
 import { useDrag } from '@use-gesture/react';
-import { Resizable } from 're-resizable';
+// import { Resizable } from 're-resizable';
+import { Rnd } from 'react-rnd';
 import axios from 'axios';
 import styled from 'styled-components';
 import Button from '../Components/Button';
@@ -24,7 +25,7 @@ import Kitchen1 from '../Images/Kitchen1.png';
 import Kitchen2 from '../Images/Kitchen2.png';
 import Yarn1 from '../Images/Yarn1.png';
 import None from '../Images/None.png';
-import Cookie from '../Images/cookie.png';
+// import Cookie from '../Images/cookie.png';
 
 const Wrap = styled.div`
   position: absolute;
@@ -425,11 +426,9 @@ function WriteModal({ setVisibleModal, onChange, keyword }) {
 
     return (
       <>
-        <animated.div
+        {/* <animated.div
           {...bind()}
           style={{
-            // top: dragging ? position.y : finalPosition.x,
-            // left: dragging ? position.x : finalPosition.y,
             x,
             y,
             position: 'absolute',
@@ -439,11 +438,9 @@ function WriteModal({ setVisibleModal, onChange, keyword }) {
             backgroundSize: 100,
             touchAction: 'none',
             boxSizing: 'content-box',
-            // overflow: 'auto',
-            // resize: 'both',
           }}
-        >
-          {/* <Resizable
+        > */}
+        {/* <Resizable
             style={{
               position: 'absolute',
               backgroundColor: 'black',
@@ -454,35 +451,49 @@ function WriteModal({ setVisibleModal, onChange, keyword }) {
               setHeight(height + d.height);
             }}
           /> */}
+        <Rnd
+          style={{
+            // width: 100,
+            // height: 100,
+            backgroundImage: `url('data:image/jpeg;base64,${data}')`,
+            // backgroundSize: 'contain',
+            backgroundRepeat: 'no-repeat',
+            // overflow: 'auto',
+            // resize: 'both',
+          }}
+          default={{ x: 0, y: 0, width: 100, height: 100 }}
+        >
           <Delete
             style={{
               display: parseInt(selectedDiv) === id ? 'block' : 'none',
               position: 'absolute',
-              width: '1rem',
-              height: '1rem',
-              top: '0.5rem',
-              left: '0.2rem',
+              width: '1.3rem',
+              height: '1.3rem',
+              top: '-1.3rem',
+              left: '-1.3rem',
               borderRadius: '1rem',
-              backgroundColor: 'grey',
+              backgroundColor: 'lightgrey',
               color: 'white',
-              fontSize: '0.8rem',
+              fontSize: '1rem',
+              textAlign: 'center',
             }}
             id={id}
             onClick={onClickDelete}
           >
-            D
+            X
           </Delete>
           <FixFrame
             style={{
               width: '100%',
               height: '100%',
               border:
-                parseInt(selectedDiv) === id ? '1px solid transparent' : 'none',
+                parseInt(selectedDiv) === id ? '1px solid lightgrey' : 'none',
             }}
             id={id}
             onClick={onClickPicture}
           />
-        </animated.div>
+        </Rnd>
+        {/* </animated.div> */}
       </>
     );
   };
