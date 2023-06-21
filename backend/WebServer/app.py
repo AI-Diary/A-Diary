@@ -143,7 +143,7 @@ def my_page():
         #cursor.execute("SELECT CONVERT(img USING euckr) FROM user_diary WHERE userid=%s", (userid))
         #images = cursor.fetchall()
 
-        cursor.execute("SELECT * FROM user_diary WHERE userid = %s ORDER BY diarynum DESC", (userid))
+        cursor.execute("SELECT * FROM user_diary WHERE userid = %s ORDER BY date DESC", (userid))
         rows = cursor.fetchall()
         print(rows)
 
@@ -218,17 +218,17 @@ def delete():
     if request.method == 'POST':
         diarynumber=params["diarynum"]
         
-#         print("diarynum: ", diarynumber)
+        print("diarynum: ", diarynumber)
 
-#         conn = mysql.connect()
-#         cursor = conn.cursor()
-#         cursor.execute("DELETE FROM user_diary WHERE diarynum = %s",(diarynumber))
-#         conn.commit()
+        conn = mysql.connect()
+        cursor = conn.cursor()
+        cursor.execute("DELETE FROM user_diary WHERE diarynum = %s",(diarynumber))
+        conn.commit()
             
-#         cursor.close()
-#         conn.close()
+        cursor.close()
+        conn.close()
 
-#     return "success"
+    return "success"
 
 # 일기, 감정 통계
 @app.route('/cal', methods = ['POST'])
