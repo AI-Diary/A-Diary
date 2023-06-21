@@ -412,9 +412,9 @@ function WriteModal({ setVisibleModal, onChange, keyword }) {
     const [{ x, y }, api] = useSpring(() => ({ x: 0, y: 0 }));
 
     const bind = useDrag(
-      ({ down, offset: [ox, oy] }, e) => {
+      ({ down, offset: [ox, oy] }) => {
         api.start({ x: ox, y: oy, immediate: down });
-        console.log('id : ', e, 'ox : ', ox, 'oy : ', oy);
+        console.log('ox : ', ox, 'oy : ', oy);
       },
       {
         bounds: { left: 0, right: 732, top: 0, bottom: 422 },

@@ -194,7 +194,7 @@ const Diary = styled.div`
   width: 40rem;
   height: 25rem;
   background-color: transparent;
-  background-image: url(${(props) => props.backgroundImage});
+  background-image: ${({ Image }) => `url(${Image})`};
   background-size: 40rem 25rem;
 `;
 
@@ -234,12 +234,15 @@ const WrapDelete = styled.div`
 
 function ShowDiary() {
   const { state } = useLocation();
+  const navigate = useNavigate();
   const info = state.info.split('`');
+  console.log(info);
 
   const date = info[0].split('-');
   const year = date[0];
   const month = date[1];
   const day = date[2];
+  const diarynum = info[7];
 
   let weather, background;
 
@@ -247,6 +250,17 @@ function ShowDiary() {
     const check = window.confirm('일기를 삭제하시겠습니까?');
     if (check) {
       console.log('삭제');
+      console.log('diarynum : ', diarynum);
+      axios
+        .post(`http://127.0.0.1:5000/delete`, { diarynum: diarynum })
+        .then((res) => {
+          console.log(res);
+          alert('삭제 완료 되었습니다.');
+          navigate(-1);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
   };
 
@@ -332,7 +346,7 @@ function ShowDiary() {
             </WrapTitleContents>
           </WrapTitle>
           <DrawDiary>
-            <Diary backgrundImage={info[3]} />
+            <Diary Image={info[3]} />
           </DrawDiary>
           <WriteDiary readOnly>{info[2]}</WriteDiary>
           <WrapDelete>

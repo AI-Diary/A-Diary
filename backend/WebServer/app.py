@@ -10,8 +10,8 @@ CORS(app)
 
 app.config['MYSQL_DATABASE_USER'] = 'root'
 app.config['MYSQL_DATABASE_PASSWORD'] = 'password'
-app.config['MYSQL_DATABASE_DB'] = 'A-diary'
-app.config['MYSQL_DATABASE_HOST'] = 'localhost'
+app.config['MYSQL_DATABASE_DB'] = 'A-Diary'
+app.config['MYSQL_DATABASE_HOST'] = '127.0.0.1'
 app.secret_key = "ABCDEFG"
 mysql.init_app(app)
 
@@ -77,10 +77,6 @@ def login():
         conn = mysql.connect()
         cursor = conn.cursor()
 
-        # sql = "SELECT * FROM user WHERE id = %s and pw = %s"
-        # rows_count = cursor.execute(sql, (id, pw))
-
-        sql = "SELECT userid FROM user WHERE id = %s and pw = %s"
         rows_count = cursor.execute("SELECT userid FROM user WHERE id = %s and pw = %s", (id, pw))
 
         if rows_count > 0:
@@ -90,6 +86,13 @@ def login():
             return jsonify(userid)
         else:
             return "fail"
+
+#         if rows_count > 0:
+#             user_info = cursor.fetchone()
+#             print(user_info)
+#             session['login']= user_info
+#             print(session['login'])
+#             return redirect(url_for('index'))
 
 
 
@@ -105,15 +108,15 @@ def save_diary():
         weather = params['weather']
         title = params['title']
         diary = params['diary']
-        img = params['jpgUrl']
+        #img = params['jpgUrl']
         mood = params['emotion']
         
         print('userid:', userid, 'weather: ',weather, 'title: ', title, 'diary: ', diary)
 
         conn = mysql.connect()
         cursor = conn.cursor()
-        cursor.execute("INSERT INTO user_diary(userid, title, mood, weather, diary, date, img, day) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)", 
-                       (userid, title, mood, weather, diary, date[0]+'-'+date[1]+'-'+date[2], img, day))
+        cursor.execute("INSERT INTO user_diary(userid, title, mood, weather, diary, date, day) VALUES (%s, %s, %s, %s, %s, %s, %s)", 
+                       (userid, title, mood, weather, diary, date[0]+'-'+date[1]+'-'+date[2], day))
 
         conn.commit()
             
@@ -130,10 +133,15 @@ def my_page():
         userid = params['userid']
         conn = mysql.connect()
         cursor = conn.cursor()
-        #id = session['login'][0]
+        # id = session['login'][0]
+        
+        #cursor.execute("SELECT CONVERT(img USING euckr) FROM user_diary WHERE userid=%s", (userid))
+        #images = cursor.fetchall()
+        # for image in images:
+            # print(image)
 
-        cursor.execute("SELECT CONVERT(img USING euckr) FROM user_diary WHERE userid=%s", (userid))
-        images = cursor.fetchall()
+        #cursor.execute("SELECT CONVERT(img USING euckr) FROM user_diary WHERE userid=%s", (userid))
+        #images = cursor.fetchall()
 
         cursor.execute("SELECT * FROM user_diary WHERE userid = %s ORDER BY diarynum DESC", (userid))
         rows = cursor.fetchall()
@@ -141,14 +149,16 @@ def my_page():
 
         result = []
         for row in rows:
-            diarynum = row[1]
+            print(row[0], row[1])
+            diarynum = row[0]
             title = row[2]
             mood = row[3]
             weather = row[4]
             diary = row[5]
             date_str = row[6]
             createat_str = row[7]
-            img = 'https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMzAzMzFfMjg4%2FMDAxNjgwMjQyNDk3NjQ1.1kiGUNgdBc0LoEMQTxGhH2KDBFu65OPtZMuBABKYmJ0g.gTfZNOC5_loP_dfvvqHXrCpKo5X6CK8ORdR1Pg9xE2Qg.JPEG.commab%2F4%25BF%25F9_%25B9%25D9%25C5%25C1%25C8%25AD%25B8%25E9.jpg&type=a340'
+            # img = 'https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMzAzMzFfMjg4%2FMDAxNjgwMjQyNDk3NjQ1.1kiGUNgdBc0LoEMQTxGhH2KDBFu65OPtZMuBABKYmJ0g.gTfZNOC5_loP_dfvvqHXrCpKo5X6CK8ORdR1Pg9xE2Qg.JPEG.commab%2F4%25BF%25F9_%25B9%25D9%25C5%25C1%25C8%25AD%25B8%25E9.jpg&type=a340'
+            img = row[8]
             day = row[9]
 
             # date = datetime.strptime(date_str, "%Y-%m-%d").date()
@@ -165,7 +175,8 @@ def my_page():
                 "date": date_str,
                 "day":day,
                 "createat": createat_str,
-                "img": img
+                # "img": img,
+                "day": day,
             })
     
 
@@ -201,7 +212,7 @@ def main_page():
 
 # 일기 삭제
 @app.route('/delete', methods = ['POST'])
-def delete(diarynumber):
+def delete():
     params = request.get_json()
     error=None
     if request.method == 'POST':
@@ -226,25 +237,60 @@ def mood():
     userid = params["userid"]
 
     if request.method == 'POST':
+        emotion=[0,0,0,0,0,0,0]
+        date=[0,0,0,0,0,0,0]
         conn = mysql.connect()
         cursor = conn.cursor()
-        cursor.execute("SELECT (mood, date) FROM user_diary WHERE userid = %s", (userid))
+        cursor.execute("SELECT mood, day FROM user_diary WHERE userid = %s", (userid))
         print(userid)
 
         rows = cursor.fetchall()
-        print(rows)
+        print('rows : ',rows)
 
         result = []
         for row in rows:
-            mood = row[1]
-            date = row[2]
+            mood = row[0]
+            day = row[1]
 
-            result.append({
-                'mood':mood - 30,
-                'date':date - 30
-            })
+            if mood == '기쁨':
+                emotion[0]+=1
+            elif mood == '슬픔':
+                emotion[1]+=1
+            elif mood == '당황':
+                emotion[2]+=1
+            elif mood == '불안':
+                emotion[3]+=1
+            elif mood == '분노':
+                emotion[4]+=1
+            elif mood == '상처':
+                emotion[5]+=1
+            elif mood == '중립':
+                emotion[6]+=1    
 
-            print(result)
+
+            if day == '월':
+                date[0]+=1
+            elif day == '화':
+                date[1]+=1
+            elif day == '수':
+                date[2]+=1
+            elif day == '목':
+                date[3]+=1
+            elif day == '금':
+                date[4]+=1
+            elif day == '토':
+                date[5]+=1
+            elif day == '일':
+                date[6]+=1  
+            # emotion.append(mood)
+            # date.append(day)
+
+        result.append({
+            'mood':emotion,
+            'date':date
+        })
+
+        print(result)
     
     return jsonify(result)
 

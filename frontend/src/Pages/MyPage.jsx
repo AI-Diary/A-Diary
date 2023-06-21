@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import AWS from 'aws-sdk';
+import { Buffer } from 'buffer';
 import axios from 'axios';
-import ShowDiary from './ShowDiary.jsx';
+// import ShowDiary from './ShowDiary.jsx';
 import styled from 'styled-components';
 import Menu from '../Components/Menu';
 import Button from '../Components/Button';
@@ -67,11 +69,13 @@ const WrapDiary = styled.div`
   background-color: rgba(256, 256, 256, 0.7);
   box-shadow: 0.4rem 0.4rem 1rem rgba(120, 120, 120, 0.3);
 `;
-const DiaryImage = styled.img`
+const DiaryImage = styled.div`
   width: 20rem;
   height: 13rem;
   background-color: white;
-  background-image: url(${(props) => props.backgroundImage});
+  background-size: 20rem 13rem;
+  background-image: ${({ Image }) => `url(${Image})`};
+  /* background-image: url('https://a-diary.s3.ap-northeast-2.amazonaws.com/a-diary/32023%2C06%2C15.png'); */
   border-radius: 1rem;
 `;
 const Date = styled.div`
@@ -87,12 +91,13 @@ const Title = styled.div`
 function MyPage() {
   const [diarys, getDiarys] = useState([]);
   const [show, setShow] = useState(false);
+  const [keys, setKeys] = useState([]);
   const navigate = useNavigate();
   // const { state } = useLocation();
   // console.log(state);
 
   useEffect(() => {
-    console.log('localStorage : ', localStorage.userid);
+    // console.log('localStorage : ', localStorage.userid);
     axios
       .post(`http://127.0.0.1:5000/mypage`, { userid: localStorage.userid })
       .then((res) => {
@@ -113,19 +118,24 @@ function MyPage() {
   const NavigateToStatistics = () => {
     navigate(`/Statistics`);
   };
-  // console.log('diary확인', diarys);
-  // let i = 0;
-  // for (i = 0; i < 1; i += 1) {
-  //   console.log(i + ' : ' + diarys);
-  // }
 
-  // let reader = new FileReader();
+  diarys.map((diary) => {
+    const DATE = diary.date.split('-');
+    const link =
+      'https://a-diary.s3.ap-northeast-2.amazonaws.com/a-diary/' +
+      localStorage.userid +
+      DATE[0] +
+      '%2C' +
+      DATE[1] +
+      '%2C' +
+      DATE[2] +
+      '.png';
+    console.log(link);
+    diary['img'] = link;
+  });
 
-  // reader.readAsDataURL(blob);
-  // reader.onloadend = () => {
-  //   var base64data = reader.result;
-  //   console.log(base64data);
-  // };
+  console.log(diarys);
+
   return (
     <div>
       <Wrap>
@@ -151,26 +161,6 @@ function MyPage() {
           />
           <List>
             {diarys.map((diary, index) => {
-              {
-                /* let reader = new FileReader(); */
-              }
-              {
-                /* var img; */
-              }
-              {
-                /* console.log(typeof diary.img); */
-              }
-              {
-                /* console.log(diary.img); */
-              }
-
-              {
-                /* reader.readAsDataURL(diary.img);
-              reader.onloadend = () => {
-                var base64data = reader.result;
-                console.log(base64data);
-              }; */
-              }
               const getDate = diary.date.split('-');
 
               const date =
@@ -193,10 +183,12 @@ function MyPage() {
                     '`' +
                     diary.title +
                     '`' +
-                    diary.weather
+                    diary.weather +
+                    '`' +
+                    diary.diarynum
                   }
                 >
-                  <DiaryImage backgroundIamge={diary.img} />
+                  <DiaryImage Image={diary.img} />
                   {/* <div>{diary.img}</div> */}
                   <Date>{date}</Date>
                   <Title>{diary.title}</Title>
