@@ -353,12 +353,9 @@ function Write() {
       alert('키워드 추출을 눌러주세요 🫠');
     } else {
       AWS.config.update({
-        // accessKeyId: process.env.REACT_APP_ACCESS_KEY_ID,
-        // secretAccessKey: process.env.REACT_APP_SECRET_ACCEESS_KEY,
-        // region: process.env.REACT_APP_REGION,
-        accessKeyId: 'AKIA2BJG3GD7YDGEDZF7',
-        secretAccessKey: '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',
-        region: 'ap-northeast-2',
+        accessKeyId: process.env.REACT_APP_ACCESS_KEY_ID,
+        secretAccessKey: process.env.REACT_APP_SECRET_ACCEESS_KEY,
+        region: process.env.REACT_APP_REGION,
       });
 
       const s3 = new AWS.S3();
