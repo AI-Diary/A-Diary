@@ -2,8 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 // import ReactDOM from 'react-dom/client';
 // import html2canvas from 'html2canvas';
 import * as htmlToImage from 'html-to-image';
-import { useSpring, animated } from 'react-spring';
-import { useDrag } from '@use-gesture/react';
+// import { useSpring, animated } from 'react-spring';
+// import { useDrag } from '@use-gesture/react';
 // import { Resizable } from 're-resizable';
 import { Rnd } from 'react-rnd';
 import axios from 'axios';
@@ -391,19 +391,19 @@ function WriteModal({ setVisibleModal, onChange, keyword }) {
     // 사이즈 조절
     // 그림 다시 받아오기 (선택)
     const [selectedDiv, setSelectedDiv] = useState(null);
-    const [width, setWidth] = useState(100);
-    const [height, setHeight] = useState(100);
-    const [{ x, y }, api] = useSpring(() => ({ x: 0, y: 0 }));
+    // const [width, setWidth] = useState(100);
+    // const [height, setHeight] = useState(100);
+    // const [{ x, y }, api] = useSpring(() => ({ x: 0, y: 0 }));
 
-    const bind = useDrag(
-      ({ down, offset: [ox, oy] }) => {
-        api.start({ x: ox, y: oy, immediate: down });
-        console.log('ox : ', ox, 'oy : ', oy);
-      },
-      {
-        bounds: { left: 0, right: 732, top: 0, bottom: 422 },
-      }
-    );
+    // const bind = useDrag(
+    //   ({ down, offset: [ox, oy] }) => {
+    //     api.start({ x: ox, y: oy, immediate: down });
+    //     console.log('ox : ', ox, 'oy : ', oy);
+    //   },
+    //   {
+    //     bounds: { left: 0, right: 732, top: 0, bottom: 422 },
+    //   }
+    // );
 
     const onClickDelete = (e, params) => {
       e.preventDefault();
@@ -456,7 +456,7 @@ function WriteModal({ setVisibleModal, onChange, keyword }) {
             // width: 100,
             // height: 100,
             backgroundImage: `url('data:image/jpeg;base64,${data}')`,
-            // backgroundSize: 'contain',
+            backgroundSize: 'contain',
             backgroundRepeat: 'no-repeat',
             // overflow: 'auto',
             // resize: 'both',
