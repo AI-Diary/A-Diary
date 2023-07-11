@@ -20,6 +20,10 @@ const ButtonStyle = styled.button`
   background-color: ${(props) => props.backgroundColor};
   font-family: 'NanumGothic';
   float: ${(props) => props.float};
+  margin-top: ${(props) => props.marginTop};
+  margin-right: ${(props) => props.marginRight};
+  margin-bottom: ${(props) => props.marginBottom};
+  margin-left: ${(props) => props.marginLeft};
   cursor: pointer;
   &:hover {
     /* background-color: rgba(256, 256, 256, 0.35); */

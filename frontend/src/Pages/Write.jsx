@@ -7,6 +7,8 @@ import Menu from '../Components/Menu';
 import Button from '../Components/Button';
 import Input from '../Components/Input';
 import moment from 'moment';
+import AWS from 'aws-sdk';
+import { Buffer } from 'buffer';
 import WordSpeech from '../Images/speech.png';
 import Sunny from '../Images/sunny_default.png';
 import Cloudy from '../Images/cloudy_default.png';
@@ -342,64 +344,115 @@ function Write() {
 
   // 일기 저장 눌렀을 때
   const onClickSave = () => {
-    // console.log(
-    //   'date : ',
-    //   date,
-    //   dayOfWeek,
-    //   'weather : ',
-    //   weather,
-    //   'title : ',
-    //   title,
-    //   'write : ',
-    //   write,
-    //   'jpgurl',
-    //   jpgUrl,
-    //   'emotion',
-    //   emotion
-    // );
-    axios
-      .post(`http://127.0.0.1:5000/write`, {
-        userid: localStorage.userid,
-        date: date,
-        weather: weather,
-        title: title,
-        diary: write,
-        jpgUrl: jpgUrl,
-        emotion: emotion,
-        day: dayOfWeek,
-      })
-      .then((res) => {
-        console.log(res);
-        alert('일기 저장에 성공했습니다 :)');
-        navigate(`/Main`);
-      })
-      .catch((err) => {
-        console.log(err);
-        alert('일기 저장에 실패했습니다 :(');
+    // console.log('date : ',date,dayOfWeek,'weather : ',weather,'title : ',title,'write : ',write,'jpgurl',jpgUrl,'emotion',emotion);
+    if (weather.length === 0) {
+      alert('날씨를 선택해주세요 🫠');
+    } else if (title.length === 0) {
+      alert('제목을 작성해주세요 🫠');
+    } else if (emotion.length === 0) {
+      alert('키워드 추출을 눌러주세요 🫠');
+    } else {
+      AWS.config.update({
+        accessKeyId: process.env.REACT_APP_ACCESS_KEY_ID,
+        secretAccessKey: process.env.REACT_APP_SECRET_ACCEESS_KEY,
+        region: process.env.REACT_APP_REGION,
       });
+
+      const s3 = new AWS.S3();
+
+      const base64Image = jpgUrl.replace(/^data:image\/\w+;base64,/, '');
+      const params = {
+        Bucket: 'a-diary/a-diary',
+        Key: localStorage.userid + date + '.png',
+        Body: Buffer.from(String(base64Image), 'base64'),
+        ACL: 'public-read',
+        ContentEncoding: 'base64',
+        ContentType: 'image/png',
+      };
+
+      // const params = {
+      //   Bucket: 'a-diary/a-diary',
+      //   Key: localStorage.userid + date + '.png',
+      //   Body: Buffer.from(
+      //     jpgUrl.replace(/^data:image\/\w+;base64,/, ''),
+      //     'base64'
+      //   ),
+      //   ACL: 'public-read',
+      //   ContentEncoding: 'base64',
+      //   ContentType: 'image/png',
+      // };
+
+      s3.upload(params, (err, data) => {
+        if (err) console.log('S3 업로드 중 에러 발생 : ', err);
+        else {
+          console.log('S3 업로드 완료');
+          console.log('업로드 된 이미지의 공개 URL : ', data.Location);
+        }
+      });
+      axios
+        .post(`http://127.0.0.1:5000/write`, {
+          userid: localStorage.userid,
+          date: date,
+          weather: weather,
+          title: title,
+          diary: write,
+          //jpgUrl: jpgUrl,
+          emotion: emotion,
+          day: dayOfWeek,
+        })
+        .then((res) => {
+          console.log(res);
+          alert('일기 저장에 성공했습니다 :)');
+          navigate(`/Main`);
+        })
+        .catch((err) => {
+          console.log(err);
+          alert('일기 저장에 실패했습니다 :(');
+        });
+    }
   };
 
   // 키워드 추출 눌렀을 때
   const onClickKeyword = () => {
-    axios
-      .post(`http://127.0.0.1:5001/keyword`, { text: write })
-      .then((res) => {
-        console.log(res);
-        alert('키워드 추출에 성공했습니다 :)');
-        setKeyword(res.data.word);
-        setEmotion(res.data.emotion);
-        document.getElementById('emotion').innerText = res.data.emotion;
-      })
-      .catch((err) => {
-        console.log(err);
-        alert('키워드 추출에 실패했습니다 :(');
-      });
+    if (write.length === 0) {
+      alert('일기를 적어주세요 🫠');
+    } else {
+      axios
+        .post(`http://127.0.0.1:5001/keyword`, { text: write })
+        .then((res) => {
+          console.log(res);
+
+          alert('키워드 추출에 성공했습니다 :)');
+          setKeyword(res.data.word);
+          setEmotion(res.data.emotion);
+          document.getElementById('emotion').innerText = res.data.emotion;
+        })
+        .catch((err) => {
+          console.log(err);
+          alert('키워드 추출에 실패했습니다 :(');
+        });
+    }
   };
 
   // WriteModal 닫혔을 때
   const onChangeUrl = (url) => {
+    // console.log('url 자르기 전 : ', url.slice(0, 22));
+    // const remodelJpgUrl = url.slice(22);
+
+    // console.log('url 자른 후 : ', jpgUrl.slice(0, 20));
+
+    // const base64Data = Buffer.from(
+    //   url.replace(/^data:image\/\w+;base64,/, ''),
+    //   'base64'
+    // );
+    // console.log(base64Data);
+    // setJpgUrl(base64Data);
     setJpgUrl(url);
-    // console.log('jpgUrl : ', jpgUrl);
+
+    // setJpgUrl(remodelJpgUrl);
+    // setJpgUrl(url.slice(0, 22));
+
+    // console.log('jpgUrl : ', jpgUrl.slice(22, 30));
     document.getElementById('diary').style.backgroundImage = `url(${url})`;
   };
 
@@ -420,7 +473,7 @@ function Write() {
     day = date[2];
     dayOfWeek = week[new Date(date).getDay()];
   }
-
+  // console.log(jpgUrl.slice(0, 20));
   return (
     <div>
       <Wrap>

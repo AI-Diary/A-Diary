@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import styled from 'styled-components';
+import Button from '../Components/Button';
 import Menu from '../Components/Menu';
 import Sunny from '../Images/sunny_grey.png';
 import Cloudy from '../Images/cloudy_grey.png';
@@ -192,7 +194,7 @@ const Diary = styled.div`
   width: 40rem;
   height: 25rem;
   background-color: transparent;
-  background-image: url(${(props) => props.backgroundImage})
+  background-image: ${({ Image }) => `url(${Image})`};
   background-size: 40rem 25rem;
 `;
 
@@ -224,16 +226,43 @@ const WriteDiary = styled.textarea`
   }
 `;
 
+const WrapDelete = styled.div`
+  width: fit-content;
+  height: fit-content;
+  margin: 2rem auto 0rem auto;
+`;
+
 function ShowDiary() {
   const { state } = useLocation();
+  const navigate = useNavigate();
   const info = state.info.split('`');
+  console.log(info);
 
   const date = info[0].split('-');
   const year = date[0];
   const month = date[1];
   const day = date[2];
+  const diarynum = info[7];
 
   let weather, background;
+
+  const onClickDelete = () => {
+    const check = window.confirm('일기를 삭제하시겠습니까?');
+    if (check) {
+      console.log('삭제');
+      console.log('diarynum : ', diarynum);
+      axios
+        .post(`http://127.0.0.1:5000/delete`, { diarynum: diarynum })
+        .then((res) => {
+          console.log(res);
+          alert('삭제 완료 되었습니다.');
+          navigate(-1);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  };
 
   if (info[6] === 'Sunny') {
     weather = '맑음';
@@ -317,9 +346,24 @@ function ShowDiary() {
             </WrapTitleContents>
           </WrapTitle>
           <DrawDiary>
-            <Diary backgrundImage={info[3]} />
+            <Diary Image={info[3]} />
           </DrawDiary>
           <WriteDiary readOnly>{info[2]}</WriteDiary>
+          <WrapDelete>
+            <Button
+              width='7rem'
+              height='2.7rem'
+              name='일기 삭제'
+              color='rgba(138, 80, 255, 0.6)'
+              marginTop='2rem'
+              border='2px solid rgba(138, 80, 255, 0.6)'
+              borderRadius='10rem'
+              backgroundColor='white'
+              hoverBackgroundColor='rgba(138, 80, 255, 0.6)'
+              hoverColor='white'
+              onClick={onClickDelete}
+            />
+          </WrapDelete>
         </WrapDiary>
       </Wrap>
     </div>
