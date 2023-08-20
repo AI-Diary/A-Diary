@@ -8,7 +8,7 @@ class draw(object):
         self.text = text
         
     def drawing(self):
-        qd = QuickDrawData()
+        qd = QuickDrawData(recognized=None)
         img = qd.get_drawing(self.text)
         self.img = img
         
@@ -35,10 +35,10 @@ class draw(object):
         return img
     
 if __name__=='__main__':
-    d = draw('anvil')
+    d = draw('cookie')
     img = d.im_b64()
-    
-    print((img))
+    # d.show()
+    # print((d))
     # dj={'img':img}
     # print(type(dj))
-    # d.b64_im(img).show()
+    d.b64_im(img).show()

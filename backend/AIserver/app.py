@@ -3,6 +3,7 @@ from flask_cors import CORS
 from WordControl.Word import Word
 from Kobert.Kobert import Kobert_predict
 from DrawControl.draw import draw
+from aipic.aiapi import get_aipic
 
 # import json
 
@@ -61,6 +62,17 @@ def get_drawpic():
     dj={'img':base}
     
     return jsonify(dj)
+
+@app.route('/aipic',methods=['POST'])
+def get_aipicture():
+    params = request.get_json()
+    text=params
+    print(text)
+    # return text
+    # print(type(text))
+    ai_pic=get_aipic(text).get_pic()
+    ai_pic={'data':ai_pic}
+    return jsonify(ai_pic)
     
 if __name__=='__main__':
     app.run('0.0.0.0',port=5001,debug=True)
