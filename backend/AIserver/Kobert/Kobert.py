@@ -101,7 +101,7 @@ class Kobert_predict:
 
 if __name__=='__main__':
     
-    text="만약에 불나거나 사고나서 밑으로 떨어지면? "
+    text="오늘은 동물원에 가서 멋진 호랑이,사자랑 귀여운 토끼도 봤다! 너무나도 재밌었다"
     kp=Kobert_predict()
     
     kp.predict(text)
