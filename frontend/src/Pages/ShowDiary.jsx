@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import AWS from 'aws-sdk';
 import axios from 'axios';
 import styled from 'styled-components';
 import Button from '../Components/Button';
@@ -255,6 +256,17 @@ function ShowDiary() {
         .post(`http://127.0.0.1:5000/delete`, { diarynum: diarynum })
         .then((res) => {
           console.log(res);
+          // const S3 = new AWS.S3();
+
+          // const params = {
+          //   Bucket: 'a-diary/a-diary',
+          //   Key: info[3],
+          // };
+
+          // S3.deleteObject(params, (err, data) => {
+          //   if (err) console.error(err);
+          //   else console.log('Object deleted successfully');
+          // });
           alert('삭제 완료 되었습니다.');
           navigate(-1);
         })

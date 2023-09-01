@@ -1,5 +1,5 @@
 // import React, { useState, useEffect, useRef } from 'react';
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import axios from 'axios';
@@ -162,6 +162,7 @@ const Diary = styled.div`
   height: 25rem;
   background-color: transparent;
   background-size: 40rem 25rem;
+  /* border: 2px solid black; */
 `;
 
 const WrapPlus = styled.div`
@@ -302,6 +303,10 @@ function Write() {
   // WriteModal에서 받아온 Uri 저장
   const [jpgUrl, setJpgUrl] = useState('');
 
+  const [getAipic, setGetAipic] = useState('');
+
+  const diaryRef = useRef(null);
+
   const week = ['일', '월', '화', '수', '목', '금', '토'];
   let date = '';
   let year = '';
@@ -309,6 +314,21 @@ function Write() {
   let day = '';
   let dayOfWeek = '';
 
+  // useEffect(() => {
+  //   // const koreakeywords = keyword.map((key) => key.korea);
+  //   // console.log(koreakeywords);
+  //   let data = '집, 무지개, 나무';
+
+  //   console.log(data);
+  //   axios.post(`http://127.0.0.1:5001/aipic`, { data: [data] }).then((res) => {
+  //     const aipic = res.data.data;
+  //     console.log('aipic : ', aipic);
+  //     // console.log('aipic atob : ', btoa(aipic));
+  //     document.getElementById(
+  //       'drawTest'
+  //     ).backgroundImage = `url(data:image/png;base64,${aipic})`;
+  //   });
+  // }, [write]);
   // 날짜 저장
   const onClickWeather = (e) => {
     setWeather(e.target.value);
@@ -358,9 +378,26 @@ function Write() {
         region: process.env.REACT_APP_REGION,
       });
 
-      const s3 = new AWS.S3();
+      const getBackgroundImageUrl = () => {
+        if (diaryRef.current) {
+          const backgroundImage = window.getComputedStyle(
+            diaryRef.current
+          ).backgroundImage;
+          console.log(backgroundImage);
 
-      const base64Image = jpgUrl.replace(/^data:image\/\w+;base64,/, '');
+          return backgroundImage;
+        }
+      };
+      const s3 = new AWS.S3();
+      let base64Image = window
+        .getComputedStyle(diaryRef.current)
+        .backgroundImage.replace('url("data:image/png;base64,', '');
+      base64Image = base64Image.replace('")', '');
+      // const base64Image = window
+      //   .getComputedStyle(diaryRef.current)
+      //   .backgroundImage.replace(/^data:image\/\w+;base64,/, '');
+      // const base64Image = jpgUrl.replace(/^data:image\/\w+;base64,/, '');
+      console.log('base64Image : ', base64Image);
       const params = {
         Bucket: 'a-diary/a-diary',
         Key: localStorage.userid + date + '.png',
@@ -434,25 +471,36 @@ function Write() {
     }
   };
 
+  //
+  const onClickSendKeywords = () => {
+    const koreakeywords = keyword.map((key) => key.korea);
+    // console.log(koreakeywords);
+    let data = '';
+    for (let i = 0; i < koreakeywords.length; i++) {
+      console.log(data);
+      if (i === koreakeywords.length - 1) {
+        data += koreakeywords[i];
+        break;
+      }
+      data += koreakeywords[i] + ', ';
+    }
+
+    console.log(data);
+    axios.post(`http://127.0.0.1:5001/aipic`, { data: [data] }).then((res) => {
+      const aipic = res.data.data;
+      console.log('aipic : ', aipic);
+      setGetAipic(aipic);
+      // console.log('aipic atob : ', btoa(aipic));
+      document.getElementById(
+        'diary'
+      ).style.backgroundImage = `url(data:image/png;base64,${getAipic})`;
+    });
+  };
+
   // WriteModal 닫혔을 때
   const onChangeUrl = (url) => {
-    // console.log('url 자르기 전 : ', url.slice(0, 22));
-    // const remodelJpgUrl = url.slice(22);
-
-    // console.log('url 자른 후 : ', jpgUrl.slice(0, 20));
-
-    // const base64Data = Buffer.from(
-    //   url.replace(/^data:image\/\w+;base64,/, ''),
-    //   'base64'
-    // );
-    // console.log(base64Data);
-    // setJpgUrl(base64Data);
     setJpgUrl(url);
-
-    // setJpgUrl(remodelJpgUrl);
-    // setJpgUrl(url.slice(0, 22));
-
-    // console.log('jpgUrl : ', jpgUrl.slice(22, 30));
+    // console.log(url.slice(0, 100));
     document.getElementById('diary').style.backgroundImage = `url(${url})`;
   };
 
@@ -565,7 +613,7 @@ function Write() {
             </WrapTitleContents>
           </WrapTitle>
           <DrawDiary>
-            <Diary id='diary'></Diary>
+            <Diary id='diary' ref={diaryRef}></Diary>
             <WrapPlus
               id='plus'
               onClick={() => {
@@ -629,7 +677,32 @@ function Write() {
               hoverColor='white'
               onClick={onClickSave}
             />
+            <Button
+              width='7rem'
+              height='2.7rem'
+              name='그림 그리기'
+              margin='0rem 0rem 0rem 2rem'
+              color='rgba(138, 80, 255, 0.6)'
+              border='2px solid rgba(138, 80, 255, 0.6)'
+              borderRadius='10rem'
+              backgroundColor='white'
+              hoverBackgroundColor='rgba(138, 80, 255, 0.6)'
+              hoverColor='white'
+              onClick={onClickSendKeywords}
+            />
           </WrapKeywordButton>
+          {/* <Diary id='drawTest'></Diary> */}
+          {/* <div
+            style={{
+              position: 'absolute',
+              width: '40rem',
+              height: '25rem',
+              backgroundColor: 'transparent',
+              backgroundSize: '40rem 25rem',
+              border: '2px solid black',
+              backgroundImage: `url(data:image/png;base64,${getAipic})`,
+            }}
+          ></div> */}
         </WrapDiary>
       </Wrap>
     </div>
