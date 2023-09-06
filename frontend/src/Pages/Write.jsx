@@ -364,7 +364,6 @@ function Write() {
 
   // 일기 저장 눌렀을 때
   const onClickSave = () => {
-    // console.log('date : ',date,dayOfWeek,'weather : ',weather,'title : ',title,'write : ',write,'jpgurl',jpgUrl,'emotion',emotion);
     if (weather.length === 0) {
       alert('날씨를 선택해주세요 🫠');
     } else if (title.length === 0) {
@@ -378,26 +377,23 @@ function Write() {
         region: process.env.REACT_APP_REGION,
       });
 
-      const getBackgroundImageUrl = () => {
-        if (diaryRef.current) {
-          const backgroundImage = window.getComputedStyle(
-            diaryRef.current
-          ).backgroundImage;
-          console.log(backgroundImage);
+      // const getBackgroundImageUrl = () => {
+      //   if (diaryRef.current) {
+      //     const backgroundImage = window.getComputedStyle(
+      //       diaryRef.current
+      //     ).backgroundImage;
+      //     console.log(backgroundImage);
 
-          return backgroundImage;
-        }
-      };
+      //     return backgroundImage;
+      //   }
+      // };
       const s3 = new AWS.S3();
       let base64Image = window
         .getComputedStyle(diaryRef.current)
         .backgroundImage.replace('url("data:image/png;base64,', '');
       base64Image = base64Image.replace('")', '');
-      // const base64Image = window
-      //   .getComputedStyle(diaryRef.current)
-      //   .backgroundImage.replace(/^data:image\/\w+;base64,/, '');
-      // const base64Image = jpgUrl.replace(/^data:image\/\w+;base64,/, '');
-      console.log('base64Image : ', base64Image);
+      // console.log('base64Image : ', base64Image);
+
       const params = {
         Bucket: 'a-diary/a-diary',
         Key: localStorage.userid + date + '.png',
@@ -407,23 +403,11 @@ function Write() {
         ContentType: 'image/png',
       };
 
-      // const params = {
-      //   Bucket: 'a-diary/a-diary',
-      //   Key: localStorage.userid + date + '.png',
-      //   Body: Buffer.from(
-      //     jpgUrl.replace(/^data:image\/\w+;base64,/, ''),
-      //     'base64'
-      //   ),
-      //   ACL: 'public-read',
-      //   ContentEncoding: 'base64',
-      //   ContentType: 'image/png',
-      // };
-
       s3.upload(params, (err, data) => {
         if (err) console.log('S3 업로드 중 에러 발생 : ', err);
         else {
-          console.log('S3 업로드 완료');
-          console.log('업로드 된 이미지의 공개 URL : ', data.Location);
+          // console.log('S3 업로드 완료');
+          // console.log('업로드 된 이미지의 공개 URL : ', data.Location);
         }
       });
       axios
@@ -433,7 +417,6 @@ function Write() {
           weather: weather,
           title: title,
           diary: write,
-          //jpgUrl: jpgUrl,
           emotion: emotion,
           day: dayOfWeek,
         })
@@ -471,13 +454,11 @@ function Write() {
     }
   };
 
-  //
+  // 키워드 합쳐서 AI 그림 그리는 기능
   const onClickSendKeywords = () => {
     const koreakeywords = keyword.map((key) => key.korea);
-    // console.log(koreakeywords);
     let data = '';
     for (let i = 0; i < koreakeywords.length; i++) {
-      console.log(data);
       if (i === koreakeywords.length - 1) {
         data += koreakeywords[i];
         break;
@@ -488,19 +469,16 @@ function Write() {
     console.log(data);
     axios.post(`http://127.0.0.1:5001/aipic`, { data: [data] }).then((res) => {
       const aipic = res.data.data;
-      console.log('aipic : ', aipic);
       setGetAipic(aipic);
-      // console.log('aipic atob : ', btoa(aipic));
       document.getElementById(
         'diary'
-      ).style.backgroundImage = `url(data:image/png;base64,${getAipic})`;
+      ).style.backgroundImage = `url(data:image/png;base64,${res.data.data})`;
     });
   };
 
   // WriteModal 닫혔을 때
   const onChangeUrl = (url) => {
     setJpgUrl(url);
-    // console.log(url.slice(0, 100));
     document.getElementById('diary').style.backgroundImage = `url(${url})`;
   };
 
@@ -521,7 +499,6 @@ function Write() {
     day = date[2];
     dayOfWeek = week[new Date(date).getDay()];
   }
-  // console.log(jpgUrl.slice(0, 20));
   return (
     <div>
       <Wrap>
@@ -691,18 +668,6 @@ function Write() {
               onClick={onClickSendKeywords}
             />
           </WrapKeywordButton>
-          {/* <Diary id='drawTest'></Diary> */}
-          {/* <div
-            style={{
-              position: 'absolute',
-              width: '40rem',
-              height: '25rem',
-              backgroundColor: 'transparent',
-              backgroundSize: '40rem 25rem',
-              border: '2px solid black',
-              backgroundImage: `url(data:image/png;base64,${getAipic})`,
-            }}
-          ></div> */}
         </WrapDiary>
       </Wrap>
     </div>
