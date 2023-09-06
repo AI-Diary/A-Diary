@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import Lottie from 'lottie-react';
 import axios from 'axios';
 import Menu from '../Components/Menu';
 import Button from '../Components/Button';
@@ -29,6 +30,7 @@ import InstargramGrey from '../Images/instagram_grey.png';
 import TwitterGrey from '../Images/twitter_grey.png';
 import KakaotalkGrey from '../Images/kakaotalk_grey.png';
 import Plus from '../Images/drawplus_256.png';
+import Loading from '../Images/Loading.json';
 import WriteModal from './WriteModal';
 
 const Wrap = styled.div`
@@ -154,6 +156,20 @@ const DrawDiary = styled.div`
   /* border-radius: 1.5rem 1.5rem 0rem 0rem; */
   border: 1.8px solid grey;
   background-size: 40rem 25rem;
+`;
+
+const LoadingBackground = styled.div`
+  position: absolute;
+  width: 40rem;
+  height: 25rem;
+  background-color: rgba(256, 256, 256, 0.7);
+  z-index: 10;
+`;
+
+const WrapLoading = styled.div`
+  width: 22rem;
+  height: 22rem;
+  margin: 0 auto;
 `;
 
 const Diary = styled.div`
@@ -304,6 +320,8 @@ function Write() {
   const [jpgUrl, setJpgUrl] = useState('');
 
   const [getAipic, setGetAipic] = useState('');
+
+  const [loading, setLoading] = useState(false);
 
   const diaryRef = useRef(null);
 
@@ -467,13 +485,21 @@ function Write() {
     }
 
     console.log(data);
-    axios.post(`http://127.0.0.1:5001/aipic`, { data: [data] }).then((res) => {
-      const aipic = res.data.data;
-      setGetAipic(aipic);
-      document.getElementById(
-        'diary'
-      ).style.backgroundImage = `url(data:image/png;base64,${res.data.data})`;
-    });
+    setLoading(true);
+    axios
+      .post(`http://127.0.0.1:5001/aipic`, { data: [data] })
+      .then((res) => {
+        const aipic = res.data.data;
+        setGetAipic(aipic);
+        setLoading(false);
+        document.getElementById(
+          'diary'
+        ).style.backgroundImage = `url(data:image/png;base64,${res.data.data})`;
+      })
+      .catch((err) => {
+        setLoading(false);
+        alert('그림 생성에 실패했습니다.');
+      });
   };
 
   // WriteModal 닫혔을 때
@@ -591,6 +617,15 @@ function Write() {
           </WrapTitle>
           <DrawDiary>
             <Diary id='diary' ref={diaryRef}></Diary>
+            {loading ? (
+              <LoadingBackground>
+                <WrapLoading>
+                  <Lottie animationData={Loading}></Lottie>
+                </WrapLoading>
+              </LoadingBackground>
+            ) : (
+              <div></div>
+            )}
             <WrapPlus
               id='plus'
               onClick={() => {
