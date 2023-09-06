@@ -77,17 +77,21 @@ const GetPictures = styled.div`
 
 const Cancel = styled.div`
   position: absolute;
-  width: 4rem;
-  height: 4rem;
-  background-color: transparent;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 2rem;
+  border: 2px solid grey;
+  background-color: white;
   background-size: 4rem;
+  background-image: url(${Close});
+  background-position: center;
   float: right;
   top: 10.5rem;
-  right: calc((100% - 61rem) / 2);
+  right: calc((100% - 60rem) / 2);
 
-  background-image: url(${Close});
   &:hover {
     background-image: url(${CloseGrey});
+    border: 2px solid rgba(0, 0, 0, 0.7);
   }
 `;
 
@@ -177,16 +181,19 @@ const FixFrame = styled.div`
 `;
 
 const Delete = styled.div`
-  /* position: absolute;
-  width: 1rem;
-  height: 1rem;
-  top: -0.5rem;
-  left: -0.5rem;
+  background-size: 1.3rem;
+  background-image: url(${Close});
+  position: absolute;
+  width: 1.3rem;
+  height: 1.3rem;
+  top: -1rem;
+  left: -1rem;
   border-radius: 1rem;
-  background-color: grey;
+  background-color: white;
   color: white;
   font-size: 0.8rem;
-  align-content: center; */
+  align-content: center;
+  z-index: 2;
 `;
 
 const Resize = styled.div`
@@ -432,13 +439,13 @@ function WriteModal({ setVisibleModal, onChange, keyword }) {
     //   console.log(components[0].id);
     // };
 
-    const handleDragStop = (e, id) => {
-      console.log(id);
-    };
+    // const handleDragStop = (e, id) => {
+    //   console.log(id);
+    // };
 
-    const handleResizeStop = (e, id) => {
-      console.log(id);
-    };
+    // const handleResizeStop = (e, id) => {
+    //   console.log(id);
+    // };
 
     return (
       <div id={id}>
@@ -450,28 +457,16 @@ function WriteModal({ setVisibleModal, onChange, keyword }) {
           }}
           default={{ x: 0, y: 0, width: 100, height: 100 }}
           lockAspectRatio={true}
-          onDragStop={handleDragStop({ id })}
-          onResizeStop={handleResizeStop({ id })}
+          // onDragStop={handleDragStop({ id })}
+          // onResizeStop={handleResizeStop({ id })}
         >
           <Delete
             style={{
               display: parseInt(selectedDiv) === id ? 'block' : 'none',
-              position: 'absolute',
-              width: '1.3rem',
-              height: '1.3rem',
-              top: '-1.3rem',
-              left: '-1.3rem',
-              borderRadius: '1rem',
-              backgroundColor: 'lightgrey',
-              color: 'white',
-              fontSize: '1rem',
-              textAlign: 'center',
             }}
             id={id}
             onClick={onClickDelete}
-          >
-            X
-          </Delete>
+          ></Delete>
           <FixFrame
             style={{
               width: '100%',
