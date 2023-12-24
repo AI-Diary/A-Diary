@@ -3,13 +3,17 @@ import requests
 class get_aipic:
     def __init__(self, data):
         self.data = data
-        self.url="https://bebaa0b7a426991791.gradio.live/run/predict"
-        
+        self.url="https://147986a55ebd1b3169.gradio.live/run/predict"
+        self.keyword=['golden color, high quality,highly detailed, elegant, sharp focus, cute magical, fantasy art, concept art, character concepts, digital painting,mystery, adventure']
     
     def get_pic(self):
         print(self.data)
-        # data=
-        response=requests.post(self.url, json=self.data)
+        self.data['data']+=self.keyword
+        print(self.data)
+        result = ','.join(self.data['data'])
+        result={'data':[result]}
+        print(result)
+        response=requests.post(self.url, json=result)
         print(response)
         # return True
         return response.json()['data'][0].replace('data:image/png;base64,', '')
