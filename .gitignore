@@ -1,9 +1,12 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
+
+
 # dependencies
 /node_modules
 /.pnp
 .pnp.js
+yarn.lock
 
 # testing
 /coverage
@@ -24,3 +27,11 @@ yarn-error.log*
 node_modules
 node_modules
 node_modules
+
+#캐쉬파일 안 올라가게하기
+.cache/
+.quickdrawcache/
+__pycache__/
+# pt파일들 못올리게 하기
+*.pt
+*.pyc

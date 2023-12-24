@@ -2,33 +2,57 @@ import React from 'react';
 import styled from 'styled-components';
 
 const InputStyle = styled.input`
-  display: block;
   box-sizing: content-box;
   width: ${(props) => props.width};
   height: ${(props) => props.height};
-  /* margin: ${(props) => props.margin}; */
   margin-top: ${(props) => props.marginTop};
   padding: 0rem 1rem;
-  border: 1.2px solid grey;
-  border-radius: 0.4rem;
-  font-size: 1rem;
-  /* color: rgba(200, 200, 200); */
+  border: ${(props) => props.border};
+  /* border: 1.5px solid grey; */
+  border-style: ${(props) => props.borderStyle};
+  border-radius: ${(props) => props.borderRadius};
+  background-color: ${(props) => props.backgroundColor};
+  font-size: ${(props) => props.fontSize};
+  font-family: 'NanumGothic';
+  color: ${(props) => props.color};
+  transform: rotate(${(props) => props.degree});
+  &:focus {
+    outline: none;
+  }
 `;
 
 export default function Input({
   width,
   height,
-  marginTop,
   placeholder,
   onChange,
+  color,
+  border,
+  borderStyle,
+  borderRadius,
+  backgroundColor,
+  type,
+  fontSize,
+  maxLength,
+  degree,
 }) {
   return (
-    <InputStyle
-      width={width}
-      height={height}
-      marginTop={marginTop}
-      placeholder={placeholder}
-      onChange={onChange}
-    />
+    <div>
+      <InputStyle
+        width={width}
+        height={height}
+        placeholder={placeholder}
+        onChange={onChange}
+        color={color}
+        border={border}
+        borderStyle={borderStyle}
+        borderRadius={borderRadius}
+        backgroundColor={backgroundColor}
+        type={type}
+        fontSize={fontSize}
+        maxLength={maxLength}
+        degree={degree}
+      />
+    </div>
   );
 }

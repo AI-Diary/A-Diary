@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "@use-gesture/react": "^10.2.26",
+    "react-redux": "^8.0.5",
+    "react-rnd": "^10.4.1",
+    "react-spring": "^9.7.1",
+    "redux": "^4.2.1",
+    "redux-devtools-extension": "^2.13.9"
+  }
+}
