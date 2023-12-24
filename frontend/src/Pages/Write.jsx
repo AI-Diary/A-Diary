@@ -1,7 +1,8 @@
 // import React, { useState, useEffect, useRef } from 'react';
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import Lottie from 'lottie-react';
 import axios from 'axios';
 import Menu from '../Components/Menu';
 import Button from '../Components/Button';
@@ -29,6 +30,7 @@ import InstargramGrey from '../Images/instagram_grey.png';
 import TwitterGrey from '../Images/twitter_grey.png';
 import KakaotalkGrey from '../Images/kakaotalk_grey.png';
 import Plus from '../Images/drawplus_256.png';
+import Loading from '../Images/Loading.json';
 import WriteModal from './WriteModal';
 
 const Wrap = styled.div`
@@ -156,12 +158,27 @@ const DrawDiary = styled.div`
   background-size: 40rem 25rem;
 `;
 
+const LoadingBackground = styled.div`
+  position: absolute;
+  width: 40rem;
+  height: 25rem;
+  background-color: rgba(256, 256, 256, 0.7);
+  z-index: 10;
+`;
+
+const WrapLoading = styled.div`
+  width: 22rem;
+  height: 22rem;
+  margin: 0 auto;
+`;
+
 const Diary = styled.div`
   position: absolute;
   width: 40rem;
   height: 25rem;
   background-color: transparent;
   background-size: 40rem 25rem;
+  /* border: 2px solid black; */
 `;
 
 const WrapPlus = styled.div`
@@ -302,6 +319,12 @@ function Write() {
   // WriteModal에서 받아온 Uri 저장
   const [jpgUrl, setJpgUrl] = useState('');
 
+  const [getAipic, setGetAipic] = useState('');
+
+  const [loading, setLoading] = useState(false);
+
+  const diaryRef = useRef(null);
+
   const week = ['일', '월', '화', '수', '목', '금', '토'];
   let date = '';
   let year = '';
@@ -309,6 +332,21 @@ function Write() {
   let day = '';
   let dayOfWeek = '';
 
+  // useEffect(() => {
+  //   // const koreakeywords = keyword.map((key) => key.korea);
+  //   // console.log(koreakeywords);
+  //   let data = '집, 무지개, 나무';
+
+  //   console.log(data);
+  //   axios.post(`http://127.0.0.1:5001/aipic`, { data: [data] }).then((res) => {
+  //     const aipic = res.data.data;
+  //     console.log('aipic : ', aipic);
+  //     // console.log('aipic atob : ', btoa(aipic));
+  //     document.getElementById(
+  //       'drawTest'
+  //     ).backgroundImage = `url(data:image/png;base64,${aipic})`;
+  //   });
+  // }, [write]);
   // 날짜 저장
   const onClickWeather = (e) => {
     setWeather(e.target.value);
@@ -344,7 +382,6 @@ function Write() {
 
   // 일기 저장 눌렀을 때
   const onClickSave = () => {
-    // console.log('date : ',date,dayOfWeek,'weather : ',weather,'title : ',title,'write : ',write,'jpgurl',jpgUrl,'emotion',emotion);
     if (weather.length === 0) {
       alert('날씨를 선택해주세요 🫠');
     } else if (title.length === 0) {
@@ -358,9 +395,23 @@ function Write() {
         region: process.env.REACT_APP_REGION,
       });
 
-      const s3 = new AWS.S3();
+      // const getBackgroundImageUrl = () => {
+      //   if (diaryRef.current) {
+      //     const backgroundImage = window.getComputedStyle(
+      //       diaryRef.current
+      //     ).backgroundImage;
+      //     console.log(backgroundImage);
 
-      const base64Image = jpgUrl.replace(/^data:image\/\w+;base64,/, '');
+      //     return backgroundImage;
+      //   }
+      // };
+      const s3 = new AWS.S3();
+      let base64Image = window
+        .getComputedStyle(diaryRef.current)
+        .backgroundImage.replace('url("data:image/png;base64,', '');
+      base64Image = base64Image.replace('")', '');
+      // console.log('base64Image : ', base64Image);
+
       const params = {
         Bucket: 'a-diary/a-diary',
         Key: localStorage.userid + date + '.png',
@@ -370,23 +421,11 @@ function Write() {
         ContentType: 'image/png',
       };
 
-      // const params = {
-      //   Bucket: 'a-diary/a-diary',
-      //   Key: localStorage.userid + date + '.png',
-      //   Body: Buffer.from(
-      //     jpgUrl.replace(/^data:image\/\w+;base64,/, ''),
-      //     'base64'
-      //   ),
-      //   ACL: 'public-read',
-      //   ContentEncoding: 'base64',
-      //   ContentType: 'image/png',
-      // };
-
       s3.upload(params, (err, data) => {
         if (err) console.log('S3 업로드 중 에러 발생 : ', err);
         else {
-          console.log('S3 업로드 완료');
-          console.log('업로드 된 이미지의 공개 URL : ', data.Location);
+          // console.log('S3 업로드 완료');
+          // console.log('업로드 된 이미지의 공개 URL : ', data.Location);
         }
       });
       axios
@@ -396,7 +435,6 @@ function Write() {
           weather: weather,
           title: title,
           diary: write,
-          //jpgUrl: jpgUrl,
           emotion: emotion,
           day: dayOfWeek,
         })
@@ -434,25 +472,39 @@ function Write() {
     }
   };
 
+  // 키워드 합쳐서 AI 그림 그리는 기능
+  const onClickSendKeywords = () => {
+    const koreakeywords = keyword.map((key) => key.korea);
+    let data = '';
+    for (let i = 0; i < koreakeywords.length; i++) {
+      if (i === koreakeywords.length - 1) {
+        data += koreakeywords[i];
+        break;
+      }
+      data += koreakeywords[i] + ', ';
+    }
+
+    console.log(data);
+    setLoading(true);
+    axios
+      .post(`http://127.0.0.1:5001/aipic`, { data: [data] })
+      .then((res) => {
+        const aipic = res.data.data;
+        setGetAipic(aipic);
+        setLoading(false);
+        document.getElementById(
+          'diary'
+        ).style.backgroundImage = `url(data:image/png;base64,${res.data.data})`;
+      })
+      .catch((err) => {
+        setLoading(false);
+        alert('그림 생성에 실패했습니다.');
+      });
+  };
+
   // WriteModal 닫혔을 때
   const onChangeUrl = (url) => {
-    // console.log('url 자르기 전 : ', url.slice(0, 22));
-    // const remodelJpgUrl = url.slice(22);
-
-    // console.log('url 자른 후 : ', jpgUrl.slice(0, 20));
-
-    // const base64Data = Buffer.from(
-    //   url.replace(/^data:image\/\w+;base64,/, ''),
-    //   'base64'
-    // );
-    // console.log(base64Data);
-    // setJpgUrl(base64Data);
     setJpgUrl(url);
-
-    // setJpgUrl(remodelJpgUrl);
-    // setJpgUrl(url.slice(0, 22));
-
-    // console.log('jpgUrl : ', jpgUrl.slice(22, 30));
     document.getElementById('diary').style.backgroundImage = `url(${url})`;
   };
 
@@ -473,7 +525,6 @@ function Write() {
     day = date[2];
     dayOfWeek = week[new Date(date).getDay()];
   }
-  // console.log(jpgUrl.slice(0, 20));
   return (
     <div>
       <Wrap>
@@ -565,7 +616,16 @@ function Write() {
             </WrapTitleContents>
           </WrapTitle>
           <DrawDiary>
-            <Diary id='diary'></Diary>
+            <Diary id='diary' ref={diaryRef}></Diary>
+            {loading ? (
+              <LoadingBackground>
+                <WrapLoading>
+                  <Lottie animationData={Loading}></Lottie>
+                </WrapLoading>
+              </LoadingBackground>
+            ) : (
+              <div></div>
+            )}
             <WrapPlus
               id='plus'
               onClick={() => {
@@ -628,6 +688,19 @@ function Write() {
               hoverBackgroundColor='rgba(138, 80, 255, 0.6)'
               hoverColor='white'
               onClick={onClickSave}
+            />
+            <Button
+              width='7rem'
+              height='2.7rem'
+              name='그림 그리기'
+              margin='0rem 0rem 0rem 2rem'
+              color='rgba(138, 80, 255, 0.6)'
+              border='2px solid rgba(138, 80, 255, 0.6)'
+              borderRadius='10rem'
+              backgroundColor='white'
+              hoverBackgroundColor='rgba(138, 80, 255, 0.6)'
+              hoverColor='white'
+              onClick={onClickSendKeywords}
             />
           </WrapKeywordButton>
         </WrapDiary>

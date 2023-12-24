@@ -77,17 +77,21 @@ const GetPictures = styled.div`
 
 const Cancel = styled.div`
   position: absolute;
-  width: 4rem;
-  height: 4rem;
-  background-color: transparent;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 2rem;
+  border: 2px solid grey;
+  background-color: white;
   background-size: 4rem;
+  background-image: url(${Close});
+  background-position: center;
   float: right;
   top: 10.5rem;
-  right: calc((100% - 61rem) / 2);
+  right: calc((100% - 60rem) / 2);
 
-  background-image: url(${Close});
   &:hover {
     background-image: url(${CloseGrey});
+    border: 2px solid rgba(0, 0, 0, 0.7);
   }
 `;
 
@@ -177,16 +181,19 @@ const FixFrame = styled.div`
 `;
 
 const Delete = styled.div`
-  /* position: absolute;
-  width: 1rem;
-  height: 1rem;
-  top: -0.5rem;
-  left: -0.5rem;
+  background-size: 1.3rem;
+  background-image: url(${Close});
+  position: absolute;
+  width: 1.3rem;
+  height: 1.3rem;
+  top: -1rem;
+  left: -1rem;
   border-radius: 1rem;
-  background-color: grey;
+  background-color: white;
   color: white;
   font-size: 0.8rem;
-  align-content: center; */
+  align-content: center;
+  z-index: 2;
 `;
 
 const Resize = styled.div`
@@ -257,7 +264,9 @@ function WriteModal({ setVisibleModal, onChange, keyword }) {
   // 현재 마우스가 어떤 버튼을 눌렀는지
   const [mouseState, setMouseState] = useState('draw');
 
-  let key = 0;
+  const [idNum, setIdNum] = useState(0);
+
+  // let id_num = 0;
 
   const [ctx, setCtx] = useState();
   const [isDrawing, setIsDrawing] = useState(false);
@@ -372,14 +381,33 @@ function WriteModal({ setVisibleModal, onChange, keyword }) {
       .then((res) => {
         // console.log(res.data.img);
         data = res.data.img;
-        const newComponentId = components.length + 1;
+        // const newComponentId = components.length + 1;
+        console.log('id_num', idNum);
+        const newComponentId = idNum;
+        setIdNum(idNum + 1);
         const newComponents = [
           ...components,
-          { id: newComponentId, img: data },
+          {
+            id: newComponentId,
+            img: data,
+            x: 0,
+            y: 0,
+            width: 100,
+            height: 100,
+          },
         ];
         setComponents(newComponents);
-        // console.log('components : ', components);
-        localStorage.setItem('components', newComponents);
+        console.log('components : ', components);
+        localStorage.setItem(
+          idNum,
+          JSON.stringify({
+            x: 0,
+            y: 0,
+            width: 100,
+            height: 100,
+          })
+        );
+        // localStorage.setItem('components', newComponents);
       })
       .catch((err) => {
         console.log(err);
@@ -391,24 +419,9 @@ function WriteModal({ setVisibleModal, onChange, keyword }) {
     // 사이즈 조절
     // 그림 다시 받아오기 (선택)
     const [selectedDiv, setSelectedDiv] = useState(null);
-    // const [width, setWidth] = useState(100);
-    // const [height, setHeight] = useState(100);
-    // const [{ x, y }, api] = useSpring(() => ({ x: 0, y: 0 }));
-
-    // const bind = useDrag(
-    //   ({ down, offset: [ox, oy] }) => {
-    //     api.start({ x: ox, y: oy, immediate: down });
-    //     console.log('ox : ', ox, 'oy : ', oy);
-    //   },
-    //   {
-    //     bounds: { left: 0, right: 732, top: 0, bottom: 422 },
-    //   }
-    // );
 
     const onClickDelete = (e, params) => {
       e.preventDefault();
-      //console.log("params : ", params);
-      //console.log("e.target.id : ",e.target.id);
       const id = parseInt(e.target.id);
       console.log(typeof id);
       setComponents(components.filter((component) => component.id !== id));
@@ -419,69 +432,41 @@ function WriteModal({ setVisibleModal, onChange, keyword }) {
       setSelectedDiv((prevId) =>
         prevId === clickedDivId ? null : clickedDivId
       );
-
-      // console.log(selectedDiv, id);
-      // console.log(typeof selectedDiv, typeof id);
     };
 
+    // const handleClick = (e) => {
+    //   const id = e.target.id;
+    //   console.log(components[0].id);
+    // };
+
+    // const handleDragStop = (e, id) => {
+    //   console.log(id);
+    // };
+
+    // const handleResizeStop = (e, id) => {
+    //   console.log(id);
+    // };
+
     return (
-      <>
-        {/* <animated.div
-          {...bind()}
-          style={{
-            x,
-            y,
-            position: 'absolute',
-            width: 100,
-            height: 100,
-            backgroundImage: `url('data:image/jpeg;base64,${data}')`,
-            backgroundSize: 100,
-            touchAction: 'none',
-            boxSizing: 'content-box',
-          }}
-        > */}
-        {/* <Resizable
-            style={{
-              position: 'absolute',
-              backgroundColor: 'black',
-            }}
-            size={{ width, height }}
-            onResizeStop={(e, direection, ref, d) => {
-              setWidth(width + d.width);
-              setHeight(height + d.height);
-            }}
-          /> */}
+      <div id={id}>
         <Rnd
           style={{
-            // width: 100,
-            // height: 100,
             backgroundImage: `url('data:image/jpeg;base64,${data}')`,
             backgroundSize: 'contain',
             backgroundRepeat: 'no-repeat',
-            // overflow: 'auto',
-            // resize: 'both',
           }}
           default={{ x: 0, y: 0, width: 100, height: 100 }}
+          lockAspectRatio={true}
+          // onDragStop={handleDragStop({ id })}
+          // onResizeStop={handleResizeStop({ id })}
         >
           <Delete
             style={{
               display: parseInt(selectedDiv) === id ? 'block' : 'none',
-              position: 'absolute',
-              width: '1.3rem',
-              height: '1.3rem',
-              top: '-1.3rem',
-              left: '-1.3rem',
-              borderRadius: '1rem',
-              backgroundColor: 'lightgrey',
-              color: 'white',
-              fontSize: '1rem',
-              textAlign: 'center',
             }}
             id={id}
             onClick={onClickDelete}
-          >
-            X
-          </Delete>
+          ></Delete>
           <FixFrame
             style={{
               width: '100%',
@@ -493,8 +478,7 @@ function WriteModal({ setVisibleModal, onChange, keyword }) {
             onClick={onClickPicture}
           />
         </Rnd>
-        {/* </animated.div> */}
-      </>
+      </div>
     );
   };
 

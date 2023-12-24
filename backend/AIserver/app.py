@@ -10,6 +10,7 @@ from aipic.aiapi import get_aipic
 
 app = Flask(__name__)
 CORS(app)
+CORS(app,resource={r'*':{'origins':'*'}})
 
 @app.route('/keyword',methods=['POST'])
 def get_keyword():
@@ -56,6 +57,7 @@ def get_drawpic():
     #그림추출
     params = request.get_json()
     text=params['keyword']
+    print(text)
     # text='cat'
     draw_pic=draw(text)
     base=draw_pic.im_b64()
@@ -71,8 +73,11 @@ def get_aipicture():
     # return text
     # print(type(text))
     ai_pic=get_aipic(text).get_pic()
+    # ai_pic=get_aipic(['강아지, 고양이']).get_pic()
+    print("ai_pic : ", ai_pic[0:200])
     ai_pic={'data':ai_pic}
     return jsonify(ai_pic)
+    # return jsonify(params)
     
 if __name__=='__main__':
     app.run('0.0.0.0',port=5001,debug=True)
