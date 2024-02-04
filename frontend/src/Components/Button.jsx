@@ -6,12 +6,9 @@ const ButtonStyle = styled.button`
   width: ${(props) => props.width};
   height: ${(props) => props.height};
   margin: ${(props) => props.margin};
-  /* padding: 0.2rem 1rem; */
   border: ${(props) => props.border};
-  /* border: 1px solid; */
   border-image: ${(props) => props.borderImage};
   border-radius: ${(props) => props.borderRadius};
-  /* border-radius: ${(props) => props.borderRadius}; */
   background-clip: padding-box;
   text-align: center;
   font-size: ${(props) => props.fontSize};
@@ -26,7 +23,6 @@ const ButtonStyle = styled.button`
   margin-left: ${(props) => props.marginLeft};
   cursor: pointer;
   &:hover {
-    /* background-color: rgba(256, 256, 256, 0.35); */
     background-color: ${(props) => props.hoverBackgroundColor};
     color: ${(props) => props.hoverColor};
     border: ${(props) => props.hoverBorder};

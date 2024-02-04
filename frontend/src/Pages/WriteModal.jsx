@@ -1,6 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react';
-// import ReactDOM from 'react-dom/client';
-// import html2canvas from 'html2canvas';
 import * as htmlToImage from 'html-to-image';
 // import { useSpring, animated } from 'react-spring';
 // import { useDrag } from '@use-gesture/react';

@@ -7,6 +7,7 @@ import axios from 'axios';
 import Menu from '../Components/Menu';
 import Button from '../Components/Button';
 import Input from '../Components/Input';
+import TextArea from '../Components/TextArea';
 import moment from 'moment';
 import AWS from 'aws-sdk';
 import { Buffer } from 'buffer';
@@ -196,34 +197,6 @@ const WrapPlus = styled.div`
   }
 `;
 
-const WriteDiary = styled.textarea`
-  box-sizing: border-box;
-  width: 40.2rem;
-  height: 20rem;
-  background-color: rgba(256, 256, 256, 0.7);
-  padding: 2.8rem 2rem 1rem 2rem;
-  border: 1.8px solid grey;
-  border-radius: 0rem 0rem 1.5rem 1.5rem;
-  font-size: 1rem;
-  font-family: 'NanumGothic';
-  resize: none;
-
-  background-attachment: local;
-  background-image: linear-gradient(to right, white 10px, transparent 10px),
-    linear-gradient(to left, white 10px, transparent 10px),
-    repeating-linear-gradient(
-      white,
-      white 39px,
-      #ccc 39px,
-      #ccc 40px,
-      white 40px
-    );
-  line-height: 40px;
-  &:focus {
-    outline: none;
-  }
-`;
-
 const WrapShare = styled.div`
   position: absolute;
   width: fit-content;
@@ -332,21 +305,6 @@ function Write() {
   let day = '';
   let dayOfWeek = '';
 
-  // useEffect(() => {
-  //   // const koreakeywords = keyword.map((key) => key.korea);
-  //   // console.log(koreakeywords);
-  //   let data = '집, 무지개, 나무';
-
-  //   console.log(data);
-  //   axios.post(`http://127.0.0.1:5001/aipic`, { data: [data] }).then((res) => {
-  //     const aipic = res.data.data;
-  //     console.log('aipic : ', aipic);
-  //     // console.log('aipic atob : ', btoa(aipic));
-  //     document.getElementById(
-  //       'drawTest'
-  //     ).backgroundImage = `url(data:image/png;base64,${aipic})`;
-  //   });
-  // }, [write]);
   // 날짜 저장
   const onClickWeather = (e) => {
     setWeather(e.target.value);
@@ -661,7 +619,7 @@ function Write() {
             </WrapShare>
           </DrawDiary>
 
-          <WriteDiary onChange={onChangeText} />
+          <TextArea onChange={onChangeText} />
 
           <WrapKeywordButton>
             <Button
