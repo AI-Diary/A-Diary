@@ -180,12 +180,6 @@ function Main() {
       });
   }, []);
 
-  // diarys.map((diary) => {
-  //   dates.push(diary.date);
-  //   moods.push(diary.mood);
-  // });
-
-  // console.log('dates : ', dates);
   return (
     <div>
       <Wrap>
@@ -243,8 +237,10 @@ function Main() {
                   <>
                     <div
                       style={{
-                        marginTop: '-0.6rem',
-                        marginLeft: '2rem',
+                        // position: 'absolute',
+                        // top: '0',
+                        marginTop: '-0.4rem',
+                        marginLeft: '2.5rem',
                         fontSize: '2.5rem',
                       }}
                     >

@@ -8,39 +8,33 @@ import Menu from '../Components/Menu';
 import Button from '../Components/Button';
 import Input from '../Components/Input';
 import TextArea from '../Components/TextArea';
+import ShareComponent from '../Components/ShareComponent';
 import moment from 'moment';
 import AWS from 'aws-sdk';
 import { Buffer } from 'buffer';
-import WordSpeech from '../Images/speech.png';
 import Sunny from '../Images/sunny_default.png';
 import Cloudy from '../Images/cloudy_default.png';
 import Rain from '../Images/rain_default.png';
 import Snow from '../Images/snow_default.png';
 import Wind from '../Images/wind_default.png';
-import Share from '../Images/share_default.png';
-import Instargram from '../Images/instagram_default.png';
-import Twitter from '../Images/twitter_default.png';
-import Kakaotalk from '../Images/kakaotalk_default.png';
 import SunnyGrey from '../Images/sunny_grey.png';
 import CloudyGrey from '../Images/cloudy_grey.png';
 import RainGrey from '../Images/rain_grey.png';
 import SnowGrey from '../Images/snow_grey.png';
 import WindGrey from '../Images/wind_grey.png';
-import ShareGrey from '../Images/share_grey.png';
-import InstargramGrey from '../Images/instagram_grey.png';
-import TwitterGrey from '../Images/twitter_grey.png';
-import KakaotalkGrey from '../Images/kakaotalk_grey.png';
 import Plus from '../Images/drawplus_256.png';
 import Loading from '../Images/Loading.json';
 import WriteModal from './WriteModal';
 
 const Wrap = styled.div`
-  position: absolute;
+  /* box-sizing: border-box; */
+  /* position: fixed; */
   width: 100vw;
   height: 80rem;
   min-width: 60rem;
-  border: 0.1px solid transparent;
+  /* border: 0.1px solid transparent; */
   /* padding-bottom: 4rem; */
+  /* overflow: scroll; */
   background: linear-gradient(
     to bottom,
     rgba(51, 153, 255),
@@ -93,6 +87,9 @@ const RadioLabel = styled.label`
   [type='radio'] {
     width: 0;
     height: 0;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    appearance: none;
   }
   [type='radio'] + img {
     cursor: pointer;
@@ -103,10 +100,16 @@ const RadioLabel = styled.label`
     background-size: 1.8rem;
     border: none;
     box-shadow: none;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    appearance: none;
   }
   [type='radio']:checked + img {
     background-image: url(${(props) => props.backgroundChecked});
     border: none;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    appearance: none;
   }
 `;
 
@@ -192,55 +195,10 @@ const WrapPlus = styled.div`
   background-repeat: no-repeat;
   background-size: 16rem;
   transition: all 0.1s linear;
+  cursor: pointer;
   &:hover {
     transform: scale(1.2);
   }
-`;
-
-const WrapShare = styled.div`
-  position: absolute;
-  width: fit-content;
-  height: fit-content;
-  margin: 3.5rem 0rem 0rem 0.7rem;
-  display: flex;
-  z-index: 5;
-`;
-const ShareButton = styled.div`
-  /* border: 2px solid black; */
-  display: inline-block right;
-  width: 1.8rem;
-  height: 1.8rem;
-
-  background-image: url(${Share});
-  &:hover {
-    background-image: url(${ShareGrey});
-  }
-`;
-
-const WrapSNS = styled.div`
-  width: 10rem;
-  height: 2.1rem;
-  display: flex;
-  visibility: ${(props) => props.visibility};
-  margin-top: -0.3rem;
-  margin-left: 0.3rem;
-  padding-top: 0.4rem;
-  background-image: url(${WordSpeech});
-  background-repeat: no-repeat;
-  background-size: 10rem 2.5rem;
-  /* border: 1px solid yellow; */
-`;
-
-const SNSButton = styled.div`
-  width: 1.8rem;
-  height: 1.8rem;
-  margin-left: 1.25rem;
-  background-size: 1.8rem;
-  background-image: url(${(props) => props.backgroundImage});
-  &:hover {
-    background-image: url(${(props) => props.backgroundChecked});
-  }
-  /* border: 1px solid orange; */
 `;
 
 const WrapKeywordButton = styled.div`
@@ -283,9 +241,6 @@ function Write() {
   // 키워드 받아온 거 저장
   const [keyword, setKeyword] = useState([]);
 
-  // SNS 공유 창 보이기
-  const [visibleShare, setVisibleShare] = useState(false);
-
   // WriteModal 보이기
   const [visibleModal, setVisibleModal] = useState(false);
 
@@ -318,24 +273,6 @@ function Write() {
   // 일기글 저장
   const onChangeText = (e) => {
     setWrite(e.target.value);
-  };
-
-  // SNS 연동
-  const onClickInsta = () => {
-    console.log('insta');
-    const insta = 'https://www.instagram.com/';
-    window.open(insta);
-  };
-  const onClickTwitter = () => {
-    console.log('twitter');
-    const twitter =
-      'https://twitter.com/i/flow/login?input_flow_data=%7B%22requested_variant%22%3A%22eyJsYW5nIjoia28ifQ%3D%3D%22%7D';
-    window.open(twitter);
-  };
-  const onClickKakao = () => {
-    console.log('kakao');
-    const kakao = 'https://developers.kakao.com/product/message';
-    window.open(kakao);
   };
 
   // 일기 저장 눌렀을 때
@@ -591,32 +528,7 @@ function Write() {
                 setVisibleModal(true);
               }}
             />
-            <WrapShare>
-              <ShareButton
-                onClick={() => {
-                  setVisibleShare(!visibleShare);
-                }}
-              />
-              {visibleShare && (
-                <WrapSNS>
-                  <SNSButton
-                    backgroundImage={Instargram}
-                    backgroundChecked={InstargramGrey}
-                    onClick={onClickInsta}
-                  />
-                  <SNSButton
-                    backgroundImage={Twitter}
-                    backgroundChecked={TwitterGrey}
-                    onClick={onClickTwitter}
-                  />
-                  <SNSButton
-                    backgroundImage={Kakaotalk}
-                    backgroundChecked={KakaotalkGrey}
-                    onClick={onClickKakao}
-                  />
-                </WrapSNS>
-              )}
-            </WrapShare>
+            <ShareComponent />
           </DrawDiary>
 
           <TextArea onChange={onChangeText} />

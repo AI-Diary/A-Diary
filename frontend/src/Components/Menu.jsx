@@ -4,12 +4,15 @@ import { useNavigate } from 'react-router-dom';
 import Button from '../Components/Button';
 
 const WrapMenu = styled.div`
+  box-sizing: border-box;
+  display: flex;
   width: 100vw;
   height: 5rem;
   /* min-width: 60rem; */
+  align-items: center;
   min-width: ${(props) => props.minWidth};
   background-color: rgba(256, 256, 256, 0.8);
-  border: 0.1px solid transparent;
+  /* border: 0.1px solid #ffffff06; */
 `;
 
 const Logo = styled.div`
@@ -21,16 +24,18 @@ const Logo = styled.div`
   font-size: 2rem;
   font-family: 'LogoFont';
   text-align: center;
-  margin-top: 1rem;
-  margin-left: 1rem;
+  /* margin-top: 1rem;
+  margin-left: 1rem; */
+  padding-left: 1rem;
   cursor: pointer;
 `;
 const WrapButtons = styled.div`
   width: fit-content;
   height: fit-content;
-  float: right;
+  margin-left: auto;
+  /* float: right; */
   /* border: 2px solid black; */
-  margin-top: -4rem;
+  /* margin-top: -4rem; */
   /* margin-right: 2rem; */
   /* position: absolute; */
 `;
@@ -71,7 +76,7 @@ function Menu({ minWidth }) {
         <WrapButtons>
           <Button
             width='8rem'
-            height='5rem'
+            height='4.69rem'
             name='오늘의 일기'
             color='rgba(69, 149, 255)'
             // margin='0rem 1rem 0rem 0rem'
@@ -85,7 +90,7 @@ function Menu({ minWidth }) {
           />
           <Button
             width='8rem'
-            height='5rem'
+            height='4.69rem'
             name='마이 페이지'
             color='rgba(69, 149, 255)'
             border='2px solid transparent'
@@ -98,7 +103,7 @@ function Menu({ minWidth }) {
           />
           <Button
             width='8rem'
-            height='5rem'
+            height='4.69rem'
             name='로그아웃'
             color='grey'
             border='2px solid transparent'
